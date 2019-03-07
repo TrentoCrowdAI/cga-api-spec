@@ -1,0 +1,8 @@
+
+apiTitle: CGA-api
+splitSpec: false
+codeSamples: true
+swaggerUI: true
+travis: true
+repo: TrentoCrowdAI/CGA
+oasVersion: 3.0.0
