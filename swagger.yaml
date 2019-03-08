@@ -1,0 +1,516 @@
+swagger: "2.0"
+info:
+  description: "Simple server in order to create and mantain CGA Survey"
+  version: "1.0.0"
+  title: "CGA Survey"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "a@a.com"
+  license:
+    name: "MIT"
+    url: "https://github.com/TrentoCrowdAI/CGA/blob/master/LICENSE"
+host: "a.com"
+basePath: "/v1"
+tags:
+- name: "survey"
+  description: "Access/Modify the survey"
+- name: "personalizedItem"
+  description: "Question that form a survey"
+- name: "user"
+  description: "User member of the system"
+
+schemes:
+- "https"
+paths:
+  /survey:
+    post:
+      tags:
+      - "survey"
+      summary: "Add a new survey"
+      description: "Performed by a user when he wants to create a new survey in order to collect patient data"
+      operationId: "addSurvey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "survey"
+        description: "Survey object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name assigned to the survey"
+              example: "CGA Survey - Name Surname Patient"
+            users:
+              type: "array"
+              items:
+                $ref: "#/definitions/user"
+              description: "Array that contains the users that are able to modify and submit the survey"
+            patientId:
+              type: integer
+              description: "Id that identify the patient"
+            date:
+              type: "object"
+              items:
+                $ref: "#/definitions/datetime"
+                description: "Date in wicht the survey has been created"
+            personalizedItems:
+              type: "array"
+              items:
+                $ref: "#/definitions/personalizedItem"
+              description: "Array that contains the list of all questions and relative options"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "survey"
+      summary: "Get all survey"
+      description: "Performed by a user in order to get all surveys"
+      operationId: "getSurveys"
+      produces:
+      - "application/json"
+      parameters:
+      - in: query
+        name: "sortSurveyBy"
+        type: string
+        enum: ["alpha", "date"]
+        description: "Decide how to sort surveys"
+        default: "alpha"
+      - in: query
+        name: "beforeDate"
+        type: string
+        description: "Gets only the surveys created before the date passed as parameter"
+      - in: query
+        name: "afterDate"
+        type: string
+        description: "Gets only the surveys created after the date passed as parameter"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/survey"
+        400:
+          description: "Bad request"
+  /survey/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The survey id
+    get:
+      tags:
+      - "survey"
+      summary: "Get an survey by the id"
+      description: "Performed by users in order to get specific survey"
+      operationId: "getSurvey"
+      produces:
+      - "application/json"
+      parameters:
+      - in: query
+        name: "sortSurveyBy"
+        type: string
+        enum: ["alpha", "date"]
+        description: "Decide how to sort surveys"
+        default: "alpha"
+      - in: query
+        name: "beforeDate"
+        type: string
+        description: "Gets only the surveys created before the date passed as parameter"
+      - in: query
+        name: "afterDate"
+        type: string
+        description: "Gets only the surveys created after the date passed as parameter"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Survey not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "survey"
+      summary: "Update an existing survey"
+      description: "Performed by a user in order to update the survey"
+      operationId: "updateSurvey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Survey object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              format: "int64"
+              description: "Unique identifier for the survey"
+            name:
+              type: "string"
+              description: "Name assigned to the survey"
+              example: "CGA Survey - Name Surname Patient"
+            users:
+              type: "array"
+              items:
+                $ref: "#/definitions/user"
+              description: "Array that contains the users that are able to modify and submit the survey"
+            patientId:
+              type: integer
+              description: "Id that identify the patient"
+            date:
+              type: "object"
+              items:
+                $ref: "#/definitions/datetime"
+                description: "Date in wicht the survey has been created"
+            personalizedItems:
+              type: "array"
+              items:
+                $ref: "#/definitions/personalizedItem"
+              description: "Array that contains the list of all questions and relative options"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Survey not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "survey"
+      summary: "Delete a survey by id"
+      description: "Performed by the user in order to delete the survey from the system"
+      operationId: "deleteSurvey"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Survey not found"
+        405:
+          description: "Validation exception"
+  /personalizedItem:
+    post:
+      tags:
+      - "personalizedItem"
+      summary: "Add a new personalizedItem"
+      description: "Performed by a user when he wants to create a new personalizedItem in order to collect patient data"
+      operationId: "addPersonalizedItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "personalizedItem"
+        description: "PersonalizedItem object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name assigned to the personalizedItem"
+            info:
+              type: "string"
+              description: "Tag that decribe the personalizedItem"
+            label:
+              type: "array"
+              items:
+                type: object
+              description: "List of various question in different languages"
+            options:
+              type: "array"
+              items:
+                type: object
+              description: "List of all options that the user can use to answer to the question"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/personalizedItem"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "personalizedItem"
+      summary: "Get all personalizedItems"
+      description: "Performed by a user in order to get all personalizedItems"
+      operationId: "getPersonalizedItems"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/personalizedItem"
+        400:
+          description: "Bad request"
+  /personalizedItem/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The PersonalizedItem id
+    get:
+      tags:
+      - "personalizedItem"
+      summary: "Get a PersonalizedItem by the id"
+      description: "Performed by users in order to get specific PersonalizedItem"
+      operationId: "getPersonalizedItem"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/personalizedItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "PersonalizedItem not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "personalizedItem"
+      summary: "Update an existing personalizedItem"
+      description: "Performed by a user in order to update the personalizedItem"
+      operationId: "updatePersonalizedItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "PersonalizedItem object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the personalizedItem in the system"
+            name:
+              type: "string"
+              description: "Name assigned to the personalizedItem"
+            info:
+              type: "string"
+              description: "Tag that decribe the personalizedItem"
+            label:
+              type: "array"
+              items:
+                type: object
+              description: "List of various question in different languages"
+            options:
+              type: "array"
+              items:
+                type: object
+              description: "List of all options that the user can use to answer to the question"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/personalizedItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "PersonalizedItem not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "personalizedItem"
+      summary: "Delete a PersonalizedItem by id"
+      description: "Performed by the user in order to delete the PersonalizedItem from the system"
+      operationId: "deletePersonalizedItem"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/personalizedItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "PersonalizedItem not found"
+        405:
+          description: "Validation exception"
+  /user:
+    post:
+      tags:
+      - "user"
+      summary: "Add a new user"
+      description: "Operation to call in order to create a new user in the system"
+      operationId: "addUser"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "user"
+        description: "User object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name of the user"
+            surname:
+              type: "string"
+              description: "Surname of the user"
+            email:
+              type: "string"
+              description: "Email of the user"
+            username:
+              type: "string"
+              description: "Username of the user"
+            role:
+              type: "string"
+              description: "Role of the user in the system"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/user"
+        400:
+          description: "Bad Request"
+
+definitions:
+  survey:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the survey in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the survey"
+      users:
+        type: "array"
+        items:
+          $ref: "#/definitions/user"
+        description: "Array that contains the users that are able to modify and submit the survey"
+      patientId:
+        type: "integer"
+        description: "Id that identify the patient"
+      date:
+        type: "object"
+        items:
+          $ref: "#/definitions/datetime"
+          description: "Date in wicht the survey has been created"
+      personalizedItems:
+        type: "array"
+        items:
+          $ref: "#/definitions/personalizedItem"
+        description: "Array that contains the list of all questions and relative options"
+  personalizedItem:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the personalizedItem in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the personalizedItem"
+      info:
+        type: "string"
+        description: "Tag that decribe the personalizedItem"
+      label:
+        type: "array"
+        items:
+          type: object
+        description: "List of various question in different languages"
+      options:
+        type: "array"
+        items:
+          type: object
+        description: "List of all options that the user can use to answer to the question"
+  user:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the user in the system"
+      name:
+        type: "string"
+        description: "Name of the user"
+      surname:
+        type: "string"
+        description: "Surname of the user"
+      email:
+        type: "string"
+        description: "Email of the user"
+      username:
+        type: "string"
+        description: "Username of the user"
+      role:
+        type: "string"
+        description: "Role of the user in the system"
+  datetime:
+    type: object
+    properties:
+      year:
+        type: "integer"
+        format: "int64"
+        minimum: 1900
+      month:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+        maximum: 12
+      day:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+        maximum: 31
+      hour:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 23
+      minute:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 60
+      second:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 60
