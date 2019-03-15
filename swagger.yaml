@@ -14,10 +14,18 @@ basePath: "/v1"
 tags:
 - name: "survey"
   description: "Access/Modify the survey"
-- name: "personalizedItem"
-  description: "Question that form a survey"
+- name: "surveyComponent"
+  description: "Components that compose the survey"
+- name: "surveyItem"
+  description: "Items that compose a surveyComponent"
+- name: "label"
+  description: "Label assigned to a surveyComponent"
+- name: "surveyItemOption"
+  description: "Options that compose a surveyItem"
 - name: "user"
   description: "User member of the system"
+- name: "datetime"
+  description: "Object that represents a time and a date"
 
 schemes:
 - "https"
@@ -44,25 +52,14 @@ paths:
             name:
               type: "string"
               description: "Name assigned to the survey"
-              example: "CGA Survey - Name Surname Patient"
-            users:
+            description:
+              type: "string"
+              description: "String that describe the survey"
+            components:
               type: "array"
               items:
-                $ref: "#/definitions/user"
-              description: "Array that contains the users that are able to modify and submit the survey"
-            patientId:
-              type: integer
-              description: "Id that identify the patient"
-            date:
-              type: "object"
-              items:
-                $ref: "#/definitions/datetime"
-                description: "Date in wicht the survey has been created"
-            personalizedItems:
-              type: "array"
-              items:
-                $ref: "#/definitions/personalizedItem"
-              description: "Array that contains the list of all questions and relative options"
+                $ref: "#/definitions/surveyComponent"
+              description: "SurveyComponent that compose a survey"
       responses:
         201:
           description: "Successful operation"
@@ -163,30 +160,18 @@ paths:
           properties:
             id:
               type: "integer"
-              format: "int64"
-              description: "Unique identifier for the survey"
+              description: "Number that identify the survey in the system"
             name:
               type: "string"
               description: "Name assigned to the survey"
-              example: "CGA Survey - Name Surname Patient"
-            users:
+            description:
+              type: "string"
+              description: "String that describe the survey"
+            components:
               type: "array"
               items:
-                $ref: "#/definitions/user"
-              description: "Array that contains the users that are able to modify and submit the survey"
-            patientId:
-              type: integer
-              description: "Id that identify the patient"
-            date:
-              type: "object"
-              items:
-                $ref: "#/definitions/datetime"
-                description: "Date in wicht the survey has been created"
-            personalizedItems:
-              type: "array"
-              items:
-                $ref: "#/definitions/personalizedItem"
-              description: "Array that contains the list of all questions and relative options"
+                $ref: "#/definitions/surveyComponent"
+              description: "SurveyComponent that compose a survey"
       responses:
         200:
           description: "Successful operation"
@@ -217,54 +202,46 @@ paths:
           description: "Survey not found"
         405:
           description: "Validation exception"
-  /personalizedItem:
+  /surveyComponent:
     post:
       tags:
-      - "personalizedItem"
-      summary: "Add a new personalizedItem"
-      description: "Performed by a user when he wants to create a new personalizedItem in order to collect patient data"
-      operationId: "addPersonalizedItem"
+      - "surveyComponent"
+      summary: "Add a new SurveyComponent"
+      description: "Performed by a user when he wants to create a new surveyComponent in order to collect patient data"
+      operationId: "addSurveyComponent"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: body
-        name: "personalizedItem"
-        description: "PersonalizedItem object that needs to be added"
+        name: "SurveyComponent"
+        description: "SurveyComponent object that needs to be added"
         required: true
         schema:
           type: "object"
           properties:
             name:
               type: "string"
-              description: "Name assigned to the personalizedItem"
-            info:
-              type: "string"
-              description: "Tag that decribe the personalizedItem"
-            label:
-              type: "array"
+              description: "Name thah describe the SurveyComponent"
+            items:
+              type: "object"
               items:
-                type: object
-              description: "List of various question in different languages"
-            options:
-              type: "array"
-              items:
-                type: object
-              description: "List of all options that the user can use to answer to the question"
+                $ref: "#/definitions/surveyItem"
+              description: "Items that compose a surveyComponent"
       responses:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/personalizedItem"
+            $ref: "#/definitions/surveyComponent"
         400:
           description: "Bad Request"
     get:
       tags:
-      - "personalizedItem"
-      summary: "Get all personalizedItems"
-      description: "Performed by a user in order to get all personalizedItems"
-      operationId: "getPersonalizedItems"
+      - "surveyComponent"
+      summary: "Get all surveyComponent"
+      description: "Performed by a user in order to get all surveyComponent"
+      operationId: "getAllSurveyComponent"
       produces:
       - "application/json"
       responses:
@@ -273,41 +250,41 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/personalizedItem"
+              $ref: "#/definitions/surveyComponent"
         400:
           description: "Bad request"
-  /personalizedItem/{id}:
+  /surveyComponent/{id}:
     parameters:
         - in: path
           name: id
           required: true
           type: integer
-          description: The PersonalizedItem id
+          description: The SurveyComponent id
     get:
       tags:
-      - "personalizedItem"
-      summary: "Get a PersonalizedItem by the id"
-      description: "Performed by users in order to get specific PersonalizedItem"
-      operationId: "getPersonalizedItem"
+      - "surveyComponent"
+      summary: "Get a SurveyComponent by the id"
+      description: "Performed by users in order to get specific SurveyComponent"
+      operationId: "getSurveyComponent"
       produces:
       - "application/json"
       responses:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/personalizedItem"
+            $ref: "#/definitions/surveyComponent"
         400:
           description: "Invalid id"
         404:
-          description: "PersonalizedItem not found"
+          description: "SurveyComponent not found"
         405:
           description: "Validation exception"
     put:
       tags:
-      - "personalizedItem"
-      summary: "Update an existing personalizedItem"
-      description: "Performed by a user in order to update the personalizedItem"
-      operationId: "updatePersonalizedItem"
+      - "surveyComponent"
+      summary: "Update an existing SurveyComponent"
+      description: "Performed by a user in order to update the surveyComponent"
+      operationId: "updateSurveyComponent"
       consumes:
       - "application/json"
       produces:
@@ -315,58 +292,466 @@ paths:
       parameters:
       - in: "body"
         name: "body"
-        description: "PersonalizedItem object that needs to be updated"
+        description: "SurveyComponent object that needs to be updated"
         required: true
         schema:
           type: "object"
           properties:
             id:
               type: "integer"
-              description: "Number that identify the personalizedItem in the system"
+              description: "Number that identify the SurveyComponent"
             name:
               type: "string"
-              description: "Name assigned to the personalizedItem"
-            info:
-              type: "string"
-              description: "Tag that decribe the personalizedItem"
-            label:
-              type: "array"
+              description: "Name thah describe the SurveyComponent"
+            items:
+              type: "object"
               items:
-                type: object
-              description: "List of various question in different languages"
-            options:
-              type: "array"
-              items:
-                type: object
-              description: "List of all options that the user can use to answer to the question"
+                $ref: "#/definitions/surveyItem"
+              description: "Items that compose a surveyComponent"
       responses:
         200:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/personalizedItem"
+            $ref: "#/definitions/surveyComponent"
         400:
           description: "Invalid id"
         404:
-          description: "PersonalizedItem not found"
+          description: "SurveyComponent not found"
         405:
           description: "Validation exception"
     delete:
       tags:
-      - "personalizedItem"
-      summary: "Delete a PersonalizedItem by id"
-      description: "Performed by the user in order to delete the PersonalizedItem from the system"
-      operationId: "deletePersonalizedItem"
+      - "surveyComponent"
+      summary: "Delete a SurveyItem by id"
+      description: "Performed by the user in order to delete the SurveyItem from the system"
+      operationId: "deleteSurveyComponent"
       produces:
       - "application/json"
       responses:
         200:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/personalizedItem"
+            $ref: "#/definitions/surveyComponent"
         400:
           description: "Invalid id"
         404:
-          description: "PersonalizedItem not found"
+          description: "SurveyComponent not found"
+        405:
+          description: "Validation exception"
+  /surveyItem:
+    post:
+      tags:
+      - "surveyItem"
+      summary: "Add a new SurveyItem"
+      description: "Performed by a user when he wants to create a new SurveyItem"
+      operationId: "addSurveyItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "SurveyItem"
+        description: "SurveyItem object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name that describe the SurveyComponent"
+            labels:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Objects that allow the surveyItem to be displayed in different languages"
+            options:
+              type: "array"
+              items:
+                $ref: "#/definitions/surveyItemOption"
+              description: "Object that contains the options in order to response to the surveyItem"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "surveyItem"
+      summary: "Get all surveyItem"
+      description: "Performed by a user in order to get all surveyItem"
+      operationId: "getAllSurveyItem"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyItem"
+        400:
+          description: "Bad request"
+  /surveyItem/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The SurveyItem id
+    get:
+      tags:
+      - "surveyItem"
+      summary: "Get a SurveyItem by the id"
+      description: "Performed by users in order to get specific SurveyItem"
+      operationId: "getSurveyItem"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "surveyItem"
+      summary: "Update an existing SurveyItem"
+      description: "Performed by a user in order to update the surveyItem"
+      operationId: "updateSurveyItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "SurveyItem object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the SurveyItem"
+            name:
+              type: "string"
+              description: "Name that describe the SurveyComponent"
+            labels:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Objects that allow the surveyItem to be displayed in different languages"
+            options:
+              type: "array"
+              items:
+                $ref: "#/definitions/surveyItemOption"
+              description: "Object that contains the options in order to response to the surveyItem"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "surveyItem"
+      summary: "Delete a SurveyItem by id"
+      description: "Performed by the user in order to delete the SurveyItem from the system"
+      operationId: "deleteSurveyItem"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+  /label:
+    post:
+      tags:
+      - "label"
+      summary: "Add a new Label"
+      description: "Performed by a user when he wants to create a new Label"
+      operationId: "addLabel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "Label"
+        description: "Label object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            language:
+              type: "string"
+              description: "Contains the language of the question"
+            content:
+              type: "string"
+              description: "Contains the question in the language indicated in the language field"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "label"
+      summary: "Get all label"
+      description: "Performed by a user in order to get all Label"
+      operationId: "getAllLabel"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/label"
+        400:
+          description: "Bad request"
+  /label/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The Label id
+    get:
+      tags:
+      - "label"
+      summary: "Get a Label by the id"
+      description: "Performed by users in order to get specific Label"
+      operationId: "getLabel"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Label not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "label"
+      summary: "Update an existing Label"
+      description: "Performed by a user in order to update the Label"
+      operationId: "updateLabel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Label object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the label"
+            language:
+              type: "string"
+              description: "Contains the language of the question"
+            content:
+              type: "string"
+              description: "Contains the question in the language indicated in the language field"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Label not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "label"
+      summary: "Delete a Label by id"
+      description: "Performed by the user in order to delete the Label from the system"
+      operationId: "deleteLabel"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Label not found"
+        405:
+          description: "Validation exception"
+  /surveyItemOption:
+    post:
+      tags:
+      - "surveyItemOption"
+      summary: "Add a new SurveyItemOption"
+      description: "Performed by a user when he wants to create a new SurveyItemOption"
+      operationId: "addSurveyItemOption"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "surveyItemOption"
+        description: "SurveyItemOption object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name that describe the SurveyItemOption"
+            value:
+              type: "string"
+              description: ""
+            type:
+              type: "string"
+              description: "Name that identify the type of the surveyItemOption"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "surveyItemOption"
+      summary: "Get all SurveyItemOption"
+      description: "Performed by a user in order to get all SurveyItemOption"
+      operationId: "getAllSurveyItemOption"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Bad request"
+  /surveyItemOption/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The SurveyItemOption id
+    get:
+      tags:
+      - "surveyItemOption"
+      summary: "Get a SurveyItemOption by the id"
+      description: "Performed by users in order to get specific SurveyItemOption"
+      operationId: "getSurveyItemOption"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItemOption not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "surveyItemOption"
+      summary: "Update an existing SurveyItemOption"
+      description: "Performed by a user in order to update the SurveyItemOption"
+      operationId: "updateSurveyItemOption"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "SurveyItemOption object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the SurveyItemOption"
+            name:
+              type: "string"
+              description: "Name that describe the SurveyItemOption"
+            value:
+              type: "string"
+              description: ""
+            type:
+              type: "string"
+              description: "Name that identify the type of the surveyItemOption"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItemOption not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "surveyItemOption"
+      summary: "Delete a SurveyItemOption by id"
+      description: "Performed by the user in order to delete the SurveyItemOption from the system"
+      operationId: "deleteSurveyItemOption"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItemOption not found"
         405:
           description: "Validation exception"
   /user:
@@ -421,46 +806,74 @@ definitions:
       name:
         type: "string"
         description: "Name assigned to the survey"
-      users:
+      description:
+        type: "string"
+        description: "String that describe the survey"
+      components:
         type: "array"
         items:
-          $ref: "#/definitions/user"
-        description: "Array that contains the users that are able to modify and submit the survey"
-      patientId:
-        type: "integer"
-        description: "Id that identify the patient"
-      date:
-        type: "object"
-        items:
-          $ref: "#/definitions/datetime"
-          description: "Date in wicht the survey has been created"
-      personalizedItems:
-        type: "array"
-        items:
-          $ref: "#/definitions/personalizedItem"
-        description: "Array that contains the list of all questions and relative options"
-  personalizedItem:
+          $ref: "#/definitions/surveyComponent"
+        description: "SurveyComponent that compose a survey"
+  surveyComponent:
     type: "object"
     properties:
       id:
         type: "integer"
-        description: "Number that identify the personalizedItem in the system"
+        description: "Number that identify the SurveyComponent"
       name:
         type: "string"
-        description: "Name assigned to the personalizedItem"
-      info:
+        description: "Name thah describe the SurveyComponent"
+      items:
+        type: "object"
+        items:
+          $ref: "#/definitions/surveyItem"
+        description: "Items that compose a surveyComponent"
+  surveyItem:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItem"
+      name:
         type: "string"
-        description: "Tag that decribe the personalizedItem"
-      label:
+        description: "Name that describe the SurveyComponent"
+      labels:
         type: "array"
         items:
-          type: object
-        description: "List of various question in different languages"
+          $ref: "#/definitions/label"
+        description: "Objects that allow the surveyItem to be displayed in different languages"
       options:
         type: "array"
         items:
-          type: object
-        description: "List of all options that the user can use to answer to the question"
+          $ref: "#/definitions/surveyItemOption"
+        description: "Object that contains the options in order to response to the surveyItem"
+  label:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      language:
+        type: "string"
+        description: "Contains the language of the question"
+      content:
+        type: "string"
+        description: "Contains the question in the language indicated in the language field"
+  surveyItemOption:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItemOption"
+      name:
+        type: "string"
+        description: "Name that describe the SurveyItemOption"
+      value:
+        type: "string"
+        description: ""
+      type:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
   user:
     type: "object"
     properties:
