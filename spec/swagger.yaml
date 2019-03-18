@@ -66,6 +66,11 @@ paths:
               items:
                 $ref: "#/definitions/dataCollection"
               description: "DataCollection that compose a project"
+            subjects:
+              type: "array"
+              items:
+                $ref: '#/definitions/subject'
+              description: "Subject assigned to the project"
       responses:
         201:
           description: "Successful operation"
@@ -148,6 +153,11 @@ paths:
               items:
                 $ref: "#/definitions/dataCollection"
               description: "DataCollection that compose a project"
+            subjects:
+              type: "array"
+              items:
+                $ref: '#/definitions/subject'
+              description: "Subject assigned to the project"
       responses:
         200:
           description: "Successful operation"
@@ -303,7 +313,7 @@ paths:
           description: "Validation exception"
     delete:
       tags:
-      - "project"
+      - "dataCollection"
       summary: "Delete a DataCollection by id"
       description: "Performed by the user in order to delete the DataCollection from the system"
       operationId: "deleteDataCollection"
@@ -750,6 +760,166 @@ paths:
           description: "Invalid id"
         404:
           description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+  /surveyImages:
+    post:
+      tags:
+      - "surveyImage"
+      summary: "Add a new SurveyImage"
+      description: "Performed by a user when he wants to create a new SurveyImage"
+      operationId: "addSurveyImage"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "SurveyImage"
+        description: "SurveyImage object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name that describe the SurveyComponent"
+            link:
+              type: "string"
+              description: "Link to the image file"
+            labels:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Objects that allow the surveyItem to be displayed in different languages"
+            possibleAnswers:
+              type: "object"
+              $ref: "#/definitions/surveyItemOption"
+              description: "Object that contains the options in order to response to the surveyItem"
+            constraints:
+              type: "array"
+              items:
+                $ref: "#/definitions/constraint"
+              description: "Constraints to apply to the item"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "surveyImage"
+      summary: "Get all SurveyImage"
+      description: "Performed by a user in order to get all SurveyImage"
+      operationId: "getAllSurveyImages"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyImage"
+        400:
+          description: "Bad request"
+  /surveyImages/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The SurveyImage id
+    get:
+      tags:
+      - "surveyItem"
+      summary: "Get a SurveyItem by the id"
+      description: "Performed by users in order to get specific SurveyImage"
+      operationId: "getSurveyImage"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "surveyImage"
+      summary: "Update an existing SurveyImage"
+      description: "Performed by a user in order to update the SurveyImage"
+      operationId: "updateSurveyImage"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "SurveyImage object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the SurveyItem"
+            name:
+              type: "string"
+              description: "Name that describe the SurveyComponent"
+            link:
+              type: "string"
+              description: "Link to the image file"
+            labels:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Objects that allow the surveyItem to be displayed in different languages"
+            possibleAnswers:
+              type: "object"
+              $ref: "#/definitions/surveyItemOption"
+              description: "Object that contains the options in order to response to the surveyItem"
+            constraints:
+              type: "array"
+              items:
+                $ref: "#/definitions/constraint"
+              description: "Constraints to apply to the item"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "surveyImage"
+      summary: "Delete a SurveyImage by id"
+      description: "Performed by the user in order to delete the SurveyImage from the system"
+      operationId: "deleteSurveyImage"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
         405:
           description: "Validation exception"
   /constraints:
@@ -1327,6 +1497,11 @@ definitions:
         items:
           $ref: "#/definitions/dataCollection"
         description: "DataCollection that compose a project"
+      subjects:
+        type: "array"
+        items:
+          $ref: '#/definitions/subject'
+        description: "Subject assigned to the project"
   dataCollection:
     type: "object"
     properties:
@@ -1398,6 +1573,44 @@ definitions:
         items:
           $ref: "#/definitions/constraint"
         description: "Constraints to apply to the item"
+  surveyImage:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItem"
+      name:
+        type: "string"
+        description: "Name that describe the SurveyComponent"
+      link:
+        type: "string"
+        description: "Link to the image file"
+      labels:
+        type: "array"
+        items:
+          $ref: "#/definitions/label"
+        description: "Objects that allow the surveyItem to be displayed in different languages"
+      possibleAnswers:
+        type: "object"
+        $ref: "#/definitions/surveyItemOption"
+        description: "Object that contains the options in order to response to the surveyItem"
+      constraints:
+        type: "array"
+        items:
+          $ref: "#/definitions/constraint"
+        description: "Constraints to apply to the item"
+  label:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      language:
+        type: "string"
+        description: "Contains the language of the question"
+      values:
+        type: "string"
+        description: "Contains the question in the language indicated in the language field"
   constraint:
     type: "object"
     properties:
@@ -1413,19 +1626,6 @@ definitions:
       value:
         type: "string"
         description: "Value of the constraint"
-  label:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        description: "Number that identify the label"
-      language:
-        type: "string"
-        description: "Contains the language of the question"
-      values:
-        type: "array"
-        items: {}
-        description: "Contains the question/answers in the language indicated in the language field"
   surveyItemOption:
     type: "object"
     properties:
@@ -1438,11 +1638,24 @@ definitions:
       options:
         type: "array"
         items:
-          $ref: "#/definitions/label"
+          $ref: "#/definitions/labelOptions"
         description: "Values in order to answer to a specific question"
       typology:
         type: "string"
         description: "Name that identify the type of the surveyItemOption"
+  labelOptions:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      language:
+        type: "string"
+        description: "Contains the language of the question"
+      values:
+        type: "array"
+        items: {}
+        description: "Contains the question/answers in the language indicated in the language field"
   subject:
     type: "object"
     properties:
