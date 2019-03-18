@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: "Simple server in order to create and mantain CGA Survey"
-  version: "1.0.0"
+  version: "v1"
   title: "CGA Survey"
   termsOfService: "http://swagger.io/terms/"
   contact:
@@ -21,6 +21,8 @@ tags:
 - name: "surveyComponent"
   description: "Components that compose the survey"
 - name: "surveyItem"
+  description: "Items that compose a surveyComponent"
+- name: "surveyImage"
   description: "Items that compose a surveyComponent"
 - name: "constraint"
   description: "Constraints between surveyItems"
@@ -636,9 +638,7 @@ paths:
                 $ref: "#/definitions/label"
               description: "Objects that allow the surveyItem to be displayed in different languages"
             possibleAnswers:
-              type: "object"
               $ref: "#/definitions/surveyItemOption"
-              description: "Object that contains the options in order to response to the surveyItem"
             constraints:
               type: "array"
               items:
@@ -724,9 +724,7 @@ paths:
                 $ref: "#/definitions/label"
               description: "Objects that allow the surveyItem to be displayed in different languages"
             possibleAnswers:
-              type: "object"
               $ref: "#/definitions/surveyItemOption"
-              description: "Object that contains the options in order to response to the surveyItem"
             constraints:
               type: "array"
               items:
@@ -793,9 +791,7 @@ paths:
                 $ref: "#/definitions/label"
               description: "Objects that allow the surveyItem to be displayed in different languages"
             possibleAnswers:
-              type: "object"
               $ref: "#/definitions/surveyItemOption"
-              description: "Object that contains the options in order to response to the surveyItem"
             constraints:
               type: "array"
               items:
@@ -834,7 +830,7 @@ paths:
           description: The SurveyImage id
     get:
       tags:
-      - "surveyItem"
+      - "surveyImage"
       summary: "Get a SurveyItem by the id"
       description: "Performed by users in order to get specific SurveyImage"
       operationId: "getSurveyImage"
@@ -884,9 +880,7 @@ paths:
                 $ref: "#/definitions/label"
               description: "Objects that allow the surveyItem to be displayed in different languages"
             possibleAnswers:
-              type: "object"
               $ref: "#/definitions/surveyItemOption"
-              description: "Object that contains the options in order to response to the surveyItem"
             constraints:
               type: "array"
               items:
@@ -1565,9 +1559,7 @@ definitions:
           $ref: "#/definitions/label"
         description: "Objects that allow the surveyItem to be displayed in different languages"
       possibleAnswers:
-        type: "object"
         $ref: "#/definitions/surveyItemOption"
-        description: "Object that contains the options in order to response to the surveyItem"
       constraints:
         type: "array"
         items:
@@ -1591,9 +1583,7 @@ definitions:
           $ref: "#/definitions/label"
         description: "Objects that allow the surveyItem to be displayed in different languages"
       possibleAnswers:
-        type: "object"
         $ref: "#/definitions/surveyItemOption"
-        description: "Object that contains the options in order to response to the surveyItem"
       constraints:
         type: "array"
         items:
