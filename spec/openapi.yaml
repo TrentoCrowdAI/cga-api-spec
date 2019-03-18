@@ -1,249 +1,1699 @@
-# This is an **example** API to demonstrate features of OpenAPI specification.
-# It doesn't cover all OpenAPI features. For more full example check out: https://github.com/APIs-guru/petstore_extended
-
-openapi: 3.0.0
+swagger: "2.0"
 info:
-  version: '1.0.0' # Your API version
-  # It can be any string but it is better to use semantic versioning: http://semver.org/
-  # Warning: OpenAPI require version to be string, but without quotation YAML can recognize it as number.
-  
-  title: Example.com # Replace with your API title
-  # Keep it simple. Don't add "API" or version at the end of the string.
-
-  termsOfService: 'https://example.com/terms/' # [Optional] Replace with an URL to your ToS
+  description: "Simple server in order to create and mantain CGA Survey"
+  version: "v1"
+  title: "CGA Survey"
+  termsOfService: "http://swagger.io/terms/"
   contact:
-    email: contact@example.com # [Optional] Replace with your contact email
-    url: 'http://example.com/contact' # [Optional] Replace with link to your contact form
+    email: "a@a.com"
   license:
-    name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-  x-logo:
-    url: 'https://apis.guru/openapi-template/logo.png'
-  
-  # Describe your API here, you can use GFM (https://guides.github.com/features/mastering-markdown) here
-  description: |
-    This is an **example** API to demonstrate features of OpenAPI specification
-    # Introduction
-    This specification is intended to to be a good starting point for describing your API in 
-    [OpenAPI/Swagger format](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md).
-    It also demonstrates features of [generator-openapi-repo](https://github.com/Rebilly/generator-openapi-repo) tool and 
-    [ReDoc](https://github.com/Rebilly/ReDoc) documentation engine. So beyond the standard OpenAPI syntax we use a few 
-    [vendor extensions](https://github.com/Rebilly/ReDoc/blob/master/docs/redoc-vendor-extensions.md).
-
-    # OpenAPI Specification
-    The goal of The OpenAPI Specification is to define a standard, language-agnostic interface to REST APIs which
-    allows both humans and computers to discover and understand the capabilities of the service without access to source
-    code, documentation, or through network traffic inspection. When properly defined via OpenAPI, a consumer can 
-    understand and interact with the remote service with a minimal amount of implementation logic. Similar to what
-    interfaces have done for lower-level programming, OpenAPI removes the guesswork in calling the service.
-externalDocs:
-  description: Find out how to create Github repo for your OpenAPI spec.
-  url: 'https://github.com/Rebilly/generator-openapi-repo'
-
-# A list of tags used by the specification with additional metadata.
-# The order of the tags can be used to reflect on their order by the parsing tools.
+    name: "MIT"
+    url: "https://github.com/TrentoCrowdAI/CGA/blob/master/LICENSE"
+host: "a.com"
+basePath: "/v1"
 tags:
-  - name: Echo
-    description: Example echo operations
-  - name: User
-    description: Operations about user
-servers:
-  - url: 'http://example.com/api/v1'
-  - url: 'https://example.com/api/v1'
+- name: "project"
+  description: "Project to collect datas"
+- name: "dataCollection"
+  description: "DataCollection of surveys"
+- name: "survey"
+  description: "Access/Modify the survey"
+- name: "surveyComponent"
+  description: "Components that compose the survey"
+- name: "surveyItem"
+  description: "Items that compose a surveyComponent"
+- name: "surveyImage"
+  description: "Items that compose a surveyComponent"
+- name: "constraint"
+  description: "Constraints between surveyItems"
+- name: "label"
+  description: "Label assigned to a surveyComponent"
+- name: "surveyItemOption"
+  description: "Options that compose a surveyItem"
+- name: "subject"
+  description: "Subject member of the system"
+- name: "datetime"
+  description: "Object that represents a time and a date"
 
-# Holds the relative paths to the individual endpoints. The path is appended to the
-# basePath in order to construct the full URL. 
+schemes:
+- "https"
 paths:
-  '/users/{username}': # path parameter in curly braces
-
-    # parameters list that are used with each operation for this path
-    parameters:
-      - name: pretty_print
-        in: query
-        description: Pretty print response
-        schema:
-          type: boolean
-    get: # documentation for GET operation for this path
+  /projects:
+    post:
       tags:
-        - User
-      
-      # summary is up to 120 symbold but we recommend to be shortest as possible
-      summary: Get user by user name
-      
-      # you can use GFM in operation description too: https://guides.github.com/features/mastering-markdown
-      description: |
-        Some description of the operation. 
-        You can use `markdown` here.
-      
-      # operationId should be unique across the whole specification
-      operationId: getUserByName
-      
-      # list of parameters for the operation
+      - "project"
+      summary: "Add a new project"
+      description: "Performed by a user when he wants to create a new project"
+      operationId: "addProject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
       parameters:
-        - name: username
-          in: path
-          description: The name that needs to be fetched
+      - in: body
+        name: "project"
+        description: "Project object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name assigned to the project"
+            description:
+              type: "string"
+              description: "String that describe the project"
+            collections:
+              type: "array"
+              items:
+                $ref: "#/definitions/dataCollection"
+              description: "DataCollection that compose a project"
+            subjects:
+              type: "array"
+              items:
+                $ref: '#/definitions/subject'
+              description: "Subject assigned to the project"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/project"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "project"
+      summary: "Get all project"
+      description: "Performed by a user in order to get all projects"
+      operationId: "getProjects"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/project"
+        400:
+          description: "Bad request"
+  /projects/{id}:
+    parameters:
+        - in: path
+          name: id
           required: true
+          type: integer
+          description: The Project id
+    get:
+      tags:
+      - "project"
+      summary: "Get an project by the id"
+      description: "Performed by users in order to get specific project"
+      operationId: "getProject"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
           schema:
-            type: string
-        - name: with_email
-          in: query
-          description: Filter users without email
-          schema:
-            type: boolean
-      
-      # security schemas applied to this operation
-      security:
-        - main_auth:
-            - 'read:users' # for auth2 provide list of scopes here
-        - api_key: []
-      responses: # list of responses
-        '200':
-          description: Success
-          content:
-            application/json: # operation response mime type
-              schema: # response schema can be specified for each response
-                $ref: '#/components/schemas/User'
-              example: # response example
-                username: user1
-                email: user@example.com
-        '403':
-          description: Forbidden
-        '404':
-          description: User not found
-    # documentation for PUT operation for this path
+            $ref: "#/definitions/project"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Project not found"
+        405:
+          description: "Validation exception"
     put:
       tags:
-        - User
-      summary: Updated user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
+      - "project"
+      summary: "Update an existing project"
+      description: "Performed by a user in order to update the project"
+      operationId: "updateProject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
       parameters:
-        - name: username
-          in: path
-          description: The name that needs to be updated
-          required: true
+      - in: "body"
+        name: "body"
+        description: "Project object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the project in the system"
+            name:
+              type: "string"
+              description: "Name assigned to the project"
+            description:
+              type: "string"
+              description: "String that describe the project"
+            collections:
+              type: "array"
+              items:
+                $ref: "#/definitions/dataCollection"
+              description: "DataCollection that compose a project"
+            subjects:
+              type: "array"
+              items:
+                $ref: '#/definitions/subject'
+              description: "Subject assigned to the project"
+      responses:
+        200:
+          description: "Successful operation"
           schema:
-            type: string
-      security:
-        - main_auth:
-            - 'write:users'
-      responses:
-        '200':
-          description: OK
-        '400':
-          description: Invalid user supplied
-        '404':
-          description: User not found
-      # request body documentation
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/User'
-        description: Updated user object
-        required: true
-  /echo: # path parameter in curly braces
-    post: # documentation for POST operation for this path
+            $ref: "#/definitions/project"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Project not found"
+        405:
+          description: "Validation exception"
+    delete:
       tags:
-        - Echo
-      summary: Echo test
-      description: Receive the exact message you've sent
-      operationId: echo
-      security:
-        - api_key: []
-        - basic_auth: []
+      - "project"
+      summary: "Delete a Project by id"
+      description: "Performed by the user in order to delete the Project from the system"
+      operationId: "deleteProject"
+      produces:
+      - "application/json"
       responses:
-        '200':
-          description: OK
-          # document headers for this response
-          headers:
-            X-Rate-Limit: # Header name
-              description: calls per hour allowed by the user
-              schema: # Header schema
-                type: integer
-                format: int32
-            X-Expires-After:
-              $ref: '#/components/headers/ExpiresAfter'
-          content:
-            application/json:
-              schema:
-                type: string
-              examples:
-                response:
-                  value: Hello world!
-            application/xml:
-              schema:
-                type: string
-            text/csv:
-              schema:
-                type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: string
-              example: Hello world!
-          application/xml:
-            schema:
-              type: string
-              example: Hello world!
-        description: Echo payload
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/project"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Project not found"
+        405:
+          description: "Validation exception"
+  /dataCollections:
+    post:
+      tags:
+      - "dataCollection"
+      summary: "Add a new DataCollection"
+      description: "Performed by a user when he wants to create a new DataCollection"
+      operationId: "addDataCollection"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "dataCollection"
+        description: "DataCollection object that needs to be added"
         required: true
-        
-# An object to hold reusable parts that can be used across the spec
-components:
-  schemas:
-    Email:
-      description: User email address
-      type: string
-      format: test
-      example: john.smith@example.com
-    User:
-      type: object
-      properties:
-        username:
-          description: User supplied username
-          type: string
-          minLength: 4
-          example: John78
-        firstName:
-          description: User first name
-          type: string
-          minLength: 1
-          example: John
-        lastName:
-          description: User last name
-          type: string
-          minLength: 1
-          example: Smith
-        email:
-          $ref: '#/components/schemas/Email'
-  headers:
-    ExpiresAfter:
-      description: date in UTC when token expires
-      schema:
-        type: string
-        format: date-time
-  # Security scheme definitions that can be used across the specification.
-  securitySchemes:
-    main_auth: # security definition name (you can name it as you want)
-      # the following options are specific to oauth2 type
-      type: oauth2 # authorization type, one of: oauth2, apiKey, http
-      flows:
-        implicit:
-          authorizationUrl: 'http://example.com/api/oauth/dialog'
-          scopes:
-            'read:users': read users info
-            'write:users': modify or remove users
-    api_key:  # security definition name (you can name it as you want)
-      type: apiKey 
-      # The following options are specific to apiKey type
-      in: header # Where API key will be passed: header or query
-      name: api_key # API key parameter name
-    basic_auth: # security definition name (you can name it as you want)
-      type: http
-      scheme: basic
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name assigned to the dataCollection"
+            description:
+              type: "string"
+              description: "String that describe the dataCollection"
+            surveys:
+              type: "array"
+              items:
+                $ref: "#/definitions/survey"
+              description: "Surveys that compose a dataCollection"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/dataCollection"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "dataCollection"
+      summary: "Get all dataCollection"
+      description: "Performed by a user in order to get all dataCollections"
+      operationId: "getAllDataCollections"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/dataCollection"
+        400:
+          description: "Bad request"
+  /dataCollections/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The DataCollection id
+    get:
+      tags:
+      - "dataCollection"
+      summary: "Get an DataCollection by the id"
+      description: "Performed by users in order to get specific DataCollection"
+      operationId: "getDataCollection"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/dataCollection"
+        400:
+          description: "Invalid id"
+        404:
+          description: "DataCollection not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "dataCollection"
+      summary: "Update an existing dataCollection"
+      description: "Performed by a user in order to update the dataCollection"
+      operationId: "updateDataCollection"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Project object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the dataCollection in the system"
+            name:
+              type: "string"
+              description: "Name assigned to the dataCollection"
+            description:
+              type: "string"
+              description: "String that describe the dataCollection"
+            surveys:
+              type: "array"
+              items:
+                $ref: "#/definitions/survey"
+              description: "Surveys that compose a dataCollection"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/dataCollection"
+        400:
+          description: "Invalid id"
+        404:
+          description: "DataCollection not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "dataCollection"
+      summary: "Delete a DataCollection by id"
+      description: "Performed by the user in order to delete the DataCollection from the system"
+      operationId: "deleteDataCollection"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/dataCollection"
+        400:
+          description: "Invalid id"
+        404:
+          description: "DataCollection not found"
+        405:
+          description: "Validation exception"
+  /surveys:
+    post:
+      tags:
+      - "survey"
+      summary: "Add a new survey"
+      description: "Performed by a user when he wants to create a new survey in order to collect patient data"
+      operationId: "addSurvey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "survey"
+        description: "Survey object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name assigned to the survey"
+            description:
+              type: "string"
+              description: "String that describe the survey"
+            components:
+              type: "array"
+              items:
+                $ref: "#/definitions/surveyComponent"
+              description: "SurveyComponent that compose a survey"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "survey"
+      summary: "Get all survey"
+      description: "Performed by a user in order to get all surveys"
+      operationId: "getSurveys"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/survey"
+        400:
+          description: "Bad request"
+  /surveys/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The survey id
+    get:
+      tags:
+      - "survey"
+      summary: "Get an survey by the id"
+      description: "Performed by users in order to get specific survey"
+      operationId: "getSurvey"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Survey not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "survey"
+      summary: "Update an existing survey"
+      description: "Performed by a user in order to update the survey"
+      operationId: "updateSurvey"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Survey object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the survey in the system"
+            name:
+              type: "string"
+              description: "Name assigned to the survey"
+            description:
+              type: "string"
+              description: "String that describe the survey"
+            components:
+              type: "array"
+              items:
+                $ref: "#/definitions/surveyComponent"
+              description: "SurveyComponent that compose a survey"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Survey not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "survey"
+      summary: "Delete a survey by id"
+      description: "Performed by the user in order to delete the survey from the system"
+      operationId: "deleteSurvey"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/survey"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Survey not found"
+        405:
+          description: "Validation exception"
+  /surveyComponents:
+    post:
+      tags:
+      - "surveyComponent"
+      summary: "Add a new SurveyComponent"
+      description: "Performed by a user when he wants to create a new surveyComponent in order to collect patient data"
+      operationId: "addSurveyComponent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "SurveyComponent"
+        description: "SurveyComponent object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name thah describe the SurveyComponent"
+            items:
+              type: "array"
+              items:
+                $ref: "#/definitions/surveyItem"
+              description: "Items that compose a surveyComponent"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "surveyComponent"
+      summary: "Get all surveyComponent"
+      description: "Performed by a user in order to get all surveyComponent"
+      operationId: "getAllSurveyComponents"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Bad request"
+  /surveyComponents/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The SurveyComponent id
+    get:
+      tags:
+      - "surveyComponent"
+      summary: "Get a SurveyComponent by the id"
+      description: "Performed by users in order to get specific SurveyComponent"
+      operationId: "getSurveyComponent"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyComponent not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "surveyComponent"
+      summary: "Update an existing SurveyComponent"
+      description: "Performed by a user in order to update the surveyComponent"
+      operationId: "updateSurveyComponent"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "SurveyComponent object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the SurveyComponent"
+            name:
+              type: "string"
+              description: "Name thah describe the SurveyComponent"
+            items:
+              type: "array"
+              items:
+                $ref: "#/definitions/surveyItem"
+              description: "Items that compose a surveyComponent"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyComponent not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "surveyComponent"
+      summary: "Delete a SurveyItem by id"
+      description: "Performed by the user in order to delete the SurveyItem from the system"
+      operationId: "deleteSurveyComponent"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyComponent"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyComponent not found"
+        405:
+          description: "Validation exception"
+  /surveyItems:
+    post:
+      tags:
+      - "surveyItem"
+      summary: "Add a new SurveyItem"
+      description: "Performed by a user when he wants to create a new SurveyItem"
+      operationId: "addSurveyItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "SurveyItem"
+        description: "SurveyItem object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name that describe the SurveyComponent"
+            labels:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Objects that allow the surveyItem to be displayed in different languages"
+            possibleAnswers:
+              $ref: "#/definitions/surveyItemOption"
+            constraints:
+              type: "array"
+              items:
+                $ref: "#/definitions/constraint"
+              description: "Constraints to apply to the item"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "surveyItem"
+      summary: "Get all surveyItem"
+      description: "Performed by a user in order to get all surveyItem"
+      operationId: "getAllSurveyItems"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyItem"
+        400:
+          description: "Bad request"
+  /surveyItems/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The SurveyItem id
+    get:
+      tags:
+      - "surveyItem"
+      summary: "Get a SurveyItem by the id"
+      description: "Performed by users in order to get specific SurveyItem"
+      operationId: "getSurveyItem"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "surveyItem"
+      summary: "Update an existing SurveyItem"
+      description: "Performed by a user in order to update the surveyItem"
+      operationId: "updateSurveyItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "SurveyItem object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the SurveyItem"
+            name:
+              type: "string"
+              description: "Name that describe the SurveyComponent"
+            labels:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Objects that allow the surveyItem to be displayed in different languages"
+            possibleAnswers:
+              $ref: "#/definitions/surveyItemOption"
+            constraints:
+              type: "array"
+              items:
+                $ref: "#/definitions/constraint"
+              description: "Constraints to apply to the item"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "surveyItem"
+      summary: "Delete a SurveyItem by id"
+      description: "Performed by the user in order to delete the SurveyItem from the system"
+      operationId: "deleteSurveyItem"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItem"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItem not found"
+        405:
+          description: "Validation exception"
+  /surveyImages:
+    post:
+      tags:
+      - "surveyImage"
+      summary: "Add a new SurveyImage"
+      description: "Performed by a user when he wants to create a new SurveyImage"
+      operationId: "addSurveyImage"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "SurveyImage"
+        description: "SurveyImage object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name that describe the SurveyComponent"
+            link:
+              type: "string"
+              description: "Link to the image file"
+            labels:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Objects that allow the surveyItem to be displayed in different languages"
+            possibleAnswers:
+              $ref: "#/definitions/surveyItemOption"
+            constraints:
+              type: "array"
+              items:
+                $ref: "#/definitions/constraint"
+              description: "Constraints to apply to the item"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "surveyImage"
+      summary: "Get all SurveyImage"
+      description: "Performed by a user in order to get all SurveyImage"
+      operationId: "getAllSurveyImages"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyImage"
+        400:
+          description: "Bad request"
+  /surveyImages/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The SurveyImage id
+    get:
+      tags:
+      - "surveyImage"
+      summary: "Get a SurveyItem by the id"
+      description: "Performed by users in order to get specific SurveyImage"
+      operationId: "getSurveyImage"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "surveyImage"
+      summary: "Update an existing SurveyImage"
+      description: "Performed by a user in order to update the SurveyImage"
+      operationId: "updateSurveyImage"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "SurveyImage object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the SurveyItem"
+            name:
+              type: "string"
+              description: "Name that describe the SurveyComponent"
+            link:
+              type: "string"
+              description: "Link to the image file"
+            labels:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Objects that allow the surveyItem to be displayed in different languages"
+            possibleAnswers:
+              $ref: "#/definitions/surveyItemOption"
+            constraints:
+              type: "array"
+              items:
+                $ref: "#/definitions/constraint"
+              description: "Constraints to apply to the item"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "surveyImage"
+      summary: "Delete a SurveyImage by id"
+      description: "Performed by the user in order to delete the SurveyImage from the system"
+      operationId: "deleteSurveyImage"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyImage"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        405:
+          description: "Validation exception"
+  /constraints:
+    post:
+      tags:
+      - "constraint"
+      summary: "Add a new Constraint"
+      description: "Performed by a user when he wants to create a new Constraint"
+      operationId: "addConstraint"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "constraint"
+        description: "Constraint object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            typology:
+              type: "string"
+              description: "Describe the type of constraint"
+            condition:
+              type: "string"
+              description: "Condition to apply the constraint"
+            value:
+              type: "string"
+              description: "Value of the constraint"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/constraint"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "constraint"
+      summary: "Get all Constraint"
+      description: "Performed by a user in order to get all Constraint"
+      operationId: "getAllConstraints"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/constraint"
+        400:
+          description: "Bad request"
+  /constraints/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The Constraint id
+    get:
+      tags:
+      - "constraint"
+      summary: "Get a Constraint by the id"
+      description: "Performed by users in order to get specific Constraint"
+      operationId: "getConstraint"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/constraint"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Constraint not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "constraint"
+      summary: "Update an existing Constraint"
+      description: "Performed by a user in order to update the Constraint"
+      operationId: "updateConstraint"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Constraint object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the label"
+            typology:
+              type: "string"
+              description: "Describe the type of constraint"
+            condition:
+              type: "string"
+              description: "Condition to apply the constraint"
+            value:
+              type: "string"
+              description: "Value of the constraint"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/constraint"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Constraint not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "constraint"
+      summary: "Delete a Constraint by id"
+      description: "Performed by the user in order to delete the Constraint from the system"
+      operationId: "deleteConstraint"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/constraint"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Constraint not found"
+        405:
+          description: "Validation exception"
+  /labels:
+    post:
+      tags:
+      - "label"
+      summary: "Add a new Label"
+      description: "Performed by a user when he wants to create a new Label"
+      operationId: "addLabel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "Label"
+        description: "Label object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            language:
+              type: "string"
+              description: "Contains the language of the question"
+            content:
+              type: "string"
+              description: "Contains the question in the language indicated in the language field"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "label"
+      summary: "Get all label"
+      description: "Performed by a user in order to get all Label"
+      operationId: "getAllLabels"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/label"
+        400:
+          description: "Bad request"
+  /labels/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The Label id
+    get:
+      tags:
+      - "label"
+      summary: "Get a Label by the id"
+      description: "Performed by users in order to get specific Label"
+      operationId: "getLabel"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Label not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "label"
+      summary: "Update an existing Label"
+      description: "Performed by a user in order to update the Label"
+      operationId: "updateLabel"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Label object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the label"
+            language:
+              type: "string"
+              description: "Contains the language of the question"
+            content:
+              type: "string"
+              description: "Contains the question in the language indicated in the language field"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Label not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "label"
+      summary: "Delete a Label by id"
+      description: "Performed by the user in order to delete the Label from the system"
+      operationId: "deleteLabel"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/label"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Label not found"
+        405:
+          description: "Validation exception"
+  /surveyItemOptions:
+    post:
+      tags:
+      - "surveyItemOption"
+      summary: "Add a new SurveyItemOption"
+      description: "Performed by a user when he wants to create a new SurveyItemOption"
+      operationId: "addSurveyItemOption"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "surveyItemOption"
+        description: "SurveyItemOption object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            name:
+              type: "string"
+              description: "Name that describe the SurveyItemOption"
+            options:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Values in order to answer to a specific question"
+            typology:
+              type: "string"
+              description: "Name that identify the type of the surveyItemOption"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "surveyItemOption"
+      summary: "Get all SurveyItemOption"
+      description: "Performed by a user in order to get all SurveyItemOption"
+      operationId: "getAllSurveyItemOptions"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Bad request"
+  /surveyItemOptions/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The SurveyItemOption id
+    get:
+      tags:
+      - "surveyItemOption"
+      summary: "Get a SurveyItemOption by the id"
+      description: "Performed by users in order to get specific SurveyItemOption"
+      operationId: "getSurveyItemOption"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItemOption not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "surveyItemOption"
+      summary: "Update an existing SurveyItemOption"
+      description: "Performed by a user in order to update the SurveyItemOption"
+      operationId: "updateSurveyItemOption"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "SurveyItemOption object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the SurveyItemOption"
+            name:
+              type: "string"
+              description: "Name that describe the SurveyItemOption"
+            options:
+              type: "array"
+              items:
+                $ref: "#/definitions/label"
+              description: "Values in order to answer to a specific question"
+            typology:
+              type: "string"
+              description: "Name that identify the type of the surveyItemOption"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItemOption not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "surveyItemOption"
+      summary: "Delete a SurveyItemOption by id"
+      description: "Performed by the user in order to delete the SurveyItemOption from the system"
+      operationId: "deleteSurveyItemOption"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/surveyItemOption"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyItemOption not found"
+        405:
+          description: "Validation exception"
+  /subjects:
+    post:
+      tags:
+      - "subject"
+      summary: "Add a new subject"
+      description: "Operation to call in order to create a new Subject in the system"
+      operationId: "addSubject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "subject"
+        description: "Subject object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+              name:
+                type: "string"
+                description: "Name of the subject"
+              surname:
+                type: "string"
+                description: "Surname of the subject"
+              email:
+                type: "string"
+                description: "Email of the subject"
+              role:
+                type: "string"
+                description: "Role of the subject in the system"
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/subject"
+        400:
+          description: "Bad Request"
+    get:
+      tags:
+      - "subject"
+      summary: "Get all subject"
+      description: "Performed by a user in order to get all Subject"
+      operationId: "getAllSubjects"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/subject"
+        400:
+          description: "Bad request"
+  /subject/{id}:
+    parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+          description: The Subject id
+    get:
+      tags:
+      - "subject"
+      summary: "Get a Subject by the id"
+      description: "Performed by users in order to get specific Subject"
+      operationId: "getSubject"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/subject"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Subject not found"
+        405:
+          description: "Validation exception"
+    put:
+      tags:
+      - "subject"
+      summary: "Update an existing Subject"
+      description: "Performed by a user in order to update the Subject"
+      operationId: "updateSubject"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Subject object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the subject in the system"
+            name:
+              type: "string"
+              description: "Name of the subject"
+            surname:
+              type: "string"
+              description: "Surname of the subject"
+            email:
+              type: "string"
+              description: "Email of the subject"
+            role:
+              type: "string"
+              description: "Role of the subject in the system"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/subject"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Subject not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "subject"
+      summary: "Delete a Subject by id"
+      description: "Performed by the user in order to delete the Subject from the system"
+      operationId: "deleteSubject"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/subject"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Subject not found"
+        405:
+          description: "Validation exception"
+
+definitions:
+  project:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the project in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the project"
+      description:
+        type: "string"
+        description: "String that describe the project"
+      collections:
+        type: "array"
+        items:
+          $ref: "#/definitions/dataCollection"
+        description: "DataCollection that compose a project"
+      subjects:
+        type: "array"
+        items:
+          $ref: '#/definitions/subject'
+        description: "Subject assigned to the project"
+  dataCollection:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the dataCollection in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the dataCollection"
+      description:
+        type: "string"
+        description: "String that describe the dataCollection"
+      surveys:
+        type: "array"
+        items:
+          $ref: "#/definitions/survey"
+        description: "Surveys that compose a dataCollection"
+  survey:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the survey in the system"
+      name:
+        type: "string"
+        description: "Name assigned to the survey"
+      description:
+        type: "string"
+        description: "String that describe the survey"
+      components:
+        type: "array"
+        items:
+          $ref: "#/definitions/surveyComponent"
+        description: "SurveyComponent that compose a survey"
+  surveyComponent:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyComponent"
+      name:
+        type: "string"
+        description: "Name thah describe the SurveyComponent"
+      items:
+        type: "array"
+        items:
+          $ref: "#/definitions/surveyItem"
+        description: "Items that compose a surveyComponent"
+  surveyItem:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItem"
+      name:
+        type: "string"
+        description: "Name that describe the SurveyComponent"
+      labels:
+        type: "array"
+        items:
+          $ref: "#/definitions/label"
+        description: "Objects that allow the surveyItem to be displayed in different languages"
+      possibleAnswers:
+        $ref: "#/definitions/surveyItemOption"
+      constraints:
+        type: "array"
+        items:
+          $ref: "#/definitions/constraint"
+        description: "Constraints to apply to the item"
+  surveyImage:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItem"
+      name:
+        type: "string"
+        description: "Name that describe the SurveyComponent"
+      link:
+        type: "string"
+        description: "Link to the image file"
+      labels:
+        type: "array"
+        items:
+          $ref: "#/definitions/label"
+        description: "Objects that allow the surveyItem to be displayed in different languages"
+      possibleAnswers:
+        $ref: "#/definitions/surveyItemOption"
+      constraints:
+        type: "array"
+        items:
+          $ref: "#/definitions/constraint"
+        description: "Constraints to apply to the item"
+  label:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      language:
+        type: "string"
+        description: "Contains the language of the question"
+      values:
+        type: "string"
+        description: "Contains the question in the language indicated in the language field"
+  constraint:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      typology:
+        type: "string"
+        description: "Describe the type of constraint"
+      condition:
+        type: "string"
+        description: "Condition to apply the constraint"
+      value:
+        type: "string"
+        description: "Value of the constraint"
+  surveyItemOption:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the SurveyItemOption"
+      name:
+        type: "string"
+        description: "Name that describe the SurveyItemOption"
+      options:
+        type: "array"
+        items:
+          $ref: "#/definitions/labelOptions"
+        description: "Values in order to answer to a specific question"
+      typology:
+        type: "string"
+        description: "Name that identify the type of the surveyItemOption"
+  labelOptions:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the label"
+      language:
+        type: "string"
+        description: "Contains the language of the question"
+      values:
+        type: "array"
+        items: {}
+        description: "Contains the question/answers in the language indicated in the language field"
+  subject:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Number that identify the subject in the system"
+      name:
+        type: "string"
+        description: "Name of the subject"
+      surname:
+        type: "string"
+        description: "Surname of the subject"
+      email:
+        type: "string"
+        description: "Email of the subject"
+      role:
+        type: "string"
+        description: "Role of the subject in the system"
+  datetime:
+    type: object
+    properties:
+      year:
+        type: "integer"
+        format: "int64"
+        minimum: 1900
+      month:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+        maximum: 12
+      day:
+        type: "integer"
+        format: "int32"
+        minimum: 1
+        maximum: 31
+      hour:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 23
+      minute:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 60
+      second:
+        type: "integer"
+        format: "int32"
+        minimum: 0
+        maximum: 60
+  #surveyResponse: to complete
