@@ -26,6 +26,8 @@ tags:
     description: Items that compose a surveyComponent
   - name: constraint
     description: Constraints between surveyItems
+  - name: validatorItem
+    description: Item in order to check the values that the user insert
   - name: label
     description: Label assigned to a surveyComponent
   - name: surveyItemOption
@@ -628,16 +630,25 @@ paths:
           schema:
             type: object
             properties:
-              name:
+              description:
                 type: string
-                description: Name that describe the SurveyComponent
+                description: Description for the item
               labels:
                 type: array
                 items:
                   $ref: '#/definitions/label'
                 description: Objects that allow the surveyItem to be displayed in different languages
-              possibleAnswers:
-                $ref: '#/definitions/surveyItemOption'
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItemOption'
+              validators:
+                type: array
+                items:
+                  $ref: '#/definitions/validatorItem'
               constraints:
                 type: array
                 items:
@@ -714,16 +725,25 @@ paths:
               id:
                 type: integer
                 description: Number that identify the SurveyItem
-              name:
+              description:
                 type: string
-                description: Name that describe the SurveyComponent
+                description: Description for the item
               labels:
                 type: array
                 items:
                   $ref: '#/definitions/label'
                 description: Objects that allow the surveyItem to be displayed in different languages
-              possibleAnswers:
-                $ref: '#/definitions/surveyItemOption'
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItemOption'
+              validators:
+                type: array
+                items:
+                  $ref: '#/definitions/validatorItem'
               constraints:
                 type: array
                 items:
@@ -778,9 +798,9 @@ paths:
           schema:
             type: object
             properties:
-              name:
+              description:
                 type: string
-                description: Name that describe the SurveyComponent
+                description: Description for the item
               link:
                 type: string
                 description: Link to the image file
@@ -789,7 +809,10 @@ paths:
                 items:
                   $ref: '#/definitions/label'
                 description: Objects that allow the surveyItem to be displayed in different languages
-              possibleAnswers:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
                 $ref: '#/definitions/surveyItemOption'
               constraints:
                 type: array
@@ -867,9 +890,9 @@ paths:
               id:
                 type: integer
                 description: Number that identify the SurveyItem
-              name:
+              description:
                 type: string
-                description: Name that describe the SurveyComponent
+                description: Description for the item
               link:
                 type: string
                 description: Link to the image file
@@ -878,7 +901,10 @@ paths:
                 items:
                   $ref: '#/definitions/label'
                 description: Objects that allow the surveyItem to be displayed in different languages
-              possibleAnswers:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
                 $ref: '#/definitions/surveyItemOption'
               constraints:
                 type: array
@@ -1053,6 +1079,138 @@ paths:
           description: Constraint not found
         '405':
           description: Validation exception
+  /validatorItem:
+    post:
+      tags:
+        - validatorItem
+      summary: Add a new ValidatorItem
+      description: Operation to call in order to create a new ValidatorItem in the system
+      operationId: addValidatorItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: validatorItem
+          description: ValidatorItem object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Type of the validation value
+              value:
+                type: string
+                description: Value in order to validate the data
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - validatorItem
+      summary: Get all validatorItem
+      description: Performed by a user in order to get all ValidatorItem
+      operationId: getAllValidatorItems
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/validatorItem'
+        '400':
+          description: Bad request
+  '/validatorItem/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The ValidatorItem id
+    get:
+      tags:
+        - validatorItem
+      summary: Get a ValidatorItem by the id
+      description: Performed by users in order to get specific ValidatorItem
+      operationId: getValidatorItem
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: ValidatorItem not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - validatorItem
+      summary: Update an existing ValidatorItem
+      description: Performed by a user in order to update the ValidatorItem
+      operationId: updateValidatorItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Subject object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the validatorItem in the system
+              type:
+                type: string
+                description: Type of the validation value
+              value:
+                type: string
+                description: Value in order to validate the data
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: ValidatorItem not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - validatorItem
+      summary: Delete a ValidatorItem by id
+      description: Performed by the user in order to delete the ValidatorItem from the system
+      operationId: deleteValidatorItem
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: ValidatorItem not found
+        '405':
+          description: Validation exception
   /labels:
     post:
       tags:
@@ -1075,7 +1233,7 @@ paths:
               language:
                 type: string
                 description: Contains the language of the question
-              content:
+              values:
                 type: string
                 description: Contains the question in the language indicated in the language field
       responses:
@@ -1152,7 +1310,7 @@ paths:
               language:
                 type: string
                 description: Contains the language of the question
-              content:
+              values:
                 type: string
                 description: Contains the question in the language indicated in the language field
       responses:
@@ -1204,17 +1362,17 @@ paths:
           schema:
             type: object
             properties:
-              name:
+              value:
                 type: string
                 description: Name that describe the SurveyItemOption
-              options:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              labels:
                 type: array
                 items:
                   $ref: '#/definitions/label'
                 description: Values in order to answer to a specific question
-              typology:
-                type: string
-                description: Name that identify the type of the surveyItemOption
       responses:
         '201':
           description: Successful operation
@@ -1286,17 +1444,17 @@ paths:
               id:
                 type: integer
                 description: Number that identify the SurveyItemOption
-              name:
+              value:
                 type: string
                 description: Name that describe the SurveyItemOption
-              options:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              labels:
                 type: array
                 items:
                   $ref: '#/definitions/label'
                 description: Values in order to answer to a specific question
-              typology:
-                type: string
-                description: Name that identify the type of the surveyItemOption
       responses:
         '200':
           description: Successful operation
@@ -1548,16 +1706,25 @@ definitions:
       id:
         type: integer
         description: Number that identify the SurveyItem
-      name:
+      description:
         type: string
-        description: Name that describe the SurveyComponent
+        description: Description for the item
       labels:
         type: array
         items:
           $ref: '#/definitions/label'
         description: Objects that allow the surveyItem to be displayed in different languages
-      possibleAnswers:
-        $ref: '#/definitions/surveyItemOption'
+      type:
+        type: string
+        description: Name that identify the type of the surveyItemOption
+      options:
+        type: array
+        items:
+          $ref: '#/definitions/surveyItemOption'
+      validators:
+        type: array
+        items:
+          $ref: '#/definitions/validatorItem'
       constraints:
         type: array
         items:
@@ -1569,9 +1736,9 @@ definitions:
       id:
         type: integer
         description: Number that identify the SurveyItem
-      name:
+      description:
         type: string
-        description: Name that describe the SurveyComponent
+        description: Description for the item
       link:
         type: string
         description: Link to the image file
@@ -1580,7 +1747,10 @@ definitions:
         items:
           $ref: '#/definitions/label'
         description: Objects that allow the surveyItem to be displayed in different languages
-      possibleAnswers:
+      type:
+        type: string
+        description: Name that identify the type of the surveyItemOption
+      options:
         $ref: '#/definitions/surveyItemOption'
       constraints:
         type: array
@@ -1614,36 +1784,35 @@ definitions:
       value:
         type: string
         description: Value of the constraint
+  validatorItem:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Number that identify the validatorItem in the system
+      type:
+        type: string
+        description: Type of the validation value
+      value:
+        type: string
+        description: Value in order to validate the data
   surveyItemOption:
     type: object
     properties:
       id:
         type: integer
         description: Number that identify the SurveyItemOption
-      name:
+      value:
         type: string
         description: Name that describe the SurveyItemOption
-      options:
-        type: array
-        items:
-          $ref: '#/definitions/labelOptions'
-        description: Values in order to answer to a specific question
-      typology:
+      type:
         type: string
         description: Name that identify the type of the surveyItemOption
-  labelOptions:
-    type: object
-    properties:
-      id:
-        type: integer
-        description: Number that identify the label
-      language:
-        type: string
-        description: Contains the language of the question
-      values:
+      labels:
         type: array
-        items: {}
-        description: Contains the question/answers in the language indicated in the language field
+        items:
+          $ref: '#/definitions/label'
+        description: Values in order to answer to a specific question
   subject:
     type: object
     properties:
