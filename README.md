@@ -1,11 +1,11 @@
 # CGA-api OpenAPI Specification
-[![Build Status](https://travis-ci.com/TrentoCrowdAI/CGA.svg?branch=master)](https://travis-ci.com/TrentoCrowdAI/CGA)
+[![Build Status](https://travis-ci.org/TrentoCrowdAI/cga-api-spec.svg?branch=master)](https://travis-ci.org/TrentoCrowdAI/cga-api-spec)
 ## Links
 
 - Reference Documentation (ReDoc): https://trentocrowdai.github.io/cga-api-spec/
-- SwaggerUI: https://trentocrowdai.github.io/CGA/swagger-ui/
-- Look full spec: 
-    - JSON: https://trentocrowdai.github.io/cga-api-spec/openapi.json 
+- SwaggerUI: https://trentocrowdai.github.io/cga-api-spec/swagger-ui/
+- Look full spec:
+    - JSON: https://trentocrowdai.github.io/cga-api-spec/openapi.json
     - YAML: https://trentocrowdai.github.io/cga-api-spec/openapi.yaml
 
 
