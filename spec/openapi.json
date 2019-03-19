@@ -1,0 +1,2749 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Simple server in order to create and mantain CGA Survey",
+    "version": "v1",
+    "title": "CGA Survey",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "a@a.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/TrentoCrowdAI/CGA/blob/master/LICENSE"
+    }
+  },
+  "host": "a.com",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "project",
+      "description": "Project to collect datas"
+    },
+    {
+      "name": "dataCollection",
+      "description": "DataCollection of surveys"
+    },
+    {
+      "name": "survey",
+      "description": "Access/Modify the survey"
+    },
+    {
+      "name": "surveyComponent",
+      "description": "Components that compose the survey"
+    },
+    {
+      "name": "surveyItem",
+      "description": "Items that compose a surveyComponent"
+    },
+    {
+      "name": "surveyImage",
+      "description": "Items that compose a surveyComponent"
+    },
+    {
+      "name": "constraint",
+      "description": "Constraints between surveyItems"
+    },
+    {
+      "name": "validatorItem",
+      "description": "Item in order to check the values that the user insert"
+    },
+    {
+      "name": "label",
+      "description": "Label assigned to a surveyComponent"
+    },
+    {
+      "name": "surveyItemOption",
+      "description": "Options that compose a surveyItem"
+    },
+    {
+      "name": "subject",
+      "description": "Subject member of the system"
+    },
+    {
+      "name": "datetime",
+      "description": "Object that represents a time and a date"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/projects": {
+      "post": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Add a new project",
+        "description": "Performed by a user when he wants to create a new project",
+        "operationId": "addProject",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "project",
+            "description": "Project object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name assigned to the project"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the project"
+                },
+                "collections": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/dataCollection"
+                  },
+                  "description": "DataCollection that compose a project"
+                },
+                "subjects": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/subject"
+                  },
+                  "description": "Subject assigned to the project"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/project"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Get all project",
+        "description": "Performed by a user in order to get all projects",
+        "operationId": "getProjects",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/project"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/projects/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The Project id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Get an project by the id",
+        "description": "Performed by users in order to get specific project",
+        "operationId": "getProject",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/project"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Project not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Update an existing project",
+        "description": "Performed by a user in order to update the project",
+        "operationId": "updateProject",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Project object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the project in the system"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name assigned to the project"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the project"
+                },
+                "collections": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/dataCollection"
+                  },
+                  "description": "DataCollection that compose a project"
+                },
+                "subjects": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/subject"
+                  },
+                  "description": "Subject assigned to the project"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/project"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Project not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "project"
+        ],
+        "summary": "Delete a Project by id",
+        "description": "Performed by the user in order to delete the Project from the system",
+        "operationId": "deleteProject",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/project"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Project not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/dataCollections": {
+      "post": {
+        "tags": [
+          "dataCollection"
+        ],
+        "summary": "Add a new DataCollection",
+        "description": "Performed by a user when he wants to create a new DataCollection",
+        "operationId": "addDataCollection",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "dataCollection",
+            "description": "DataCollection object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name assigned to the dataCollection"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the dataCollection"
+                },
+                "surveys": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/survey"
+                  },
+                  "description": "Surveys that compose a dataCollection"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/dataCollection"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "dataCollection"
+        ],
+        "summary": "Get all dataCollection",
+        "description": "Performed by a user in order to get all dataCollections",
+        "operationId": "getAllDataCollections",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/dataCollection"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/dataCollections/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The DataCollection id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "dataCollection"
+        ],
+        "summary": "Get an DataCollection by the id",
+        "description": "Performed by users in order to get specific DataCollection",
+        "operationId": "getDataCollection",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/dataCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "DataCollection not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "dataCollection"
+        ],
+        "summary": "Update an existing dataCollection",
+        "description": "Performed by a user in order to update the dataCollection",
+        "operationId": "updateDataCollection",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Project object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the dataCollection in the system"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name assigned to the dataCollection"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the dataCollection"
+                },
+                "surveys": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/survey"
+                  },
+                  "description": "Surveys that compose a dataCollection"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/dataCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "DataCollection not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "dataCollection"
+        ],
+        "summary": "Delete a DataCollection by id",
+        "description": "Performed by the user in order to delete the DataCollection from the system",
+        "operationId": "deleteDataCollection",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/dataCollection"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "DataCollection not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/surveys": {
+      "post": {
+        "tags": [
+          "survey"
+        ],
+        "summary": "Add a new survey",
+        "description": "Performed by a user when he wants to create a new survey in order to collect patient data",
+        "operationId": "addSurvey",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "survey",
+            "description": "Survey object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name assigned to the survey"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the survey"
+                },
+                "components": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/surveyComponent"
+                  },
+                  "description": "SurveyComponent that compose a survey"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/survey"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "survey"
+        ],
+        "summary": "Get all survey",
+        "description": "Performed by a user in order to get all surveys",
+        "operationId": "getSurveys",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/survey"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/surveys/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The survey id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "survey"
+        ],
+        "summary": "Get an survey by the id",
+        "description": "Performed by users in order to get specific survey",
+        "operationId": "getSurvey",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/survey"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Survey not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "survey"
+        ],
+        "summary": "Update an existing survey",
+        "description": "Performed by a user in order to update the survey",
+        "operationId": "updateSurvey",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Survey object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the survey in the system"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name assigned to the survey"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the survey"
+                },
+                "components": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/surveyComponent"
+                  },
+                  "description": "SurveyComponent that compose a survey"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/survey"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Survey not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "survey"
+        ],
+        "summary": "Delete a survey by id",
+        "description": "Performed by the user in order to delete the survey from the system",
+        "operationId": "deleteSurvey",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/survey"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Survey not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/surveyComponents": {
+      "post": {
+        "tags": [
+          "surveyComponent"
+        ],
+        "summary": "Add a new SurveyComponent",
+        "description": "Performed by a user when he wants to create a new surveyComponent in order to collect patient data",
+        "operationId": "addSurveyComponent",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "SurveyComponent",
+            "description": "SurveyComponent object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name thah describe the SurveyComponent"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/surveyItem"
+                  },
+                  "description": "Items that compose a surveyComponent"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyComponent"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "surveyComponent"
+        ],
+        "summary": "Get all surveyComponent",
+        "description": "Performed by a user in order to get all surveyComponent",
+        "operationId": "getAllSurveyComponents",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/surveyComponent"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/surveyComponents/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The SurveyComponent id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "surveyComponent"
+        ],
+        "summary": "Get a SurveyComponent by the id",
+        "description": "Performed by users in order to get specific SurveyComponent",
+        "operationId": "getSurveyComponent",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/surveyComponent"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyComponent not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "surveyComponent"
+        ],
+        "summary": "Update an existing SurveyComponent",
+        "description": "Performed by a user in order to update the surveyComponent",
+        "operationId": "updateSurveyComponent",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "SurveyComponent object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the SurveyComponent"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name thah describe the SurveyComponent"
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/surveyItem"
+                  },
+                  "description": "Items that compose a surveyComponent"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyComponent"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyComponent not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "surveyComponent"
+        ],
+        "summary": "Delete a SurveyItem by id",
+        "description": "Performed by the user in order to delete the SurveyItem from the system",
+        "operationId": "deleteSurveyComponent",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyComponent"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyComponent not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/surveyItems": {
+      "post": {
+        "tags": [
+          "surveyItem"
+        ],
+        "summary": "Add a new SurveyItem",
+        "description": "Performed by a user when he wants to create a new SurveyItem",
+        "operationId": "addSurveyItem",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "SurveyItem",
+            "description": "SurveyItem object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "Description for the item"
+                },
+                "labels": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/label"
+                  },
+                  "description": "Objects that allow the surveyItem to be displayed in different languages"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Name that identify the type of the surveyItemOption"
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/surveyItemOption"
+                  }
+                },
+                "validators": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/validatorItem"
+                  }
+                },
+                "constraints": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/constraint"
+                  },
+                  "description": "Constraints to apply to the item"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyItem"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "surveyItem"
+        ],
+        "summary": "Get all surveyItem",
+        "description": "Performed by a user in order to get all surveyItem",
+        "operationId": "getAllSurveyItems",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/surveyItem"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/surveyItems/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The SurveyItem id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "surveyItem"
+        ],
+        "summary": "Get a SurveyItem by the id",
+        "description": "Performed by users in order to get specific SurveyItem",
+        "operationId": "getSurveyItem",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/surveyItem"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyItem not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "surveyItem"
+        ],
+        "summary": "Update an existing SurveyItem",
+        "description": "Performed by a user in order to update the surveyItem",
+        "operationId": "updateSurveyItem",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "SurveyItem object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the SurveyItem"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description for the item"
+                },
+                "labels": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/label"
+                  },
+                  "description": "Objects that allow the surveyItem to be displayed in different languages"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Name that identify the type of the surveyItemOption"
+                },
+                "options": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/surveyItemOption"
+                  }
+                },
+                "validators": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/validatorItem"
+                  }
+                },
+                "constraints": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/constraint"
+                  },
+                  "description": "Constraints to apply to the item"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyItem"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyItem not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "surveyItem"
+        ],
+        "summary": "Delete a SurveyItem by id",
+        "description": "Performed by the user in order to delete the SurveyItem from the system",
+        "operationId": "deleteSurveyItem",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyItem"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyItem not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/surveyImages": {
+      "post": {
+        "tags": [
+          "surveyImage"
+        ],
+        "summary": "Add a new SurveyImage",
+        "description": "Performed by a user when he wants to create a new SurveyImage",
+        "operationId": "addSurveyImage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "SurveyImage",
+            "description": "SurveyImage object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "Description for the item"
+                },
+                "link": {
+                  "type": "string",
+                  "description": "Link to the image file"
+                },
+                "labels": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/label"
+                  },
+                  "description": "Objects that allow the surveyItem to be displayed in different languages"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Name that identify the type of the surveyItemOption"
+                },
+                "options": {
+                  "$ref": "#/definitions/surveyItemOption"
+                },
+                "constraints": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/constraint"
+                  },
+                  "description": "Constraints to apply to the item"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyImage"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "surveyImage"
+        ],
+        "summary": "Get all SurveyImage",
+        "description": "Performed by a user in order to get all SurveyImage",
+        "operationId": "getAllSurveyImages",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/surveyImage"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/surveyImages/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The SurveyImage id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "surveyImage"
+        ],
+        "summary": "Get a SurveyItem by the id",
+        "description": "Performed by users in order to get specific SurveyImage",
+        "operationId": "getSurveyImage",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/surveyImage"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyImage not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "surveyImage"
+        ],
+        "summary": "Update an existing SurveyImage",
+        "description": "Performed by a user in order to update the SurveyImage",
+        "operationId": "updateSurveyImage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "SurveyImage object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the SurveyItem"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description for the item"
+                },
+                "link": {
+                  "type": "string",
+                  "description": "Link to the image file"
+                },
+                "labels": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/label"
+                  },
+                  "description": "Objects that allow the surveyItem to be displayed in different languages"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Name that identify the type of the surveyItemOption"
+                },
+                "options": {
+                  "$ref": "#/definitions/surveyItemOption"
+                },
+                "constraints": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/constraint"
+                  },
+                  "description": "Constraints to apply to the item"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyImage"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyImage not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "surveyImage"
+        ],
+        "summary": "Delete a SurveyImage by id",
+        "description": "Performed by the user in order to delete the SurveyImage from the system",
+        "operationId": "deleteSurveyImage",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyImage"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyImage not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/constraints": {
+      "post": {
+        "tags": [
+          "constraint"
+        ],
+        "summary": "Add a new Constraint",
+        "description": "Performed by a user when he wants to create a new Constraint",
+        "operationId": "addConstraint",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "constraint",
+            "description": "Constraint object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "typology": {
+                  "type": "string",
+                  "description": "Describe the type of constraint"
+                },
+                "condition": {
+                  "type": "string",
+                  "description": "Condition to apply the constraint"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value of the constraint"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/constraint"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "constraint"
+        ],
+        "summary": "Get all Constraint",
+        "description": "Performed by a user in order to get all Constraint",
+        "operationId": "getAllConstraints",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/constraint"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/constraints/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The Constraint id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "constraint"
+        ],
+        "summary": "Get a Constraint by the id",
+        "description": "Performed by users in order to get specific Constraint",
+        "operationId": "getConstraint",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/constraint"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Constraint not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "constraint"
+        ],
+        "summary": "Update an existing Constraint",
+        "description": "Performed by a user in order to update the Constraint",
+        "operationId": "updateConstraint",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Constraint object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the label"
+                },
+                "typology": {
+                  "type": "string",
+                  "description": "Describe the type of constraint"
+                },
+                "condition": {
+                  "type": "string",
+                  "description": "Condition to apply the constraint"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value of the constraint"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/constraint"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Constraint not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "constraint"
+        ],
+        "summary": "Delete a Constraint by id",
+        "description": "Performed by the user in order to delete the Constraint from the system",
+        "operationId": "deleteConstraint",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/constraint"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Constraint not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/validatorItem": {
+      "post": {
+        "tags": [
+          "validatorItem"
+        ],
+        "summary": "Add a new ValidatorItem",
+        "description": "Operation to call in order to create a new ValidatorItem in the system",
+        "operationId": "addValidatorItem",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "validatorItem",
+            "description": "ValidatorItem object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "description": "Type of the validation value"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value in order to validate the data"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/validatorItem"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "validatorItem"
+        ],
+        "summary": "Get all validatorItem",
+        "description": "Performed by a user in order to get all ValidatorItem",
+        "operationId": "getAllValidatorItems",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/validatorItem"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/validatorItem/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The ValidatorItem id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "validatorItem"
+        ],
+        "summary": "Get a ValidatorItem by the id",
+        "description": "Performed by users in order to get specific ValidatorItem",
+        "operationId": "getValidatorItem",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/validatorItem"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "ValidatorItem not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "validatorItem"
+        ],
+        "summary": "Update an existing ValidatorItem",
+        "description": "Performed by a user in order to update the ValidatorItem",
+        "operationId": "updateValidatorItem",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Subject object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the validatorItem in the system"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Type of the validation value"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Value in order to validate the data"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/validatorItem"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "ValidatorItem not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "validatorItem"
+        ],
+        "summary": "Delete a ValidatorItem by id",
+        "description": "Performed by the user in order to delete the ValidatorItem from the system",
+        "operationId": "deleteValidatorItem",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/validatorItem"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "ValidatorItem not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/labels": {
+      "post": {
+        "tags": [
+          "label"
+        ],
+        "summary": "Add a new Label",
+        "description": "Performed by a user when he wants to create a new Label",
+        "operationId": "addLabel",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Label",
+            "description": "Label object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "language": {
+                  "type": "string",
+                  "description": "Contains the language of the question"
+                },
+                "values": {
+                  "type": "string",
+                  "description": "Contains the question in the language indicated in the language field"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/label"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "label"
+        ],
+        "summary": "Get all label",
+        "description": "Performed by a user in order to get all Label",
+        "operationId": "getAllLabels",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/label"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/labels/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The Label id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "label"
+        ],
+        "summary": "Get a Label by the id",
+        "description": "Performed by users in order to get specific Label",
+        "operationId": "getLabel",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/label"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Label not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "label"
+        ],
+        "summary": "Update an existing Label",
+        "description": "Performed by a user in order to update the Label",
+        "operationId": "updateLabel",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Label object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the label"
+                },
+                "language": {
+                  "type": "string",
+                  "description": "Contains the language of the question"
+                },
+                "values": {
+                  "type": "string",
+                  "description": "Contains the question in the language indicated in the language field"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/label"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Label not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "label"
+        ],
+        "summary": "Delete a Label by id",
+        "description": "Performed by the user in order to delete the Label from the system",
+        "operationId": "deleteLabel",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/label"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Label not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/surveyItemOptions": {
+      "post": {
+        "tags": [
+          "surveyItemOption"
+        ],
+        "summary": "Add a new SurveyItemOption",
+        "description": "Performed by a user when he wants to create a new SurveyItemOption",
+        "operationId": "addSurveyItemOption",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "surveyItemOption",
+            "description": "SurveyItemOption object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "string",
+                  "description": "Name that describe the SurveyItemOption"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Name that identify the type of the surveyItemOption"
+                },
+                "labels": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/label"
+                  },
+                  "description": "Values in order to answer to a specific question"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyItemOption"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "surveyItemOption"
+        ],
+        "summary": "Get all SurveyItemOption",
+        "description": "Performed by a user in order to get all SurveyItemOption",
+        "operationId": "getAllSurveyItemOptions",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/surveyItemOption"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/surveyItemOptions/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The SurveyItemOption id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "surveyItemOption"
+        ],
+        "summary": "Get a SurveyItemOption by the id",
+        "description": "Performed by users in order to get specific SurveyItemOption",
+        "operationId": "getSurveyItemOption",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/surveyItemOption"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyItemOption not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "surveyItemOption"
+        ],
+        "summary": "Update an existing SurveyItemOption",
+        "description": "Performed by a user in order to update the SurveyItemOption",
+        "operationId": "updateSurveyItemOption",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "SurveyItemOption object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the SurveyItemOption"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Name that describe the SurveyItemOption"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Name that identify the type of the surveyItemOption"
+                },
+                "labels": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/label"
+                  },
+                  "description": "Values in order to answer to a specific question"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyItemOption"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyItemOption not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "surveyItemOption"
+        ],
+        "summary": "Delete a SurveyItemOption by id",
+        "description": "Performed by the user in order to delete the SurveyItemOption from the system",
+        "operationId": "deleteSurveyItemOption",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/surveyItemOption"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyItemOption not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    },
+    "/subjects": {
+      "post": {
+        "tags": [
+          "subject"
+        ],
+        "summary": "Add a new subject",
+        "description": "Operation to call in order to create a new Subject in the system",
+        "operationId": "addSubject",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "subject",
+            "description": "Subject object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the subject"
+                },
+                "surname": {
+                  "type": "string",
+                  "description": "Surname of the subject"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email of the subject"
+                },
+                "role": {
+                  "type": "string",
+                  "description": "Role of the subject in the system"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/subject"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "subject"
+        ],
+        "summary": "Get all subject",
+        "description": "Performed by a user in order to get all Subject",
+        "operationId": "getAllSubjects",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/subject"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/subject/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The Subject id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "subject"
+        ],
+        "summary": "Get a Subject by the id",
+        "description": "Performed by users in order to get specific Subject",
+        "operationId": "getSubject",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/subject"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Subject not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "subject"
+        ],
+        "summary": "Update an existing Subject",
+        "description": "Performed by a user in order to update the Subject",
+        "operationId": "updateSubject",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Subject object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the subject in the system"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Name of the subject"
+                },
+                "surname": {
+                  "type": "string",
+                  "description": "Surname of the subject"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "Email of the subject"
+                },
+                "role": {
+                  "type": "string",
+                  "description": "Role of the subject in the system"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/subject"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Subject not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "subject"
+        ],
+        "summary": "Delete a Subject by id",
+        "description": "Performed by the user in order to delete the Subject from the system",
+        "operationId": "deleteSubject",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/subject"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "Subject not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "project": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the project in the system"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name assigned to the project"
+        },
+        "description": {
+          "type": "string",
+          "description": "String that describe the project"
+        },
+        "collections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/dataCollection"
+          },
+          "description": "DataCollection that compose a project"
+        },
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/subject"
+          },
+          "description": "Subject assigned to the project"
+        }
+      }
+    },
+    "dataCollection": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the dataCollection in the system"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name assigned to the dataCollection"
+        },
+        "description": {
+          "type": "string",
+          "description": "String that describe the dataCollection"
+        },
+        "surveys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/survey"
+          },
+          "description": "Surveys that compose a dataCollection"
+        }
+      }
+    },
+    "survey": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the survey in the system"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name assigned to the survey"
+        },
+        "description": {
+          "type": "string",
+          "description": "String that describe the survey"
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/surveyComponent"
+          },
+          "description": "SurveyComponent that compose a survey"
+        }
+      }
+    },
+    "surveyComponent": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the SurveyComponent"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name thah describe the SurveyComponent"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/surveyItem"
+          },
+          "description": "Items that compose a surveyComponent"
+        }
+      }
+    },
+    "surveyItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the SurveyItem"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description for the item"
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/label"
+          },
+          "description": "Objects that allow the surveyItem to be displayed in different languages"
+        },
+        "type": {
+          "type": "string",
+          "description": "Name that identify the type of the surveyItemOption"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/surveyItemOption"
+          }
+        },
+        "validators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/validatorItem"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/constraint"
+          },
+          "description": "Constraints to apply to the item"
+        }
+      }
+    },
+    "surveyImage": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the SurveyItem"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description for the item"
+        },
+        "link": {
+          "type": "string",
+          "description": "Link to the image file"
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/label"
+          },
+          "description": "Objects that allow the surveyItem to be displayed in different languages"
+        },
+        "type": {
+          "type": "string",
+          "description": "Name that identify the type of the surveyItemOption"
+        },
+        "options": {
+          "$ref": "#/definitions/surveyItemOption"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/constraint"
+          },
+          "description": "Constraints to apply to the item"
+        }
+      }
+    },
+    "label": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the label"
+        },
+        "language": {
+          "type": "string",
+          "description": "Contains the language of the question"
+        },
+        "values": {
+          "type": "string",
+          "description": "Contains the question in the language indicated in the language field"
+        }
+      }
+    },
+    "constraint": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the label"
+        },
+        "typology": {
+          "type": "string",
+          "description": "Describe the type of constraint"
+        },
+        "condition": {
+          "type": "string",
+          "description": "Condition to apply the constraint"
+        },
+        "value": {
+          "type": "string",
+          "description": "Value of the constraint"
+        }
+      }
+    },
+    "validatorItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the validatorItem in the system"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of the validation value"
+        },
+        "value": {
+          "type": "string",
+          "description": "Value in order to validate the data"
+        }
+      }
+    },
+    "surveyItemOption": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the SurveyItemOption"
+        },
+        "value": {
+          "type": "string",
+          "description": "Name that describe the SurveyItemOption"
+        },
+        "type": {
+          "type": "string",
+          "description": "Name that identify the type of the surveyItemOption"
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/label"
+          },
+          "description": "Values in order to answer to a specific question"
+        }
+      }
+    },
+    "subject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Number that identify the subject in the system"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the subject"
+        },
+        "surname": {
+          "type": "string",
+          "description": "Surname of the subject"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of the subject"
+        },
+        "role": {
+          "type": "string",
+          "description": "Role of the subject in the system"
+        }
+      }
+    },
+    "datetime": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1900
+        },
+        "month": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "day": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 1,
+          "maximum": 31
+        },
+        "hour": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 23
+        },
+        "minute": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 60
+        },
+        "second": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 60
+        }
+      }
+    }
+  }
+}
