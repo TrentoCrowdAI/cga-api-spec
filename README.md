@@ -5,8 +5,13 @@
 - Reference Documentation (ReDoc): https://trentocrowdai.github.io/cga-api-spec/preview/dev/
 - SwaggerUI: https://trentocrowdai.github.io/cga-api-spec/preview/dev/swagger-ui/
 - Look full spec:
+<<<<<<< HEAD
     - JSON: https://trentocrowdai.github.io/cga-api-spec/preview/dev/openapi.json
     - YAML: https://trentocrowdai.github.io/cga-api-spec/preview/dev/openapi.yaml
+=======
+    - JSON: https://trentocrowdai.github.io/cga-api-spec/openapi.json
+    - YAML: https://trentocrowdai.github.io/cga-api-spec/openapi.yaml
+>>>>>>> 702fd17e136fb6193f990d597f71acda1e69e29f
 
 
 ## Working on specification
