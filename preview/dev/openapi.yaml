@@ -24,8 +24,12 @@ tags:
     description: Items that compose a surveyComponent
   - name: surveyImage
     description: Items that compose a surveyComponent
-  - name: constraint
-    description: Constraints between surveyItems
+  - name: flowConstraint
+    description: Constraint that determine the flow between surveyItems
+  - name: rule
+    description: Obejct in order to apply consistency checks
+  - name: validatorItem
+    description: Item in order to check the values that the user insert
   - name: label
     description: Label assigned to a surveyComponent
   - name: surveyItemOption
@@ -628,21 +632,37 @@ paths:
           schema:
             type: object
             properties:
-              name:
+              description:
                 type: string
-                description: Name that describe the SurveyComponent
+                description: Description for the item
               labels:
                 type: array
                 items:
                   $ref: '#/definitions/label'
                 description: Objects that allow the surveyItem to be displayed in different languages
-              possibleAnswers:
-                $ref: '#/definitions/surveyItemOption'
-              constraints:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
                 type: array
                 items:
-                  $ref: '#/definitions/constraint'
-                description: Constraints to apply to the item
+                  $ref: '#/definitions/surveyItemOption'
+                description: Option that the user can select
+              rules:
+                type: array
+                items:
+                  $ref: '#/definitions/rule'
+                description: Rules in order to apply consistency checks
+              validators:
+                type: array
+                items:
+                  $ref: '#/definitions/validatorItem'
+                description: Object in order to validate the user answers
+              flowConstraints:
+                type: array
+                items:
+                  $ref: '#/definitions/flowConstraint'
+                description: FlowConstraints to apply
       responses:
         '201':
           description: Successful operation
@@ -714,21 +734,37 @@ paths:
               id:
                 type: integer
                 description: Number that identify the SurveyItem
-              name:
+              description:
                 type: string
-                description: Name that describe the SurveyComponent
+                description: Description for the item
               labels:
                 type: array
                 items:
                   $ref: '#/definitions/label'
                 description: Objects that allow the surveyItem to be displayed in different languages
-              possibleAnswers:
-                $ref: '#/definitions/surveyItemOption'
-              constraints:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
                 type: array
                 items:
-                  $ref: '#/definitions/constraint'
-                description: Constraints to apply to the item
+                  $ref: '#/definitions/surveyItemOption'
+                description: Option that the user can select
+              rules:
+                type: array
+                items:
+                  $ref: '#/definitions/rule'
+                description: Rules in order to apply consistency checks
+              validators:
+                type: array
+                items:
+                  $ref: '#/definitions/validatorItem'
+                description: Object in order to validate the user answers
+              flowConstraints:
+                type: array
+                items:
+                  $ref: '#/definitions/flowConstraint'
+                description: FlowConstraints to apply
       responses:
         '200':
           description: Successful operation
@@ -778,9 +814,9 @@ paths:
           schema:
             type: object
             properties:
-              name:
+              description:
                 type: string
-                description: Name that describe the SurveyComponent
+                description: Description for the item
               link:
                 type: string
                 description: Link to the image file
@@ -789,13 +825,29 @@ paths:
                 items:
                   $ref: '#/definitions/label'
                 description: Objects that allow the surveyItem to be displayed in different languages
-              possibleAnswers:
-                $ref: '#/definitions/surveyItemOption'
-              constraints:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
                 type: array
                 items:
-                  $ref: '#/definitions/constraint'
-                description: Constraints to apply to the item
+                  $ref: '#/definitions/surveyItemOption'
+                description: Option that the user can select
+              rules:
+                type: array
+                items:
+                  $ref: '#/definitions/rule'
+                description: Rules in order to apply consistency checks
+              validators:
+                type: array
+                items:
+                  $ref: '#/definitions/validatorItem'
+                description: Object in order to validate the user answers
+              flowConstraints:
+                type: array
+                items:
+                  $ref: '#/definitions/flowConstraint'
+                description: FlowConstraints to apply
       responses:
         '201':
           description: Successful operation
@@ -867,9 +919,9 @@ paths:
               id:
                 type: integer
                 description: Number that identify the SurveyItem
-              name:
+              description:
                 type: string
-                description: Name that describe the SurveyComponent
+                description: Description for the item
               link:
                 type: string
                 description: Link to the image file
@@ -878,13 +930,29 @@ paths:
                 items:
                   $ref: '#/definitions/label'
                 description: Objects that allow the surveyItem to be displayed in different languages
-              possibleAnswers:
-                $ref: '#/definitions/surveyItemOption'
-              constraints:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
                 type: array
                 items:
-                  $ref: '#/definitions/constraint'
-                description: Constraints to apply to the item
+                  $ref: '#/definitions/surveyItemOption'
+                description: Option that the user can select
+              rules:
+                type: array
+                items:
+                  $ref: '#/definitions/rule'
+                description: Rules in order to apply consistency checks
+              validators:
+                type: array
+                items:
+                  $ref: '#/definitions/validatorItem'
+                description: Object in order to validate the user answers
+              flowConstraints:
+                type: array
+                items:
+                  $ref: '#/definitions/flowConstraint'
+                description: FlowConstraints to apply
       responses:
         '200':
           description: Successful operation
@@ -915,21 +983,21 @@ paths:
           description: SurveyImage not found
         '405':
           description: Validation exception
-  /constraints:
+  /flowConstraints:
     post:
       tags:
-        - constraint
-      summary: Add a new Constraint
-      description: Performed by a user when he wants to create a new Constraint
-      operationId: addConstraint
+        - flowConstraint
+      summary: Add a new FlowConstraint
+      description: Performed by a user when he wants to create a new FlowConstraint
+      operationId: addFlowConstraint
       consumes:
         - application/json
       produces:
         - application/json
       parameters:
         - in: body
-          name: constraint
-          description: Constraint object that needs to be added
+          name: flowConstraint
+          description: FlowConstraint object that needs to be added
           required: true
           schema:
             type: object
@@ -947,15 +1015,15 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/constraint'
+            $ref: '#/definitions/flowConstraint'
         '400':
           description: Bad Request
     get:
       tags:
-        - constraint
-      summary: Get all Constraint
-      description: Performed by a user in order to get all Constraint
-      operationId: getAllConstraints
+        - flowConstraint
+      summary: Get all FlowConstraints
+      description: Performed by a user in order to get all FlowConstraint
+      operationId: getAllFlowConstraints
       produces:
         - application/json
       responses:
@@ -964,41 +1032,41 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/constraint'
+              $ref: '#/definitions/flowConstraint'
         '400':
           description: Bad request
-  '/constraints/{id}':
+  '/flowConstraints/{id}':
     parameters:
       - in: path
         name: id
         required: true
         type: integer
-        description: The Constraint id
+        description: The FlowConstraint id
     get:
       tags:
-        - constraint
-      summary: Get a Constraint by the id
-      description: Performed by users in order to get specific Constraint
-      operationId: getConstraint
+        - flowConstraint
+      summary: Get a FlowConstraint by the id
+      description: Performed by users in order to get specific FlowConstraint
+      operationId: getFlowConstraint
       produces:
         - application/json
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/constraint'
+            $ref: '#/definitions/flowConstraint'
         '400':
           description: Invalid id
         '404':
-          description: Constraint not found
+          description: FlowConstraint not found
         '405':
           description: Validation exception
     put:
       tags:
-        - constraint
-      summary: Update an existing Constraint
-      description: Performed by a user in order to update the Constraint
-      operationId: updateConstraint
+        - flowConstraint
+      summary: Update an existing FlowConstraint
+      description: Performed by a user in order to update the FlowConstraint
+      operationId: updateFlowConstraint
       consumes:
         - application/json
       produces:
@@ -1006,7 +1074,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: Constraint object that needs to be updated
+          description: FlowConstraint object that needs to be updated
           required: true
           schema:
             type: object
@@ -1027,30 +1095,294 @@ paths:
         '200':
           description: Successful operation
           schema:
-            $ref: '#/definitions/constraint'
+            $ref: '#/definitions/flowConstraint'
         '400':
           description: Invalid id
         '404':
-          description: Constraint not found
+          description: FlowConstraint not found
         '405':
           description: Validation exception
     delete:
       tags:
-        - constraint
-      summary: Delete a Constraint by id
-      description: Performed by the user in order to delete the Constraint from the system
-      operationId: deleteConstraint
+        - flowConstraint
+      summary: Delete a FlowConstraint by id
+      description: Performed by the user in order to delete the FlowConstraint from the system
+      operationId: deleteFlowConstraint
       produces:
         - application/json
       responses:
         '200':
           description: Successful operation
           schema:
-            $ref: '#/definitions/constraint'
+            $ref: '#/definitions/flowConstraint'
         '400':
           description: Invalid id
         '404':
-          description: Constraint not found
+          description: FlowConstraint not found
+        '405':
+          description: Validation exception
+  /rules:
+    post:
+      tags:
+        - rule
+      summary: Add a new Rule
+      description: Performed by a user when he wants to create a new Rule
+      operationId: addRule
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: rule
+          description: Rule object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              item:
+                type: integer
+                description: id of the previous item in order to checkoì its value
+              condition:
+                type: string
+                description: Condition to verify
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/rule'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - rule
+      summary: Get all Rules
+      description: Performed by a user in order to get all Rules
+      operationId: getAllRules
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/rule'
+        '400':
+          description: Bad request
+  '/rules/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The Rule id
+    get:
+      tags:
+        - rule
+      summary: Get a Rule by the id
+      description: Performed by users in order to get specific Rule
+      operationId: getRule
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/rule'
+        '400':
+          description: Invalid id
+        '404':
+          description: Rule not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - rule
+      summary: Update an existing Rule
+      description: Performed by a user in order to update the Rule
+      operationId: updateRule
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Rule object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the label
+              item:
+                type: integer
+                description: id of the previous item in order to checkoì its value
+              condition:
+                type: string
+                description: Condition to verify
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/rule'
+        '400':
+          description: Invalid id
+        '404':
+          description: Rule not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - rule
+      summary: Delete a Rule by id
+      description: Performed by the user in order to delete the Rule from the system
+      operationId: deleteRule
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/rule'
+        '400':
+          description: Invalid id
+        '404':
+          description: Rule not found
+        '405':
+          description: Validation exception
+  /validatorItems:
+    post:
+      tags:
+        - validatorItem
+      summary: Add a new ValidatorItem
+      description: Operation to call in order to create a new ValidatorItem in the system
+      operationId: addValidatorItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: validatorItem
+          description: ValidatorItem object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Type of the validation value
+              value:
+                type: string
+                description: Value in order to validate the data
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - validatorItem
+      summary: Get all validatorItem
+      description: Performed by a user in order to get all ValidatorItem
+      operationId: getAllValidatorItems
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/validatorItem'
+        '400':
+          description: Bad request
+  '/validatorItems/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The ValidatorItem id
+    get:
+      tags:
+        - validatorItem
+      summary: Get a ValidatorItem by the id
+      description: Performed by users in order to get specific ValidatorItem
+      operationId: getValidatorItem
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: ValidatorItem not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - validatorItem
+      summary: Update an existing ValidatorItem
+      description: Performed by a user in order to update the ValidatorItem
+      operationId: updateValidatorItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Subject object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the validatorItem in the system
+              type:
+                type: string
+                description: Type of the validation value
+              value:
+                type: string
+                description: Value in order to validate the data
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: ValidatorItem not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - validatorItem
+      summary: Delete a ValidatorItem by id
+      description: Performed by the user in order to delete the ValidatorItem from the system
+      operationId: deleteValidatorItem
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: ValidatorItem not found
         '405':
           description: Validation exception
   /labels:
@@ -1075,7 +1407,7 @@ paths:
               language:
                 type: string
                 description: Contains the language of the question
-              content:
+              values:
                 type: string
                 description: Contains the question in the language indicated in the language field
       responses:
@@ -1152,7 +1484,7 @@ paths:
               language:
                 type: string
                 description: Contains the language of the question
-              content:
+              values:
                 type: string
                 description: Contains the question in the language indicated in the language field
       responses:
@@ -1204,17 +1536,17 @@ paths:
           schema:
             type: object
             properties:
-              name:
+              value:
                 type: string
                 description: Name that describe the SurveyItemOption
-              options:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              labels:
                 type: array
                 items:
                   $ref: '#/definitions/label'
                 description: Values in order to answer to a specific question
-              typology:
-                type: string
-                description: Name that identify the type of the surveyItemOption
       responses:
         '201':
           description: Successful operation
@@ -1286,17 +1618,17 @@ paths:
               id:
                 type: integer
                 description: Number that identify the SurveyItemOption
-              name:
+              value:
                 type: string
                 description: Name that describe the SurveyItemOption
-              options:
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              labels:
                 type: array
                 items:
                   $ref: '#/definitions/label'
                 description: Values in order to answer to a specific question
-              typology:
-                type: string
-                description: Name that identify the type of the surveyItemOption
       responses:
         '200':
           description: Successful operation
@@ -1548,30 +1880,46 @@ definitions:
       id:
         type: integer
         description: Number that identify the SurveyItem
-      name:
+      description:
         type: string
-        description: Name that describe the SurveyComponent
+        description: Description for the item
       labels:
         type: array
         items:
           $ref: '#/definitions/label'
         description: Objects that allow the surveyItem to be displayed in different languages
-      possibleAnswers:
-        $ref: '#/definitions/surveyItemOption'
-      constraints:
+      type:
+        type: string
+        description: Name that identify the type of the surveyItemOption
+      options:
         type: array
         items:
-          $ref: '#/definitions/constraint'
-        description: Constraints to apply to the item
+          $ref: '#/definitions/surveyItemOption'
+        description: Option that the user can select
+      rules:
+        type: array
+        items:
+          $ref: '#/definitions/rule'
+        description: Rules in order to apply consistency checks
+      validators:
+        type: array
+        items:
+          $ref: '#/definitions/validatorItem'
+        description: Object in order to validate the user answers
+      flowConstraints:
+        type: array
+        items:
+          $ref: '#/definitions/flowConstraint'
+        description: FlowConstraints to apply
   surveyImage:
     type: object
     properties:
       id:
         type: integer
         description: Number that identify the SurveyItem
-      name:
+      description:
         type: string
-        description: Name that describe the SurveyComponent
+        description: Description for the item
       link:
         type: string
         description: Link to the image file
@@ -1580,13 +1928,29 @@ definitions:
         items:
           $ref: '#/definitions/label'
         description: Objects that allow the surveyItem to be displayed in different languages
-      possibleAnswers:
-        $ref: '#/definitions/surveyItemOption'
-      constraints:
+      type:
+        type: string
+        description: Name that identify the type of the surveyItemOption
+      options:
         type: array
         items:
-          $ref: '#/definitions/constraint'
-        description: Constraints to apply to the item
+          $ref: '#/definitions/surveyItemOption'
+        description: Option that the user can select
+      rules:
+        type: array
+        items:
+          $ref: '#/definitions/rule'
+        description: Rules in order to apply consistency checks
+      validators:
+        type: array
+        items:
+          $ref: '#/definitions/validatorItem'
+        description: Object in order to validate the user answers
+      flowConstraints:
+        type: array
+        items:
+          $ref: '#/definitions/flowConstraint'
+        description: FlowConstraints to apply
   label:
     type: object
     properties:
@@ -1599,7 +1963,7 @@ definitions:
       values:
         type: string
         description: Contains the question in the language indicated in the language field
-  constraint:
+  flowConstraint:
     type: object
     properties:
       id:
@@ -1614,36 +1978,47 @@ definitions:
       value:
         type: string
         description: Value of the constraint
+  rule:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Number that identify the label
+      item:
+        type: integer
+        description: id of the previous item in order to check its value
+      condition:
+        type: string
+        description: Condition to verify
+  validatorItem:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Number that identify the validatorItem in the system
+      type:
+        type: string
+        description: Type of the validation value
+      value:
+        type: string
+        description: Value in order to validate the data
   surveyItemOption:
     type: object
     properties:
       id:
         type: integer
         description: Number that identify the SurveyItemOption
-      name:
+      value:
         type: string
         description: Name that describe the SurveyItemOption
-      options:
-        type: array
-        items:
-          $ref: '#/definitions/labelOptions'
-        description: Values in order to answer to a specific question
-      typology:
+      type:
         type: string
         description: Name that identify the type of the surveyItemOption
-  labelOptions:
-    type: object
-    properties:
-      id:
-        type: integer
-        description: Number that identify the label
-      language:
-        type: string
-        description: Contains the language of the question
-      values:
+      labels:
         type: array
-        items: {}
-        description: Contains the question/answers in the language indicated in the language field
+        items:
+          $ref: '#/definitions/label'
+        description: Values in order to answer to a specific question
   subject:
     type: object
     properties:
