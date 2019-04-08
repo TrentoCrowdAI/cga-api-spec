@@ -2803,6 +2803,13 @@
           },
           "description": "Option that the user can select"
         },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/surveyImage"
+          },
+          "description": "Images that could compose the item"
+        },
         "rules": {
           "type": "array",
           "items": {
