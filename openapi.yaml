@@ -631,6 +631,3597 @@ paths:
           description: Role not found
         '405':
           description: Validation exception
+  /dataCollections:
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new DataCollection
+      description: Performed by a user when he wants to create a new DataCollection
+      operationId: addDataCollection2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+        - in: body
+          name: dataCollection
+          description: DataCollection object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name assigned to the dataCollection
+              description:
+                type: string
+                description: String that describe the dataCollection
+              type:
+                type: string
+                description: String that identy the type of the data collection
+              started:
+                $ref: '#/definitions/datetime'
+              ended:
+                $ref: '#/definitions/datetime'
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/dataCollection'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all dataCollection
+      description: Performed by a user in order to get all dataCollections
+      operationId: getAllDataCollections2
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/dataCollection'
+        '400':
+          description: Bad request
+  '/dataCollections/{id}/':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The DataCollection id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get an DataCollection by the id
+      description: Performed by users in order to get specific DataCollection
+      operationId: getDataCollection2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/dataCollection'
+        '400':
+          description: Invalid id
+        '404':
+          description: DataCollection not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing dataCollection
+      description: Performed by a user in order to update the dataCollection
+      operationId: updateDataCollection2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+        - in: body
+          name: body
+          description: Project object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the dataCollection in the system
+              name:
+                type: string
+                description: Name assigned to the dataCollection
+              description:
+                type: string
+                description: String that describe the dataCollection
+              typology:
+                type: string
+                description: String that identy the type of the data collection
+              started:
+                $ref: '#/definitions/datetime'
+              ended:
+                $ref: '#/definitions/datetime'
+              surveys:
+                type: array
+                items:
+                  $ref: '#/definitions/survey'
+                description: Surveys that compose a dataCollection
+              subjects:
+                type: array
+                items:
+                  $ref: '#/definitions/subject'
+                description: Subject assigned to the project
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/dataCollection'
+        '400':
+          description: Invalid id
+        '404':
+          description: DataCollection not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a DataCollection by id
+      description: Performed by the user in order to delete the DataCollection from the system
+      operationId: deleteDataCollection2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/dataCollection'
+        '400':
+          description: Invalid id
+        '404':
+          description: DataCollection not found
+        '405':
+          description: Validation exception
+  '/dataCollections/{id}/surveys':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The dataCollection id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new survey
+      description: Performed by a user when he wants to create a new survey in order to collect patient data
+      operationId: addSurvey
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+        - in: body
+          name: survey
+          description: Survey object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name assigned to the survey
+              description:
+                type: string
+                description: String that describe the survey
+              components:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyComponent'
+                description: SurveyComponent that compose a survey
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/survey'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all survey
+      description: Performed by a user in order to get all surveys
+      operationId: getSurveys
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/survey'
+        '400':
+          description: Bad request
+  '/dataCollections/{id1}/surveys/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The DataCollection id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The survey id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get an survey by the id
+      description: Performed by users in order to get specific survey
+      operationId: getSurvey
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/survey'
+        '400':
+          description: Invalid id
+        '404':
+          description: Survey not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing survey
+      description: Performed by a user in order to update the survey
+      operationId: updateSurvey
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+        - in: body
+          name: body
+          description: Survey object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the survey in the system
+              name:
+                type: string
+                description: Name assigned to the survey
+              description:
+                type: string
+                description: String that describe the survey
+              components:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyComponent'
+                description: SurveyComponent that compose a survey
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/survey'
+        '400':
+          description: Invalid id
+        '404':
+          description: Survey not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a survey by id
+      description: Performed by the user in order to delete the survey from the system
+      operationId: deleteSurvey
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/survey'
+        '400':
+          description: Invalid id
+        '404':
+          description: Survey not found
+        '405':
+          description: Validation exception
+  '/dataCollections/{id}/subjects':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The dataCollection id
+    post:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Add a new subject
+      description: Operation to call in order to create a new Subject in the system
+      operationId: addSubject
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+        - in: body
+          name: subject
+          description: Subject object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the subject
+              location:
+                type: string
+                description: Location of the subject
+              contact:
+                type: string
+                description: Contact of the subject
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/subject'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all subject
+      description: Performed by a user in order to get all Subject
+      operationId: getAllSubjects
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/subject'
+        '400':
+          description: Bad request
+  '/dataCollections/{id1}/subects/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The dataCollection id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The Subject id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a Subject by the id
+      description: Performed by users in order to get specific Subject
+      operationId: getSubject
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/subject'
+        '400':
+          description: Invalid id
+        '404':
+          description: Subject not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Update an existing Subject
+      description: Performed by a user in order to update the Subject
+      operationId: updateSubject
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+        - in: body
+          name: body
+          description: Subject object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the subject in the system
+              name:
+                type: string
+                description: Name of the subject
+              location:
+                type: string
+                description: Location of the subject
+              contact:
+                type: string
+                description: Contact of the subject
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/subject'
+        '400':
+          description: Invalid id
+        '404':
+          description: Subject not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a Subject by id
+      description: Performed by the user in order to delete the Subject from the system
+      operationId: deleteSubject
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: projectId
+          required: true
+          type: integer
+          description: The Project id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/subject'
+        '400':
+          description: Invalid id
+        '404':
+          description: Subject not found
+        '405':
+          description: Validation exception
+  /surveys:
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new survey
+      description: Performed by a user when he wants to create a new survey in order to collect patient data
+      operationId: addSurvey2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+        - in: body
+          name: survey
+          description: Survey object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name assigned to the survey
+              description:
+                type: string
+                description: String that describe the survey
+              components:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyComponent'
+                description: SurveyComponent that compose a survey
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/survey'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all survey
+      description: Performed by a user in order to get all surveys
+      operationId: getSurveys2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/survey'
+        '400':
+          description: Bad request
+  '/surveys/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The survey id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get an survey by the id
+      description: Performed by users in order to get specific survey
+      operationId: getSurvey2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/survey'
+        '400':
+          description: Invalid id
+        '404':
+          description: Survey not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing survey
+      description: Performed by a user in order to update the survey
+      operationId: updateSurvey2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+        - in: body
+          name: body
+          description: Survey object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the survey in the system
+              name:
+                type: string
+                description: Name assigned to the survey
+              description:
+                type: string
+                description: String that describe the survey
+              components:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyComponent'
+                description: SurveyComponent that compose a survey
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/survey'
+        '400':
+          description: Invalid id
+        '404':
+          description: Survey not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a survey by id
+      description: Performed by the user in order to delete the survey from the system
+      operationId: deleteSurvey2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/survey'
+        '400':
+          description: Invalid id
+        '404':
+          description: Survey not found
+        '405':
+          description: Validation exception
+  '/surveys/{id}/surveyComponents':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The survey id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new SurveyComponent
+      description: Performed by a user when he wants to create a new surveyComponent in order to collect patient data
+      operationId: addSurveyComponent
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+        - in: body
+          name: SurveyComponent
+          description: SurveyComponent object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name thah describe the SurveyComponent
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItem'
+                description: Items that compose a surveyComponent
+              roles:
+                type: array
+                items:
+                  $ref: '#/definitions/role'
+                description: Roles assigned to the surveyComponent
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all surveyComponent
+      description: Performed by a user in order to get all surveyComponent
+      operationId: getAllSurveyComponents
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Bad request
+  '/surveys/{id1}/surveyComponents/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The survey id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The surveyComponent id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a SurveyComponent by the id
+      description: Performed by users in order to get specific SurveyComponent
+      operationId: getSurveyComponent
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyComponent not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing SurveyComponent
+      description: Performed by a user in order to update the surveyComponent
+      operationId: updateSurveyComponent
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+        - in: body
+          name: body
+          description: SurveyComponent object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the SurveyComponent
+              name:
+                type: string
+                description: Name thah describe the SurveyComponent
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItem'
+                description: Items that compose a surveyComponent
+              roles:
+                type: array
+                items:
+                  $ref: '#/definitions/role'
+                description: Roles assigned to the surveyComponent
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyComponent not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a SurveyItem by id
+      description: Performed by the user in order to delete the SurveyItem from the system
+      operationId: deleteSurveyComponent
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: dataCollectionId
+          required: true
+          type: integer
+          description: The dataCollection id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyComponent not found
+        '405':
+          description: Validation exception
+  /surveyComponents:
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new SurveyComponent
+      description: Performed by a user when he wants to create a new surveyComponent in order to collect patient data
+      operationId: addSurveyComponent2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+        - in: body
+          name: SurveyComponent
+          description: SurveyComponent object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name thah describe the SurveyComponent
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItem'
+                description: Items that compose a surveyComponent
+              roles:
+                type: array
+                items:
+                  $ref: '#/definitions/role'
+                description: Roles assigned to the surveyComponent
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all surveyComponent
+      description: Performed by a user in order to get all surveyComponent
+      operationId: getAllSurveyComponents2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Bad request
+  '/surveyComponents/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The surveyComponent id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a SurveyComponent by the id
+      description: Performed by users in order to get specific SurveyComponent
+      operationId: getSurveyComponent2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyComponent not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing SurveyComponent
+      description: Performed by a user in order to update the surveyComponent
+      operationId: updateSurveyComponent2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+        - in: body
+          name: body
+          description: SurveyComponent object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the SurveyComponent
+              name:
+                type: string
+                description: Name thah describe the SurveyComponent
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItem'
+                description: Items that compose a surveyComponent
+              roles:
+                type: array
+                items:
+                  $ref: '#/definitions/role'
+                description: Roles assigned to the surveyComponent
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyComponent not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a SurveyItem by id
+      description: Performed by the user in order to delete the SurveyItem from the system
+      operationId: deleteSurveyComponent2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyComponent'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyComponent not found
+        '405':
+          description: Validation exception
+  '/surveyComponents/{id}/roles':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The surveyComponent id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new role
+      description: Operation to call in order to create a new Role in the system
+      operationId: addRole2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+        - in: body
+          name: role
+          description: Role object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name assigned to the collectionRole
+              description:
+                type: string
+                description: String that describe the collectionRole
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/role'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all role
+      description: Performed by a user in order to get all role
+      operationId: getAllRole2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/role'
+        '400':
+          description: Bad request
+  '/surveyComponents/{id1}/roles/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The surveyComponent id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The Role id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a Role by the id
+      description: Performed by users in order to get specific Role
+      operationId: getRole2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/role'
+        '400':
+          description: Invalid id
+        '404':
+          description: Role not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing Role
+      description: Performed by a user in order to update the Role
+      operationId: updateRole2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+        - in: body
+          name: body
+          description: Role object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the collectionRole in the system
+              name:
+                type: string
+                description: Name assigned to the collectionRole
+              description:
+                type: string
+                description: String that describe the collectionRole
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/role'
+        '400':
+          description: Invalid id
+        '404':
+          description: Role not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a Role by id
+      description: Performed by the user in order to delete the Role from the system
+      operationId: deleteRole2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/role'
+        '400':
+          description: Invalid id
+        '404':
+          description: Role not found
+        '405':
+          description: Validation exception
+  '/surveyComponents/{id}/surveyItems':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The surveyComponent id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new SurveyItem
+      description: Performed by a user when he wants to create a new SurveyItem
+      operationId: addSurveyItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+        - in: body
+          name: SurveyItem
+          description: SurveyItem object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+                description: Description for the item
+              labels:
+                type: array
+                items:
+                  $ref: '#/definitions/label'
+                description: Objects that allow the surveyItem to be displayed in different languages
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItem'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all surveyItem
+      description: Performed by a user in order to get all surveyItem
+      operationId: getAllSurveyItems
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyItem'
+        '400':
+          description: Bad request
+  '/surveyComponents/{id1}/surveyItems/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The surveyComponent id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The SurveyItem id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a SurveyItem by the id
+      description: Performed by users in order to get specific SurveyItem
+      operationId: getSurveyItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItem not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing SurveyItem
+      description: Performed by a user in order to update the surveyItem
+      operationId: updateSurveyItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+        - in: body
+          name: body
+          description: SurveyItem object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the SurveyItem
+              description:
+                type: string
+                description: Description for the item
+              labels:
+                type: array
+                items:
+                  $ref: '#/definitions/label'
+                description: Objects that allow the surveyItem to be displayed in different languages
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItemOption'
+                description: Option that the user can select
+              images:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyImage'
+                description: Images that could compose the item
+              rules:
+                type: array
+                items:
+                  $ref: '#/definitions/rule'
+                description: Rules in order to apply consistency checks
+              validators:
+                type: array
+                items:
+                  $ref: '#/definitions/validatorItem'
+                description: Object in order to validate the user answers
+              flowConstraints:
+                type: array
+                items:
+                  $ref: '#/definitions/flowConstraint'
+                description: FlowConstraints to apply
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItem not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a SurveyItem by id
+      description: Performed by the user in order to delete the SurveyItem from the system
+      operationId: deleteSurveyItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyId
+          required: true
+          type: integer
+          description: The survey id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItem not found
+        '405':
+          description: Validation exception
+  /surveyItems:
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new SurveyItem
+      description: Performed by a user when he wants to create a new SurveyItem
+      operationId: addSurveyItem2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: SurveyItem
+          description: SurveyItem object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+                description: Description for the item
+              labels:
+                type: array
+                items:
+                  $ref: '#/definitions/label'
+                description: Objects that allow the surveyItem to be displayed in different languages
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItem'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all surveyItem
+      description: Performed by a user in order to get all surveyItem
+      operationId: getAllSurveyItems2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyItem'
+        '400':
+          description: Bad request
+  '/surveyItems/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyItem id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a SurveyItem by the id
+      description: Performed by users in order to get specific SurveyItem
+      operationId: getSurveyItem2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItem not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing SurveyItem
+      description: Performed by a user in order to update the surveyItem
+      operationId: updateSurveyItem2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: body
+          description: SurveyItem object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the SurveyItem
+              description:
+                type: string
+                description: Description for the item
+              labels:
+                type: array
+                items:
+                  $ref: '#/definitions/label'
+                description: Objects that allow the surveyItem to be displayed in different languages
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              options:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItemOption'
+                description: Option that the user can select
+              images:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyImage'
+                description: Images that could compose the item
+              rules:
+                type: array
+                items:
+                  $ref: '#/definitions/rule'
+                description: Rules in order to apply consistency checks
+              validators:
+                type: array
+                items:
+                  $ref: '#/definitions/validatorItem'
+                description: Object in order to validate the user answers
+              flowConstraints:
+                type: array
+                items:
+                  $ref: '#/definitions/flowConstraint'
+                description: FlowConstraints to apply
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItem not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a SurveyItem by id
+      description: Performed by the user in order to delete the SurveyItem from the system
+      operationId: deleteSurveyItem2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItem not found
+        '405':
+          description: Validation exception
+  '/surveyItems/{id}/surveyImages':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyItem id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new SurveyImage
+      description: Performed by a user when he wants to create a new SurveyImage
+      operationId: addSurveyImage
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: SurveyImage
+          description: SurveyImage object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Description for the item
+              path:
+                type: string
+                description: Link/Path to the image file
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyImage'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all SurveyImage
+      description: Performed by a user in order to get all SurveyImage
+      operationId: getAllSurveyImages
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyImage'
+        '400':
+          description: Bad request
+  '/surveyItems/{id1}/surveyImages/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The SurveyItem id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The SurveyImage id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a SurveyItem by the id
+      description: Performed by users in order to get specific SurveyImage
+      operationId: getSurveyImage
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyImage'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyImage not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing SurveyImage
+      description: Performed by a user in order to update the SurveyImage
+      operationId: updateSurveyImage
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: body
+          description: SurveyImage object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the SurveyItem
+              title:
+                type: string
+                description: Description for the item
+              path:
+                type: string
+                description: Link/Path to the image file
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyImage'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyImage not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a SurveyImage by id
+      description: Performed by the user in order to delete the SurveyImage from the system
+      operationId: deleteSurveyImage
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyImage'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyImage not found
+        '405':
+          description: Validation exception
+  '/surveyItems/{id}/flowConstraints':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyItem id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new FlowConstraint
+      description: Performed by a user when he wants to create a new FlowConstraint
+      operationId: addFlowConstraint
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: flowConstraint
+          description: FlowConstraint object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              typology:
+                type: string
+                description: Describe the type of constraint
+              condition:
+                type: string
+                description: Condition to apply the constraint
+              value:
+                type: string
+                description: Value of the constraint
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/flowConstraint'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all FlowConstraints
+      description: Performed by a user in order to get all FlowConstraint
+      operationId: getAllFlowConstraints
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/flowConstraint'
+        '400':
+          description: Bad request
+  '/surveyItems/{id1}/flowConstraints/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The SurveyItem id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The FlowConstraint id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a FlowConstraint by the id
+      description: Performed by users in order to get specific FlowConstraint
+      operationId: getFlowConstraint
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/flowConstraint'
+        '400':
+          description: Invalid id
+        '404':
+          description: FlowConstraint not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing FlowConstraint
+      description: Performed by a user in order to update the FlowConstraint
+      operationId: updateFlowConstraint
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: body
+          description: FlowConstraint object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the label
+              typology:
+                type: string
+                description: Describe the type of constraint
+              condition:
+                type: string
+                description: Condition to apply the constraint
+              value:
+                type: string
+                description: Value of the constraint
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/flowConstraint'
+        '400':
+          description: Invalid id
+        '404':
+          description: FlowConstraint not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a FlowConstraint by id
+      description: Performed by the user in order to delete the FlowConstraint from the system
+      operationId: deleteFlowConstraint
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/flowConstraint'
+        '400':
+          description: Invalid id
+        '404':
+          description: FlowConstraint not found
+        '405':
+          description: Validation exception
+  '/surveyItems/{id}/rules':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyItem id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new Rule
+      description: Performed by a user when he wants to create a new Rule
+      operationId: addRule
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: rule
+          description: Rule object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              item:
+                type: integer
+                description: id of the previous item in order to checkoì its value
+              condition:
+                type: string
+                description: Condition to verify
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/rule'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all Rules
+      description: Performed by a user in order to get all Rules
+      operationId: getAllRules
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/rule'
+        '400':
+          description: Bad request
+  '/surveyItems/{id1}/rules/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The SurveyItem id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The Rule id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a Rule by the id
+      description: Performed by users in order to get specific Rule
+      operationId: getRule
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/rule'
+        '400':
+          description: Invalid id
+        '404':
+          description: Rule not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing Rule
+      description: Performed by a user in order to update the Rule
+      operationId: updateRule
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: body
+          description: Rule object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the label
+              item:
+                type: integer
+                description: id of the previous item in order to checkoì its value
+              condition:
+                type: string
+                description: Condition to verify
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/rule'
+        '400':
+          description: Invalid id
+        '404':
+          description: Rule not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a Rule by id
+      description: Performed by the user in order to delete the Rule from the system
+      operationId: deleteRule
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/rule'
+        '400':
+          description: Invalid id
+        '404':
+          description: Rule not found
+        '405':
+          description: Validation exception
+  '/surveyItems/{id}/validatorItems':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyItem id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new ValidatorItem
+      description: Operation to call in order to create a new ValidatorItem in the system
+      operationId: addValidatorItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: validatorItem
+          description: ValidatorItem object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Type of the validation value
+              value:
+                type: string
+                description: Value in order to validate the data
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all validatorItem
+      description: Performed by a user in order to get all ValidatorItem
+      operationId: getAllValidatorItems
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/validatorItem'
+        '400':
+          description: Bad request
+  '/surveyItems/{id1}/validatorItems/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The SurveyItem id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The ValidatorItem id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a ValidatorItem by the id
+      description: Performed by users in order to get specific ValidatorItem
+      operationId: getValidatorItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: ValidatorItem not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing ValidatorItem
+      description: Performed by a user in order to update the ValidatorItem
+      operationId: updateValidatorItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: body
+          description: Subject object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the validatorItem in the system
+              type:
+                type: string
+                description: Type of the validation value
+              value:
+                type: string
+                description: Value in order to validate the data
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: ValidatorItem not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a ValidatorItem by id
+      description: Performed by the user in order to delete the ValidatorItem from the system
+      operationId: deleteValidatorItem
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/validatorItem'
+        '400':
+          description: Invalid id
+        '404':
+          description: ValidatorItem not found
+        '405':
+          description: Validation exception
+  '/surveyItems/{id}/labels':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyItem id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new Label
+      description: Performed by a user when he wants to create a new Label
+      operationId: addLabel
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: Label
+          description: Label object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              language:
+                type: string
+                description: Contains the language of the question
+              values:
+                type: string
+                description: Contains the question in the language indicated in the language field
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/label'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all label
+      description: Performed by a user in order to get all Label
+      operationId: getAllLabels
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/label'
+        '400':
+          description: Bad request
+  '/surveyItems/{id1}/labels/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The SurveyItem id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The Label id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a Label by the id
+      description: Performed by users in order to get specific Label
+      operationId: getLabel
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/label'
+        '400':
+          description: Invalid id
+        '404':
+          description: Label not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing Label
+      description: Performed by a user in order to update the Label
+      operationId: updateLabel
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: body
+          description: Label object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the label
+              language:
+                type: string
+                description: Contains the language of the question
+              values:
+                type: string
+                description: Contains the question in the language indicated in the language field
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/label'
+        '400':
+          description: Invalid id
+        '404':
+          description: Label not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a Label by id
+      description: Performed by the user in order to delete the Label from the system
+      operationId: deleteLabel
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/label'
+        '400':
+          description: Invalid id
+        '404':
+          description: Label not found
+        '405':
+          description: Validation exception
+  '/surveyItems/{id}/surveyItemOptions':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyItem id
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new SurveyItemOption
+      description: Performed by a user when he wants to create a new SurveyItemOption
+      operationId: addSurveyItemOption
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: surveyItemOption
+          description: SurveyItemOption object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              value:
+                type: string
+                description: Name that describe the SurveyItemOption
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              labels:
+                type: array
+                items:
+                  $ref: '#/definitions/label'
+                description: Values in order to answer to a specific question
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItemOption'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all SurveyItemOption
+      description: Performed by a user in order to get all SurveyItemOption
+      operationId: getAllSurveyItemOptions
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyItemOption'
+        '400':
+          description: Bad request
+  '/surveyItems/{id1}/surveyItemOptions/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The SurveyItem id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The SurveyItemOption id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a SurveyItemOption by the id
+      description: Performed by users in order to get specific SurveyItemOption
+      operationId: getSurveyItemOption
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyItemOption'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItemOption not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing SurveyItemOption
+      description: Performed by a user in order to update the SurveyItemOption
+      operationId: updateSurveyItemOption
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+        - in: body
+          name: body
+          description: SurveyItemOption object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the SurveyItemOption
+              value:
+                type: string
+                description: Name that describe the SurveyItemOption
+              type:
+                type: string
+                description: Name that identify the type of the surveyItemOption
+              labels:
+                type: array
+                items:
+                  $ref: '#/definitions/label'
+                description: Values in order to answer to a specific question
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItemOption'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItemOption not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+      summary: Delete a SurveyItemOption by id
+      description: Performed by the user in order to delete the SurveyItemOption from the system
+      operationId: deleteSurveyItemOption
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyComponentId
+          required: true
+          type: integer
+          description: The surveyComponent id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItemOption'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItemOption not found
+        '405':
+          description: Validation exception
+  /surveyResponses:
+    post:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Add a new surveyResponse
+      description: Operation to call in order to create a new surveyResponse in the system
+      operationId: addSurveyResponse
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: surveyResponse
+          description: SurveyResponse object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: String that identify the status of the surveyResponse
+              createdAt:
+                $ref: '#/definitions/datetime'
+              subject:
+                $ref: '#/definitions/subject'
+              dataCollectionId:
+                type: integer
+                description: Number that identify the data collection in the system
+              surveyId:
+                type: integer
+                description: Number that identify the data survey in the system
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyResponse'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all surveyResponse
+      description: Performed by a surveyResponse in order to get all surveyResponses
+      operationId: getAllSurveyResponses
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyResponse'
+        '400':
+          description: Bad request
+  '/surveyResponses/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyResponse id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a surveyResponse by the id
+      description: Performed by surveyResponses in order to get specific surveyResponse
+      operationId: getSurveyResponse
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyResponse not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Update an existing SurveyResponse
+      description: Performed by a surveyResponse in order to update the SurveyResponse
+      operationId: updateSurveyResponse
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: SurveyResponse object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the surveyResponse in the system
+              status:
+                type: string
+                description: String that identify the status of the surveyResponse
+              createdAt:
+                $ref: '#/definitions/datetime'
+              subject:
+                $ref: '#/definitions/subject'
+              dataCollectionId:
+                type: integer
+                description: Number that identify the data collection in the system
+              surveyId:
+                type: integer
+                description: Number that identify the data survey in the system
+              components:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyCompResponse'
+                description: Values in order to collect surveyComp response
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyResponse not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a SurveyResponse by id
+      description: Performed by the surveyResponse in order to delete the SurveyResponse from the system
+      operationId: deleteSurveyResponse
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyResponse not found
+        '405':
+          description: Validation exception
+  '/surveyResponses/{id}/surveyCompResponses':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyResponse id
+    post:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Add a new surveyCompResponse
+      description: Operation to call in order to create a new surveyCompResponse in the system
+      operationId: addSurveyCompResponse
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: surveyCompResponse
+          description: SurveyCompResponse object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: String that identify the status of the surveyResponse
+              createdAt:
+                $ref: '#/definitions/datetime'
+              user:
+                $ref: '#/definitions/user'
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all surveyCompResponse
+      description: Performed by a surveyCompResponse in order to get all surveyCompResponses
+      operationId: getAllSurveyCompResponses
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Bad request
+  '/surveyResponses/{id1}/surveyCompResponses/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The SurveyResponse id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The SurveyCompResponse id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a surveyCompResponse by the id
+      description: Performed by surveyCompResponses in order to get specific surveyCompResponse
+      operationId: getSurveyCompResponse
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyCompResponse not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Update an existing SurveyCompResponse
+      description: Performed by a surveyCompResponse in order to update the SurveyCompResponse
+      operationId: updateSurveyCompResponse
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: SurveyCompResponse object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the surveyCompResponse in the system
+              status:
+                type: string
+                description: String that identify the status of the surveyResponse
+              createdAt:
+                $ref: '#/definitions/datetime'
+              user:
+                $ref: '#/definitions/user'
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItemResponse'
+                description: Values in order to collect surveyItem response
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyCompResponse not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a SurveyCompResponse by id
+      description: Performed by the surveyCompResponse in order to delete the SurveyCompResponse from the system
+      operationId: deleteSurveyCompResponse
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyCompResponse not found
+        '405':
+          description: Validation exception
+  /surveyCompResponses:
+    post:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Add a new surveyCompResponse
+      description: Operation to call in order to create a new surveyCompResponse in the system
+      operationId: addSurveyCompResponse2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+        - in: body
+          name: surveyCompResponse
+          description: SurveyCompResponse object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                description: String that identify the status of the surveyResponse
+              createdAt:
+                $ref: '#/definitions/datetime'
+              user:
+                $ref: '#/definitions/user'
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all surveyCompResponse
+      description: Performed by a surveyCompResponse in order to get all surveyCompResponses
+      operationId: getAllSurveyCompResponses2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Bad request
+  '/surveyCompResponses/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyCompResponse id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a surveyCompResponse by the id
+      description: Performed by surveyCompResponses in order to get specific surveyCompResponse
+      operationId: getSurveyCompResponse2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyCompResponse not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Update an existing SurveyCompResponse
+      description: Performed by a surveyCompResponse in order to update the SurveyCompResponse
+      operationId: updateSurveyCompResponse2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+        - in: body
+          name: body
+          description: SurveyCompResponse object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the surveyCompResponse in the system
+              status:
+                type: string
+                description: String that identify the status of the surveyResponse
+              createdAt:
+                $ref: '#/definitions/datetime'
+              user:
+                $ref: '#/definitions/user'
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/surveyItemResponse'
+                description: Values in order to collect surveyItem response
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyCompResponse not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a SurveyCompResponse by id
+      description: Performed by the surveyCompResponse in order to delete the SurveyCompResponse from the system
+      operationId: deleteSurveyCompResponse2
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyCompResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyCompResponse not found
+        '405':
+          description: Validation exception
+  '/surveyCompResponses/{id}/surveyItemResponses':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyCompResponse id
+    post:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Add a new surveyItemResponse
+      description: Operation to call in order to create a new surveyItemResponse in the system
+      operationId: addSurveyItemResponse
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+        - in: body
+          name: surveyItemResponse
+          description: SurveyItemResponse object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: String that identify the name of the surveyItemResponse
+              value:
+                type: string
+                description: Value of the surveyItemResponse
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItemResponse'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all surveyItemResponse
+      description: Performed by a surveyItemResponse in order to get all surveyItemResponses
+      operationId: getAllSurveyItemResponses
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/surveyItemResponse'
+        '400':
+          description: Bad request
+  '/surveyCompResponses/{id1}/surveyItemResponses/{id2}':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The SurveyCompResponse id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The SurveyItemResponse id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a surveyItemResponse by the id
+      description: Performed by surveyItemResponses in order to get specific surveyItemResponse
+      operationId: getSurveyItemResponse
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/surveyItemResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItemResponse not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Update an existing SurveyItemResponse
+      description: Performed by a surveyItemResponse in order to update the SurveyItemResponse
+      operationId: updateSurveyItemResponse
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+        - in: body
+          name: body
+          description: SurveyItemResponse object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the surveyItemResponse in the system
+              name:
+                type: string
+                description: String that identify the name of the surveyItemResponse
+              value:
+                type: string
+                description: Value of the surveyItemResponse
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItemResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItemResponse not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a SurveyItemResponse by id
+      description: Performed by the surveyItemResponse in order to delete the SurveyItemResponse from the system
+      operationId: deleteSurveyItemResponse
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: surveyResponseId
+          required: true
+          type: integer
+          description: The surveyResponse id
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/surveyItemResponse'
+        '400':
+          description: Invalid id
+        '404':
+          description: SurveyItemResponse not found
+        '405':
+          description: Validation exception
+  /users:
+    post:
+      tags:
+        - AdminApp
+      summary: Add a new user
+      description: Operation to call in order to create a new user in the system
+      operationId: addUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: User object that needs to be added
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: String that identify the name of the user
+      responses:
+        '201':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/user'
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all user
+      description: Performed by a user in order to get all users
+      operationId: getAllUsers
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/user'
+        '400':
+          description: Bad request
+  '/users/{id}':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The User id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get a user by the id
+      description: Performed by users in order to get specific user
+      operationId: getUser
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/user'
+        '400':
+          description: Invalid id
+        '404':
+          description: User not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+        - AdminApp
+      summary: Update an existing User
+      description: Performed by a user in order to update the User
+      operationId: updateUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: User object that needs to be updated
+          required: true
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Number that identify the user in the system
+              name:
+                type: string
+                description: String that identify the name of the user
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/user'
+        '400':
+          description: Invalid id
+        '404':
+          description: User not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Delete a User by id
+      description: Performed by the user in order to delete the User from the system
+      operationId: deleteUser
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful operation
+          schema:
+            $ref: '#/definitions/user'
+        '400':
+          description: Invalid id
+        '404':
+          description: User not found
+        '405':
+          description: Validation exception
 definitions:
   project:
     type: object
@@ -910,6 +4501,12 @@ definitions:
         $ref: '#/definitions/datetime'
       subject:
         $ref: '#/definitions/subject'
+      dataCollectionId:
+        type: integer
+        description: Number that identify the data collection in the system
+      surveyId:
+        type: integer
+        description: Number that identify the data survey in the system
       components:
         type: array
         items:
@@ -926,7 +4523,9 @@ definitions:
         description: String that identify the status of the surveyResponse
       createdAt:
         $ref: '#/definitions/datetime'
-      components:
+      user:
+        $ref: '#/definitions/user'
+      items:
         type: array
         items:
           $ref: '#/definitions/surveyItemResponse'
