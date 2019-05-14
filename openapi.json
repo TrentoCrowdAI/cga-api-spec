@@ -947,13 +947,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "projectId",
-            "required": true,
-            "type": "integer",
-            "description": "The Project id"
-          },
-          {
             "in": "body",
             "name": "dataCollection",
             "description": "DataCollection object that needs to be added",
@@ -978,6 +971,10 @@
                 },
                 "ended": {
                   "$ref": "#/definitions/datetime"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -1048,11 +1045,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "projectId",
             "required": true,
-            "type": "integer",
-            "description": "The Project id"
+            "description": "The Project id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1087,13 +1086,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "in": "path",
-            "name": "projectId",
-            "required": true,
-            "type": "integer",
-            "description": "The Project id"
-          },
           {
             "in": "body",
             "name": "body",
@@ -1137,6 +1129,10 @@
                     "$ref": "#/definitions/subject"
                   },
                   "description": "Subject assigned to the project"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -1175,11 +1171,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "projectId",
             "required": true,
-            "type": "integer",
-            "description": "The Project id"
+            "description": "The Project id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1226,13 +1224,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "projectId",
-            "required": true,
-            "type": "integer",
-            "description": "The Project id"
-          },
-          {
             "in": "body",
             "name": "survey",
             "description": "Survey object that needs to be added",
@@ -1254,6 +1245,10 @@
                     "$ref": "#/definitions/surveyComponent"
                   },
                   "description": "SurveyComponent that compose a survey"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -1287,11 +1282,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "projectId",
             "required": true,
-            "type": "integer",
-            "description": "The Project id"
+            "description": "The Project id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1343,11 +1340,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "projectId",
             "required": true,
-            "type": "integer",
-            "description": "The Project id"
+            "description": "The Project id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1383,13 +1382,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "projectId",
-            "required": true,
-            "type": "integer",
-            "description": "The Project id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "Survey object that needs to be updated",
@@ -1415,6 +1407,10 @@
                     "$ref": "#/definitions/surveyComponent"
                   },
                   "description": "SurveyComponent that compose a survey"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -1453,11 +1449,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "projectId",
             "required": true,
-            "type": "integer",
-            "description": "The Project id"
+            "description": "The Project id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1505,13 +1503,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "projectId",
-            "required": true,
-            "type": "integer",
-            "description": "The Project id"
-          },
-          {
             "in": "body",
             "name": "subject",
             "description": "Subject object that needs to be added",
@@ -1530,6 +1521,10 @@
                 "contact": {
                   "type": "string",
                   "description": "Contact of the subject"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -1563,11 +1558,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "projectId",
             "required": true,
-            "type": "integer",
-            "description": "The Project id"
+            "description": "The Project id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1619,11 +1616,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "projectId",
             "required": true,
-            "type": "integer",
-            "description": "The Project id"
+            "description": "The Project id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1660,13 +1659,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "projectId",
-            "required": true,
-            "type": "integer",
-            "description": "The Project id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "Subject object that needs to be updated",
@@ -1689,6 +1681,10 @@
                 "contact": {
                   "type": "string",
                   "description": "Contact of the subject"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -1728,11 +1724,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "projectId",
             "required": true,
-            "type": "integer",
-            "description": "The Project id"
+            "description": "The Project id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1770,13 +1768,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "dataCollectionId",
-            "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
-          },
-          {
             "in": "body",
             "name": "survey",
             "description": "Survey object that needs to be added",
@@ -1798,6 +1789,10 @@
                     "$ref": "#/definitions/surveyComponent"
                   },
                   "description": "SurveyComponent that compose a survey"
+                },
+                "dataCollectionId": {
+                  "type": "integer",
+                  "description": "The dataCollection id"
                 }
               }
             }
@@ -1831,11 +1826,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "dataCollectionId",
             "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
+            "description": "The dataCollection id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1880,11 +1877,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "dataCollectionId",
             "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
+            "description": "The dataCollection id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -1920,13 +1919,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "dataCollectionId",
-            "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "Survey object that needs to be updated",
@@ -1952,6 +1944,10 @@
                     "$ref": "#/definitions/surveyComponent"
                   },
                   "description": "SurveyComponent that compose a survey"
+                },
+                "dataCollectionId": {
+                  "type": "integer",
+                  "description": "The dataCollection id"
                 }
               }
             }
@@ -1990,11 +1986,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "dataCollectionId",
             "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
+            "description": "The dataCollection id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2041,13 +2039,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "dataCollectionId",
-            "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
-          },
-          {
             "in": "body",
             "name": "SurveyComponent",
             "description": "SurveyComponent object that needs to be added",
@@ -2072,6 +2063,10 @@
                     "$ref": "#/definitions/role"
                   },
                   "description": "Roles assigned to the surveyComponent"
+                },
+                "dataCollectionId": {
+                  "type": "integer",
+                  "description": "The dataCollection id"
                 }
               }
             }
@@ -2105,11 +2100,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "dataCollectionId",
             "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
+            "description": "The dataCollection id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2161,11 +2158,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "dataCollectionId",
             "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
+            "description": "The dataCollection id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2201,13 +2200,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "dataCollectionId",
-            "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "SurveyComponent object that needs to be updated",
@@ -2236,6 +2228,10 @@
                     "$ref": "#/definitions/role"
                   },
                   "description": "Roles assigned to the surveyComponent"
+                },
+                "dataCollectionId": {
+                  "type": "integer",
+                  "description": "The dataCollection id"
                 }
               }
             }
@@ -2275,11 +2271,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "dataCollectionId",
             "required": true,
-            "type": "integer",
-            "description": "The dataCollection id"
+            "description": "The dataCollection id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2317,13 +2315,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyId",
-            "required": true,
-            "type": "integer",
-            "description": "The survey id"
-          },
-          {
             "in": "body",
             "name": "SurveyComponent",
             "description": "SurveyComponent object that needs to be added",
@@ -2348,6 +2339,10 @@
                     "$ref": "#/definitions/role"
                   },
                   "description": "Roles assigned to the surveyComponent"
+                },
+                "surveyId": {
+                  "type": "integer",
+                  "description": "The survey id"
                 }
               }
             }
@@ -2381,11 +2376,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyId",
             "required": true,
-            "type": "integer",
-            "description": "The survey id"
+            "description": "The survey id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2430,11 +2427,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyId",
             "required": true,
-            "type": "integer",
-            "description": "The survey id"
+            "description": "The survey id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2470,13 +2469,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyId",
-            "required": true,
-            "type": "integer",
-            "description": "The survey id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "SurveyComponent object that needs to be updated",
@@ -2505,6 +2497,10 @@
                     "$ref": "#/definitions/role"
                   },
                   "description": "Roles assigned to the surveyComponent"
+                },
+                "surveyId": {
+                  "type": "integer",
+                  "description": "The survey id"
                 }
               }
             }
@@ -2544,11 +2540,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyId",
             "required": true,
-            "type": "integer",
-            "description": "The survey id"
+            "description": "The survey id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2595,13 +2593,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyId",
-            "required": true,
-            "type": "integer",
-            "description": "The survey id"
-          },
-          {
             "in": "body",
             "name": "role",
             "description": "Role object that needs to be added",
@@ -2616,6 +2607,10 @@
                 "description": {
                   "type": "string",
                   "description": "String that describe the collectionRole"
+                },
+                "surveyId": {
+                  "type": "integer",
+                  "description": "The survey id"
                 }
               }
             }
@@ -2649,11 +2644,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyId",
             "required": true,
-            "type": "integer",
-            "description": "The survey id"
+            "description": "The survey id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2705,11 +2702,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyId",
             "required": true,
-            "type": "integer",
-            "description": "The survey id"
+            "description": "The survey id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2745,13 +2744,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyId",
-            "required": true,
-            "type": "integer",
-            "description": "The survey id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "Role object that needs to be updated",
@@ -2770,6 +2762,10 @@
                 "description": {
                   "type": "string",
                   "description": "String that describe the collectionRole"
+                },
+                "surveyId": {
+                  "type": "integer",
+                  "description": "The survey id"
                 }
               }
             }
@@ -2809,11 +2805,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyId",
             "required": true,
-            "type": "integer",
-            "description": "The survey id"
+            "description": "The survey id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2860,13 +2858,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyId",
-            "required": true,
-            "type": "integer",
-            "description": "The survey id"
-          },
-          {
             "in": "body",
             "name": "SurveyItem",
             "description": "SurveyItem object that needs to be added",
@@ -2888,6 +2879,10 @@
                 "type": {
                   "type": "string",
                   "description": "Name that identify the type of the surveyItemOption"
+                },
+                "surveyId": {
+                  "type": "integer",
+                  "description": "The survey id"
                 }
               }
             }
@@ -2921,11 +2916,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyId",
             "required": true,
-            "type": "integer",
-            "description": "The survey id"
+            "description": "The survey id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -2977,11 +2974,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyId",
             "required": true,
-            "type": "integer",
-            "description": "The survey id"
+            "description": "The survey id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3016,13 +3015,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "in": "path",
-            "name": "surveyId",
-            "required": true,
-            "type": "integer",
-            "description": "The survey id"
-          },
           {
             "in": "body",
             "name": "body",
@@ -3084,6 +3076,10 @@
                     "$ref": "#/definitions/flowConstraint"
                   },
                   "description": "FlowConstraints to apply"
+                },
+                "surveyId": {
+                  "type": "integer",
+                  "description": "The survey id"
                 }
               }
             }
@@ -3122,11 +3118,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyId",
             "required": true,
-            "type": "integer",
-            "description": "The survey id"
+            "description": "The survey id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3164,13 +3162,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "SurveyItem",
             "description": "SurveyItem object that needs to be added",
@@ -3192,6 +3183,10 @@
                 "type": {
                   "type": "string",
                   "description": "Name that identify the type of the surveyItemOption"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -3225,11 +3220,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3274,11 +3271,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3313,13 +3312,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
           {
             "in": "body",
             "name": "body",
@@ -3381,6 +3373,10 @@
                     "$ref": "#/definitions/flowConstraint"
                   },
                   "description": "FlowConstraints to apply"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -3419,11 +3415,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3470,13 +3468,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "SurveyImage",
             "description": "SurveyImage object that needs to be added",
@@ -3491,6 +3482,10 @@
                 "path": {
                   "type": "string",
                   "description": "Link/Path to the image file"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -3524,11 +3519,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3580,11 +3577,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3620,13 +3619,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "SurveyImage object that needs to be updated",
@@ -3645,6 +3637,10 @@
                 "path": {
                   "type": "string",
                   "description": "Link/Path to the image file"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -3683,11 +3679,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3734,13 +3732,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "flowConstraint",
             "description": "FlowConstraint object that needs to be added",
@@ -3759,6 +3750,10 @@
                 "value": {
                   "type": "string",
                   "description": "Value of the constraint"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -3792,11 +3787,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3848,11 +3845,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -3888,13 +3887,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "FlowConstraint object that needs to be updated",
@@ -3917,6 +3909,10 @@
                 "value": {
                   "type": "string",
                   "description": "Value of the constraint"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -3956,11 +3952,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4007,13 +4005,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "rule",
             "description": "Rule object that needs to be added",
@@ -4028,6 +4019,10 @@
                 "condition": {
                   "type": "string",
                   "description": "Condition to verify"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -4061,11 +4056,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4117,11 +4114,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4157,13 +4156,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "Rule object that needs to be updated",
@@ -4182,6 +4174,10 @@
                 "condition": {
                   "type": "string",
                   "description": "Condition to verify"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -4220,11 +4216,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4271,13 +4269,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "validatorItem",
             "description": "ValidatorItem object that needs to be added",
@@ -4292,6 +4283,10 @@
                 "value": {
                   "type": "string",
                   "description": "Value in order to validate the data"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -4325,11 +4320,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4381,11 +4378,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4421,13 +4420,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "Subject object that needs to be updated",
@@ -4446,6 +4438,10 @@
                 "value": {
                   "type": "string",
                   "description": "Value in order to validate the data"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -4484,11 +4480,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4535,13 +4533,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "Label",
             "description": "Label object that needs to be added",
@@ -4556,6 +4547,10 @@
                 "values": {
                   "type": "string",
                   "description": "Contains the question in the language indicated in the language field"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -4589,11 +4584,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4645,11 +4642,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4685,13 +4684,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "Label object that needs to be updated",
@@ -4710,6 +4702,10 @@
                 "values": {
                   "type": "string",
                   "description": "Contains the question in the language indicated in the language field"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -4748,11 +4744,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4820,6 +4818,10 @@
                     "$ref": "#/definitions/label"
                   },
                   "description": "Values in order to answer to a specific question"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -4845,8 +4847,22 @@
         "summary": "Get all SurveyItemOption",
         "description": "Performed by a user in order to get all SurveyItemOption",
         "operationId": "getAllSurveyItemOptions",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "surveyComponentId",
+            "required": true,
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -4897,11 +4913,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -4937,13 +4955,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyComponentId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "SurveyItemOption object that needs to be updated",
@@ -4969,6 +4980,10 @@
                     "$ref": "#/definitions/label"
                   },
                   "description": "Values in order to answer to a specific question"
+                },
+                "surveyComponentId": {
+                  "type": "integer",
+                  "description": "The surveyComponent id"
                 }
               }
             }
@@ -5007,11 +5022,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyComponentId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyComponent id"
+            "description": "The surveyComponent id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -5506,13 +5523,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyResponseId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
-          },
-          {
             "in": "body",
             "name": "surveyCompResponse",
             "description": "SurveyCompResponse object that needs to be added",
@@ -5529,6 +5539,10 @@
                 },
                 "user": {
                   "$ref": "#/definitions/user"
+                },
+                "surveyResponseId": {
+                  "type": "integer",
+                  "description": "The surveyResponse id"
                 }
               }
             }
@@ -5562,11 +5576,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyResponseId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
+            "description": "The surveyResponse id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -5611,11 +5627,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyResponseId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
+            "description": "The surveyResponse id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -5652,13 +5670,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyResponseId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "SurveyCompResponse object that needs to be updated",
@@ -5686,6 +5697,10 @@
                     "$ref": "#/definitions/surveyItemResponse"
                   },
                   "description": "Values in order to collect surveyItem response"
+                },
+                "surveyResponseId": {
+                  "type": "integer",
+                  "description": "The surveyResponse id"
                 }
               }
             }
@@ -5725,11 +5740,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyResponseId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
+            "description": "The surveyResponse id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -5777,13 +5794,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyResponseId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
-          },
-          {
             "in": "body",
             "name": "surveyItemResponse",
             "description": "SurveyItemResponse object that needs to be added",
@@ -5798,16 +5808,23 @@
                 "value": {
                   "type": "string",
                   "description": "Value of the surveyItemResponse"
+                },
+                "surveyResponseId": {
+                  "type": "integer",
+                  "description": "The surveyResponse id"
                 }
               }
             }
           }
         ],
         "responses": {
-          "201": {
-            "description": "Successful operation",
+          "200": {
+            "description": "OK",
             "schema": {
-              "$ref": "#/definitions/surveyItemResponse"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/surveyItemResponse"
+              }
             }
           },
           "400": {
@@ -5831,11 +5848,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyResponseId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
+            "description": "The surveyResponse id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -5887,11 +5906,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyResponseId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
+            "description": "The surveyResponse id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -5928,13 +5949,6 @@
         ],
         "parameters": [
           {
-            "in": "path",
-            "name": "surveyResponseId",
-            "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
-          },
-          {
             "in": "body",
             "name": "body",
             "description": "SurveyItemResponse object that needs to be updated",
@@ -5953,6 +5967,10 @@
                 "value": {
                   "type": "string",
                   "description": "Value of the surveyItemResponse"
+                },
+                "surveyResponseId": {
+                  "type": "integer",
+                  "description": "The surveyResponse id"
                 }
               }
             }
@@ -5992,11 +6010,13 @@
         ],
         "parameters": [
           {
-            "in": "path",
+            "in": "body",
             "name": "surveyResponseId",
             "required": true,
-            "type": "integer",
-            "description": "The surveyResponse id"
+            "description": "The surveyResponse id",
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
