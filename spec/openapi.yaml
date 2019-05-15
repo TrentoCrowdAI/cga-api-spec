@@ -381,7 +381,6 @@ paths:
     get:
       tags:
       - "AdminApp"
-      - "SurveyApp"
       summary: "Get all member"
       description: "Performed by a user in order to get all members"
       operationId: "getAllMembers"
