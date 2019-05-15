@@ -556,8 +556,7 @@
       },
       "get": {
         "tags": [
-          "AdminApp",
-          "SurveyApp"
+          "AdminApp"
         ],
         "summary": "Get all member",
         "description": "Performed by a user in order to get all members",
