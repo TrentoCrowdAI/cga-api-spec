@@ -4734,6 +4734,18 @@
                 "name": {
                   "type": "string",
                   "description": "String that identify the name of the user"
+                },
+                "surname": {
+                  "type": "string",
+                  "description": "String that identify the surname of the user"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "String that identify the email of the user"
+                },
+                "password": {
+                  "type": "string",
+                  "description": "String that identify the password of the user"
                 }
               }
             }
@@ -4846,6 +4858,18 @@
                 "name": {
                   "type": "string",
                   "description": "String that identify the name of the user"
+                },
+                "surname": {
+                  "type": "string",
+                  "description": "String that identify the surname of the user"
+                },
+                "email": {
+                  "type": "string",
+                  "description": "String that identify the email of the user"
+                },
+                "password": {
+                  "type": "string",
+                  "description": "String that identify the password of the user"
                 }
               }
             }
@@ -5273,6 +5297,18 @@
         "name": {
           "type": "string",
           "description": "String that identify the name of the user"
+        },
+        "surname": {
+          "type": "string",
+          "description": "String that identify the surname of the user"
+        },
+        "email": {
+          "type": "string",
+          "description": "String that identify the email of the user"
+        },
+        "password": {
+          "type": "string",
+          "description": "String that identify the password of the user"
         }
       }
     },

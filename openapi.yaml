@@ -3208,6 +3208,15 @@ paths:
               name:
                 type: string
                 description: String that identify the name of the user
+              surname:
+                type: string
+                description: String that identify the surname of the user
+              email:
+                type: string
+                description: String that identify the email of the user
+              password:
+                type: string
+                description: String that identify the password of the user
       responses:
         '201':
           description: Successful operation
@@ -3284,6 +3293,15 @@ paths:
               name:
                 type: string
                 description: String that identify the name of the user
+              surname:
+                type: string
+                description: String that identify the surname of the user
+              email:
+                type: string
+                description: String that identify the email of the user
+              password:
+                type: string
+                description: String that identify the password of the user
       responses:
         '200':
           description: Successful operation
@@ -3581,6 +3599,15 @@ definitions:
       name:
         type: string
         description: String that identify the name of the user
+      surname:
+        type: string
+        description: String that identify the surname of the user
+      email:
+        type: string
+        description: String that identify the email of the user
+      password:
+        type: string
+        description: String that identify the password of the user
   surveyResponse:
     type: object
     properties:
