@@ -36,7 +36,7 @@
         ],
         "summary": "Add a new project",
         "description": "Performed by a user when he wants to create a new project",
-        "operationId": "addProject",
+        "operationId": "createProject",
         "consumes": [
           "application/json"
         ],
@@ -59,6 +59,9 @@
                 "description": {
                   "type": "string",
                   "description": "String that describe the project"
+                },
+                "creationDate": {
+                  "$ref": "#/definitions/datetime"
                 }
               }
             }
@@ -120,7 +123,7 @@
         ],
         "summary": "Get an project by the id",
         "description": "Performed by users in order to get specific project",
-        "operationId": "getProject",
+        "operationId": "getProjectById",
         "produces": [
           "application/json"
         ],
@@ -158,7 +161,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "project",
             "description": "Project object that needs to be updated",
             "required": true,
             "schema": {
@@ -175,6 +178,9 @@
                 "description": {
                   "type": "string",
                   "description": "String that describe the project"
+                },
+                "creationDate": {
+                  "$ref": "#/definitions/datetime"
                 },
                 "dataCollections": {
                   "type": "array",
@@ -264,7 +270,7 @@
         ],
         "summary": "Add a new DataCollection",
         "description": "Performed by a user when he wants to create a new DataCollection",
-        "operationId": "addDataCollection",
+        "operationId": "createDataCollection",
         "consumes": [
           "application/json"
         ],
@@ -292,10 +298,10 @@
                   "type": "string",
                   "description": "String that identy the type of the data collection"
                 },
-                "started": {
+                "startDate": {
                   "$ref": "#/definitions/datetime"
                 },
-                "ended": {
+                "endDate": {
                   "$ref": "#/definitions/datetime"
                 }
               }
@@ -321,7 +327,7 @@
         ],
         "summary": "Get all dataCollection",
         "description": "Performed by a user in order to get all dataCollections",
-        "operationId": "getAllDataCollections",
+        "operationId": "getProjectDataCollections",
         "produces": [
           "application/json"
         ],
@@ -357,7 +363,7 @@
         ],
         "summary": "Add a new member",
         "description": "Operation to call in order to create a new member in the system",
-        "operationId": "addMember",
+        "operationId": "createMember",
         "consumes": [
           "application/json"
         ],
@@ -487,7 +493,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "member",
             "description": "Member object that needs to be updated",
             "required": true,
             "schema": {
@@ -571,52 +577,6 @@
           "description": "The Project id"
         }
       ],
-      "post": {
-        "tags": [
-          "AdminApp"
-        ],
-        "summary": "Add a new role",
-        "description": "Operation to call in order to create a new Role in the system",
-        "operationId": "addRole",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "role",
-            "description": "Role object that needs to be added",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Name assigned to the collectionRole"
-                },
-                "description": {
-                  "type": "string",
-                  "description": "String that describe the collectionRole"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": "#/definitions/role"
-            }
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      },
       "get": {
         "tags": [
           "AdminApp",
@@ -624,7 +584,7 @@
         ],
         "summary": "Get all role",
         "description": "Performed by a user in order to get all role",
-        "operationId": "getAllRole",
+        "operationId": "getProjectRoles",
         "produces": [
           "application/json"
         ],
@@ -644,18 +604,85 @@
         }
       }
     },
-    "/projects/{id1}/roles/{id2}": {
+    "/roles/": {
+      "post": {
+        "tags": [
+          "AdminApp"
+        ],
+        "summary": "Add a new role",
+        "description": "Performed by a user when he wants to create a new role",
+        "operationId": "createRole",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "role",
+            "description": "Project object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name assigned to the role"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the role"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/project"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "AdminApp",
+          "SurveyApp"
+        ],
+        "summary": "Get all roles",
+        "description": "Performed by a user in order to get all roles",
+        "operationId": "getRoles",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/role"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
       "parameters": [
         {
           "in": "path",
-          "name": "id1",
-          "required": true,
-          "type": "integer",
-          "description": "The Project id"
-        },
-        {
-          "in": "path",
-          "name": "id2",
+          "name": "id",
           "required": true,
           "type": "integer",
           "description": "The Role id"
@@ -668,7 +695,7 @@
         ],
         "summary": "Get a Role by the id",
         "description": "Performed by users in order to get specific Role",
-        "operationId": "getRole",
+        "operationId": "getRoleById",
         "produces": [
           "application/json"
         ],
@@ -706,7 +733,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "role",
             "description": "Role object that needs to be updated",
             "required": true,
             "schema": {
@@ -714,15 +741,15 @@
               "properties": {
                 "id": {
                   "type": "integer",
-                  "description": "Number that identify the collectionRole in the system"
+                  "description": "Number that identify the role in the system"
                 },
                 "name": {
                   "type": "string",
-                  "description": "Name assigned to the collectionRole"
+                  "description": "Name assigned to the role"
                 },
                 "description": {
                   "type": "string",
-                  "description": "String that describe the collectionRole"
+                  "description": "String that describe the role"
                 }
               }
             }
@@ -792,7 +819,7 @@
         ],
         "summary": "Get an DataCollection by the id",
         "description": "Performed by users in order to get specific DataCollection",
-        "operationId": "getDataCollection2",
+        "operationId": "getDataCollection",
         "consumes": [
           "application/json"
         ],
@@ -834,7 +861,7 @@
         ],
         "summary": "Update an existing dataCollection",
         "description": "Performed by a user in order to update the dataCollection",
-        "operationId": "updateDataCollection2",
+        "operationId": "updateDataCollection",
         "consumes": [
           "application/json"
         ],
@@ -844,8 +871,8 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
-            "description": "Project object that needs to be updated",
+            "name": "dataCollection",
+            "description": "DataCollection object that needs to be updated",
             "required": true,
             "schema": {
               "type": "object",
@@ -862,14 +889,14 @@
                   "type": "string",
                   "description": "String that describe the dataCollection"
                 },
-                "typology": {
+                "type": {
                   "type": "string",
                   "description": "String that identy the type of the data collection"
                 },
-                "started": {
+                "startDate": {
                   "$ref": "#/definitions/datetime"
                 },
-                "ended": {
+                "endDate": {
                   "$ref": "#/definitions/datetime"
                 },
                 "surveys": {
@@ -918,7 +945,7 @@
         ],
         "summary": "Delete a DataCollection by id",
         "description": "Performed by the user in order to delete the DataCollection from the system",
-        "operationId": "deleteDataCollection2",
+        "operationId": "deleteDataCollection",
         "consumes": [
           "application/json"
         ],
@@ -4940,6 +4967,9 @@
           "type": "string",
           "description": "String that describe the project"
         },
+        "creationDate": {
+          "$ref": "#/definitions/datetime"
+        },
         "dataCollections": {
           "type": "array",
           "items": {
@@ -4982,10 +5012,10 @@
           "type": "string",
           "description": "String that identy the type of the data collection"
         },
-        "started": {
+        "startDate": {
           "$ref": "#/definitions/datetime"
         },
-        "ended": {
+        "endDate": {
           "$ref": "#/definitions/datetime"
         },
         "surveys": {
