@@ -27,7 +27,7 @@ paths:
       - "AdminApp"
       summary: "Add a new project"
       description: "Performed by a user when he wants to create a new project"
-      operationId: "addProject"
+      operationId: "createProject"
       consumes:
       - "application/json"
       produces:
@@ -46,6 +46,8 @@ paths:
             description:
               type: "string"
               description: "String that describe the project"
+            creationDate:
+              $ref: "#/definitions/datetime"
       responses:
         201:
           description: "Successful operation"
@@ -84,7 +86,7 @@ paths:
       - "SurveyApp"
       summary: "Get an project by the id"
       description: "Performed by users in order to get specific project"
-      operationId: "getProject"
+      operationId: "getProjectById"
       produces:
       - "application/json"
       responses:
@@ -110,7 +112,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "project"
         description: "Project object that needs to be updated"
         required: true
         schema:
@@ -125,6 +127,8 @@ paths:
             description:
               type: "string"
               description: "String that describe the project"
+            creationDate:
+              $ref: "#/definitions/datetime"
             dataCollections:
               type: "array"
               items:
@@ -182,7 +186,7 @@ paths:
       - "AdminApp"
       summary: "Add a new DataCollection"
       description: "Performed by a user when he wants to create a new DataCollection"
-      operationId: "addDataCollection"
+      operationId: "createDataCollection"
       consumes:
       - "application/json"
       produces:
@@ -204,9 +208,9 @@ paths:
             type:
               type: "string"
               description: "String that identy the type of the data collection"
-            started:
+            startDate:
               $ref: "#/definitions/datetime"
-            ended:
+            endDate:
               $ref: "#/definitions/datetime"
       responses:
         201:
@@ -221,7 +225,7 @@ paths:
       - "SurveyApp"
       summary: "Get all dataCollection"
       description: "Performed by a user in order to get all dataCollections"
-      operationId: "getAllDataCollections"
+      operationId: "getProjectDataCollections"
       produces:
       - "application/json"
       responses:
@@ -245,7 +249,7 @@ paths:
       - "AdminApp"
       summary: "Add a new member"
       description: "Operation to call in order to create a new member in the system"
-      operationId: "addMember"
+      operationId: "createMember"
       consumes:
       - "application/json"
       produces:
@@ -289,18 +293,13 @@ paths:
               $ref: "#/definitions/member"
         400:
           description: "Bad request"  
-  /projects/{id1}/members/{id2}:
+  /members/{id}:
     parameters:
       - in: path
-        name: id1
+        name: id
         required: true
         type: integer
-        description: The Project id
-      - in: path
-        name: id2
-        required: true
-        type: integer
-        description: The Member id
+        description: The User id
     get:
       tags:
       - "AdminApp"
@@ -310,6 +309,17 @@ paths:
       operationId: "getMember"
       produces:
       - "application/json"
+      parameters:
+      - in: "body"
+        name: "member"
+        description: "Member object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            projectId:
+              type: "integer"
+              description: The Project id
       responses:
         200:
           description: "OK"
@@ -333,7 +343,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "member"
         description: "Member object that needs to be updated"
         required: true
         schema:
@@ -351,6 +361,9 @@ paths:
               $ref: "#/definitions/role"
             createdAt:
               $ref: "#/definitions/datetime"
+            projectId:
+              type: "integer"
+              description: The Project id
       responses:
         200:
           description: "Successful operation"
@@ -363,37 +376,216 @@ paths:
         405:
           description: "Validation exception"
     delete:
-        tags:
-        - "AdminApp"
-        summary: "Delete a Member by id"
-        description: "Performed by the user in order to delete the Member from the system"
-        operationId: "deleteMember"
-        produces:
-        - "application/json"
-        responses:
-          200:
-            description: "Successful operation"
-            schema:
-              $ref: "#/definitions/member"
-          400:
-            description: "Invalid id"
-          404:
-            description: "Member not found"
-          405:
-            description: "Validation exception"
-  /projects/{id}/roles:
+      tags:
+      - "AdminApp"
+      summary: "Delete a Member by id"
+      description: "Performed by the user in order to delete the Member from the system"
+      operationId: "deleteMember"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "member"
+        description: "Member object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            projectId:
+              type: "integer"
+              description: The Project id
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/member"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Member not found"
+        405:
+          description: "Validation exception"
+  /members/{id}/roles/:
     parameters:
       - in: path
         name: id
         required: true
         type: integer
-        description: The Project id
+        description: The User id
+    get:
+      tags:
+      - "AdminApp"
+      - "SurveyApp"
+      summary: "Get all project collectionroles"
+      description: "Performed by a user in order to get all the collection Role"
+      operationId: "getProjectRoles"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "role"
+        description: "Role object"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            projectId:
+              type: "integer"
+              description: The Project id
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/collectionRole"
+        400:
+          description: "Bad request"
+    post:
+      tags:
+      - "AdminApp"
+      summary: "Add a new rold"
+      description: "Operation to call in order to create a new role in the project"
+      operationId: "assignCollectionRole"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: body
+        name: "collectionRole"
+        description: "CollectionRole object that needs to be added"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            description:
+              type: "string"
+              description: "String that describe the collectionRole"
+            projectId:
+              type: "integer"
+              description: The Project id
+      responses:
+        201:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/member"
+        400:
+          description: "Bad Request"
+  /members/{id1}/roles/{id2}:
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The User id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The Role id
+    get:
+      tags:
+      - "AdminApp"
+      - "SurveyApp"
+      summary: "Get all project role"
+      description: "Performed by a user in order to get a CollectionRole"
+      operationId: "getCollectionRoleById"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "role"
+        description: "Role object"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            projectId:
+              type: "integer"
+              description: The Project id
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/collectionRole"
+        400:
+          description: "Bad request"
+    put:
+      tags:
+      - "AdminApp"
+      summary: "Update an existing CollectionRole"
+      description: "Performed by a user in order to update the CollectionRole"
+      operationId: "updateCollectionRole"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "collectionRole"
+        description: "CollectionRole object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            description:
+              type: "string"
+              description: "String that describe the collectionRole"
+            projectId:
+              type: "integer"
+              description: The Project id
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/collectionRole"
+        400:
+          description: "Invalid id"
+        404:
+          description: "CollectionRole not found"
+        405:
+          description: "Validation exception"
+    delete:
+      tags:
+      - "AdminApp"
+      summary: "Delete a collectionRole by id"
+      description: "Performed by the user in order to delete the CollectionRole from the system"
+      operationId: "deleteCollectionRole"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "role"
+        description: "Role object"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            projectId:
+              type: "integer"
+              description: The Project id
+      responses:
+        200:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/collectionRole"
+        400:
+          description: "Invalid id"
+        404:
+          description: "CollectionRole not found"
+        405:
+          description: "Validation exception"
+  
+  /roles/:
     post:
       tags:
       - "AdminApp"
       summary: "Add a new role"
-      description: "Operation to call in order to create a new Role in the system"
-      operationId: "addRole"
+      description: "Performed by a user when he wants to create a new role"
+      operationId: "createRole"
       consumes:
       - "application/json"
       produces:
@@ -401,31 +593,31 @@ paths:
       parameters:
       - in: body
         name: "role"
-        description: "Role object that needs to be added"
+        description: "Project object that needs to be added"
         required: true
         schema:
           type: "object"
           properties:
             name:
               type: "string"
-              description: "Name assigned to the collectionRole"
+              description: "Name assigned to the role"
             description:
               type: "string"
-              description: "String that describe the collectionRole"
+              description: "String that describe the role"
       responses:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/role"
+            $ref: "#/definitions/project"
         400:
           description: "Bad Request"
     get:
       tags:
       - "AdminApp"
       - "SurveyApp"
-      summary: "Get all role"
-      description: "Performed by a user in order to get all role"
-      operationId: "getAllRole"
+      summary: "Get all roles"
+      description: "Performed by a user in order to get all roles"
+      operationId: "getRoles"
       produces:
       - "application/json"
       responses:
@@ -437,15 +629,10 @@ paths:
               $ref: "#/definitions/role"
         400:
           description: "Bad request"
-  /projects/{id1}/roles/{id2}:
+  /roles/{id}:
     parameters:
       - in: path
-        name: id1
-        required: true
-        type: integer
-        description: The Project id
-      - in: path
-        name: id2
+        name: id
         required: true
         type: integer
         description: The Role id
@@ -455,7 +642,7 @@ paths:
       - "SurveyApp"
       summary: "Get a Role by the id"
       description: "Performed by users in order to get specific Role"
-      operationId: "getRole"
+      operationId: "getRoleById"
       produces:
       - "application/json"
       responses:
@@ -481,7 +668,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "role"
         description: "Role object that needs to be updated"
         required: true
         schema:
@@ -489,13 +676,13 @@ paths:
           properties:
             id:
               type: "integer"
-              description: "Number that identify the collectionRole in the system"
+              description: "Number that identify the role in the system"
             name:
               type: "string"
-              description: "Name assigned to the collectionRole"
+              description: "Name assigned to the role"
             description:
               type: "string"
-              description: "String that describe the collectionRole"
+              description: "String that describe the role"
       responses:
         200:
           description: "Successful operation"
@@ -540,7 +727,7 @@ paths:
       - "SurveyApp"
       summary: "Get an DataCollection by the id"
       description: "Performed by users in order to get specific DataCollection"
-      operationId: "getDataCollection2"
+      operationId: "getDataCollection"
       consumes:
       - "application/json"
       produces:
@@ -568,15 +755,15 @@ paths:
       - "AdminApp"
       summary: "Update an existing dataCollection"
       description: "Performed by a user in order to update the dataCollection"
-      operationId: "updateDataCollection2"
+      operationId: "updateDataCollection"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
-        description: "Project object that needs to be updated"
+        name: "dataCollection"
+        description: "DataCollection object that needs to be updated"
         required: true
         schema:
           type: "object"
@@ -590,12 +777,12 @@ paths:
             description:
               type: "string"
               description: "String that describe the dataCollection"
-            typology:
+            type:
               type: "string"
               description: "String that identy the type of the data collection"
-            started:
+            startDate:
               $ref: "#/definitions/datetime"
-            ended:
+            endDate:
               $ref: "#/definitions/datetime"
             surveys:
               type: "array"
@@ -626,7 +813,7 @@ paths:
       - "AdminApp"
       summary: "Delete a DataCollection by id"
       description: "Performed by the user in order to delete the DataCollection from the system"
-      operationId: "deleteDataCollection2"
+      operationId: "deleteDataCollection"
       consumes:
       - "application/json"
       produces:
@@ -794,122 +981,7 @@ paths:
               $ref: "#/definitions/subject"
         400:
           description: "Bad request"
-  /dataCollections/{id1}/subects/{id2}:
-    parameters:
-      - in: path
-        name: id1
-        required: true
-        type: integer
-        description: The dataCollection id
-      - in: path
-        name: id2
-        required: true
-        type: integer
-        description: The Subject id
-    get:
-      tags:
-      - "AdminApp"
-      - "SurveyApp"
-      summary: "Get a Subject by the id"
-      description: "Performed by users in order to get specific Subject"
-      operationId: "getSubject"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: body
-        name: projectId
-        required: true
-        description: The Project id
-        schema:
-          type: "integer"
-      responses:
-        200:
-          description: "OK"
-          schema:
-            $ref: "#/definitions/subject"
-        400:
-          description: "Invalid id"
-        404:
-          description: "Subject not found"
-        405:
-          description: "Validation exception"
-    put:
-      tags:
-      - "AdminApp"
-      - "SurveyApp"
-      summary: "Update an existing Subject"
-      description: "Performed by a user in order to update the Subject"
-      operationId: "updateSubject"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Subject object that needs to be updated"
-        required: true
-        schema:
-          type: "object"
-          properties:
-            id:
-              type: "integer"
-              description: "Number that identify the subject in the system"
-            name:
-              type: "string"
-              description: "Name of the subject"
-            location:
-              type: "string"
-              description: "Location of the subject"
-            contact:
-              type: "string"
-              description: "Contact of the subject" 
-            projectId:
-              type: "integer"
-              description: The Project id
-      responses:
-        200:
-          description: "Successful operation"
-          schema:
-            $ref: "#/definitions/subject"
-        400:
-          description: "Invalid id"
-        404:
-          description: "Subject not found"
-        405:
-          description: "Validation exception"
-    delete:
-      tags:
-      - "AdminApp"
-      - "SurveyApp"
-      summary: "Delete a Subject by id"
-      description: "Performed by the user in order to delete the Subject from the system"
-      operationId: "deleteSubject"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: body
-        name: projectId
-        required: true
-        description: The Project id
-        schema:
-          type: "integer"
-      responses:
-        200:
-          description: "Successful operation"
-          schema:
-            $ref: "#/definitions/subject"
-        400:
-          description: "Invalid id"
-        404:
-          description: "Subject not found"
-        405:
-          description: "Validation exception"      
-  
+ 
   /surveys/{id}:
     parameters:
       - in: path
@@ -3358,6 +3430,8 @@ definitions:
       description:
         type: "string"
         description: "String that describe the project"
+      creationDate:
+        $ref: "#/definitions/datetime"
       dataCollections:
         type: "array"
         items:
@@ -3388,9 +3462,9 @@ definitions:
       type:
         type: "string"
         description: "String that identy the type of the data collection"
-      started:
+      startDate:
         $ref: "#/definitions/datetime"
-      ended:
+      endDate:
         $ref: "#/definitions/datetime"
       surveys:
         type: "array"
@@ -3580,10 +3654,16 @@ definitions:
     properties:
       id:
         type: "integer"
-        description: "Number that identify the collectionRole in the system"
+        description: "Number that identify the role in the system"
       name:
         type: "string"
         description: "Name assigned to the collectionRole"
+      description:
+        type: "string"
+        description: "String that describe the collectionRole"
+  collectionRole:
+    type: "object"
+    properties:
       description:
         type: "string"
         description: "String that describe the collectionRole"
