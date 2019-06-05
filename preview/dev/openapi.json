@@ -431,21 +431,14 @@
         }
       }
     },
-    "/projects/{id1}/members/{id2}": {
+    "/members/{id}": {
       "parameters": [
         {
           "in": "path",
-          "name": "id1",
+          "name": "id",
           "required": true,
           "type": "integer",
-          "description": "The Project id"
-        },
-        {
-          "in": "path",
-          "name": "id2",
-          "required": true,
-          "type": "integer",
-          "description": "The Member id"
+          "description": "The User id"
         }
       ],
       "get": {
@@ -458,6 +451,23 @@
         "operationId": "getMember",
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "member",
+            "description": "Member object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -515,6 +525,10 @@
                 },
                 "createdAt": {
                   "$ref": "#/definitions/datetime"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -548,6 +562,23 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "member",
+            "description": "Member object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -567,14 +598,14 @@
         }
       }
     },
-    "/projects/{id}/roles": {
+    "/members/{id}/roles/": {
       "parameters": [
         {
           "in": "path",
           "name": "id",
           "required": true,
           "type": "integer",
-          "description": "The Project id"
+          "description": "The User id"
         }
       ],
       "get": {
@@ -582,11 +613,28 @@
           "AdminApp",
           "SurveyApp"
         ],
-        "summary": "Get all role",
-        "description": "Performed by a user in order to get all role",
+        "summary": "Get all project collectionroles",
+        "description": "Performed by a user in order to get all the collection Role",
         "operationId": "getProjectRoles",
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "role",
+            "description": "Role object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -594,12 +642,216 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/role"
+                "$ref": "#/definitions/collectionRole"
               }
             }
           },
           "400": {
             "description": "Bad request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "AdminApp"
+        ],
+        "summary": "Add a new rold",
+        "description": "Operation to call in order to create a new role in the project",
+        "operationId": "assignCollectionRole",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "collectionRole",
+            "description": "CollectionRole object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the collectionRole"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/member"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/members/{id1}/roles/{id2}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id1",
+          "required": true,
+          "type": "integer",
+          "description": "The User id"
+        },
+        {
+          "in": "path",
+          "name": "id2",
+          "required": true,
+          "type": "integer",
+          "description": "The Role id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "AdminApp",
+          "SurveyApp"
+        ],
+        "summary": "Get all project role",
+        "description": "Performed by a user in order to get a CollectionRole",
+        "operationId": "getCollectionRoleById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "role",
+            "description": "Role object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/collectionRole"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "AdminApp"
+        ],
+        "summary": "Update an existing CollectionRole",
+        "description": "Performed by a user in order to update the CollectionRole",
+        "operationId": "updateCollectionRole",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "collectionRole",
+            "description": "CollectionRole object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the collectionRole"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/collectionRole"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "CollectionRole not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "AdminApp"
+        ],
+        "summary": "Delete a collectionRole by id",
+        "description": "Performed by the user in order to delete the CollectionRole from the system",
+        "operationId": "deleteCollectionRole",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "role",
+            "description": "Role object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/collectionRole"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "CollectionRole not found"
+          },
+          "405": {
+            "description": "Validation exception"
           }
         }
       }
@@ -1192,175 +1444,6 @@
           },
           "400": {
             "description": "Bad request"
-          }
-        }
-      }
-    },
-    "/dataCollections/{id1}/subects/{id2}": {
-      "parameters": [
-        {
-          "in": "path",
-          "name": "id1",
-          "required": true,
-          "type": "integer",
-          "description": "The dataCollection id"
-        },
-        {
-          "in": "path",
-          "name": "id2",
-          "required": true,
-          "type": "integer",
-          "description": "The Subject id"
-        }
-      ],
-      "get": {
-        "tags": [
-          "AdminApp",
-          "SurveyApp"
-        ],
-        "summary": "Get a Subject by the id",
-        "description": "Performed by users in order to get specific Subject",
-        "operationId": "getSubject",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "projectId",
-            "required": true,
-            "description": "The Project id",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/subject"
-            }
-          },
-          "400": {
-            "description": "Invalid id"
-          },
-          "404": {
-            "description": "Subject not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "AdminApp",
-          "SurveyApp"
-        ],
-        "summary": "Update an existing Subject",
-        "description": "Performed by a user in order to update the Subject",
-        "operationId": "updateSubject",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Subject object that needs to be updated",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "Number that identify the subject in the system"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Name of the subject"
-                },
-                "location": {
-                  "type": "string",
-                  "description": "Location of the subject"
-                },
-                "contact": {
-                  "type": "string",
-                  "description": "Contact of the subject"
-                },
-                "projectId": {
-                  "type": "integer",
-                  "description": "The Project id"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": "#/definitions/subject"
-            }
-          },
-          "400": {
-            "description": "Invalid id"
-          },
-          "404": {
-            "description": "Subject not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "AdminApp",
-          "SurveyApp"
-        ],
-        "summary": "Delete a Subject by id",
-        "description": "Performed by the user in order to delete the Subject from the system",
-        "operationId": "deleteSubject",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "projectId",
-            "required": true,
-            "description": "The Project id",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": "#/definitions/subject"
-            }
-          },
-          "400": {
-            "description": "Invalid id"
-          },
-          "404": {
-            "description": "Subject not found"
-          },
-          "405": {
-            "description": "Validation exception"
           }
         }
       }
@@ -5283,12 +5366,21 @@
       "properties": {
         "id": {
           "type": "integer",
-          "description": "Number that identify the collectionRole in the system"
+          "description": "Number that identify the role in the system"
         },
         "name": {
           "type": "string",
           "description": "Name assigned to the collectionRole"
         },
+        "description": {
+          "type": "string",
+          "description": "String that describe the collectionRole"
+        }
+      }
+    },
+    "collectionRole": {
+      "type": "object",
+      "properties": {
         "description": {
           "type": "string",
           "description": "String that describe the collectionRole"
