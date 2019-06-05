@@ -445,7 +445,7 @@
           "name": "id2",
           "required": true,
           "type": "integer",
-          "description": "The Member id"
+          "description": "The User id"
         }
       ],
       "get": {
@@ -567,14 +567,21 @@
         }
       }
     },
-    "/projects/{id}/roles": {
+    "/projects/{id1}/members/{id2}/roles/": {
       "parameters": [
         {
           "in": "path",
-          "name": "id",
+          "name": "id1",
           "required": true,
           "type": "integer",
           "description": "The Project id"
+        },
+        {
+          "in": "path",
+          "name": "id2",
+          "required": true,
+          "type": "integer",
+          "description": "The User id"
         }
       ],
       "get": {
@@ -582,8 +589,8 @@
           "AdminApp",
           "SurveyApp"
         ],
-        "summary": "Get all role",
-        "description": "Performed by a user in order to get all role",
+        "summary": "Get all project collectionroles",
+        "description": "Performed by a user in order to get all the collection Role",
         "operationId": "getProjectRoles",
         "produces": [
           "application/json"
@@ -594,12 +601,181 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/role"
+                "$ref": "#/definitions/collectionRole"
               }
             }
           },
           "400": {
             "description": "Bad request"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "AdminApp"
+        ],
+        "summary": "Add a new rold",
+        "description": "Operation to call in order to create a new role in the project",
+        "operationId": "assignCollectionRole",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "collectionRole",
+            "description": "CollectionRole object that needs to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the collectionRole"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/member"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/projects/{id1}/members/{id2}/roles/{id3}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id1",
+          "required": true,
+          "type": "integer",
+          "description": "The Project id"
+        },
+        {
+          "in": "path",
+          "name": "id2",
+          "required": true,
+          "type": "integer",
+          "description": "The User id"
+        },
+        {
+          "in": "path",
+          "name": "id3",
+          "required": true,
+          "type": "integer",
+          "description": "The Role id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "AdminApp",
+          "SurveyApp"
+        ],
+        "summary": "Get all project role",
+        "description": "Performed by a user in order to get a CollectionRole",
+        "operationId": "getCollectionRoleById",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/collectionRole"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "AdminApp"
+        ],
+        "summary": "Update an existing CollectionRole",
+        "description": "Performed by a user in order to update the CollectionRole",
+        "operationId": "updateCollectionRole",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "collectionRole",
+            "description": "CollectionRole object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "String that describe the collectionRole"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/collectionRole"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "CollectionRole not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "AdminApp"
+        ],
+        "summary": "Delete a collectionRole by id",
+        "description": "Performed by the user in order to delete the CollectionRole from the system",
+        "operationId": "deleteCollectionRole",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/collectionRole"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "CollectionRole not found"
+          },
+          "405": {
+            "description": "Validation exception"
           }
         }
       }
@@ -5283,12 +5459,21 @@
       "properties": {
         "id": {
           "type": "integer",
-          "description": "Number that identify the collectionRole in the system"
+          "description": "Number that identify the role in the system"
         },
         "name": {
           "type": "string",
           "description": "Name assigned to the collectionRole"
         },
+        "description": {
+          "type": "string",
+          "description": "String that describe the collectionRole"
+        }
+      }
+    },
+    "collectionRole": {
+      "type": "object",
+      "properties": {
         "description": {
           "type": "string",
           "description": "String that describe the collectionRole"
