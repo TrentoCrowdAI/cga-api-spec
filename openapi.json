@@ -431,18 +431,11 @@
         }
       }
     },
-    "/projects/{id1}/members/{id2}": {
+    "/members/{id}": {
       "parameters": [
         {
           "in": "path",
-          "name": "id1",
-          "required": true,
-          "type": "integer",
-          "description": "The Project id"
-        },
-        {
-          "in": "path",
-          "name": "id2",
+          "name": "id",
           "required": true,
           "type": "integer",
           "description": "The User id"
@@ -458,6 +451,23 @@
         "operationId": "getMember",
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "member",
+            "description": "Member object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -515,6 +525,10 @@
                 },
                 "createdAt": {
                   "$ref": "#/definitions/datetime"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -548,6 +562,23 @@
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "member",
+            "description": "Member object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -567,18 +598,11 @@
         }
       }
     },
-    "/projects/{id1}/members/{id2}/roles/": {
+    "/members/{id}/roles/": {
       "parameters": [
         {
           "in": "path",
-          "name": "id1",
-          "required": true,
-          "type": "integer",
-          "description": "The Project id"
-        },
-        {
-          "in": "path",
-          "name": "id2",
+          "name": "id",
           "required": true,
           "type": "integer",
           "description": "The User id"
@@ -594,6 +618,23 @@
         "operationId": "getProjectRoles",
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "role",
+            "description": "Role object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -635,6 +676,10 @@
                 "description": {
                   "type": "string",
                   "description": "String that describe the collectionRole"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -653,25 +698,18 @@
         }
       }
     },
-    "/projects/{id1}/members/{id2}/roles/{id3}": {
+    "/members/{id1}/roles/{id2}": {
       "parameters": [
         {
           "in": "path",
           "name": "id1",
           "required": true,
           "type": "integer",
-          "description": "The Project id"
-        },
-        {
-          "in": "path",
-          "name": "id2",
-          "required": true,
-          "type": "integer",
           "description": "The User id"
         },
         {
           "in": "path",
-          "name": "id3",
+          "name": "id2",
           "required": true,
           "type": "integer",
           "description": "The Role id"
@@ -687,6 +725,23 @@
         "operationId": "getCollectionRoleById",
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "role",
+            "description": "Role object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -728,6 +783,10 @@
                 "description": {
                   "type": "string",
                   "description": "String that describe the collectionRole"
+                },
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
                 }
               }
             }
@@ -760,6 +819,23 @@
         "operationId": "deleteCollectionRole",
         "produces": [
           "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "role",
+            "description": "Role object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "projectId": {
+                  "type": "integer",
+                  "description": "The Project id"
+                }
+              }
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -1368,175 +1444,6 @@
           },
           "400": {
             "description": "Bad request"
-          }
-        }
-      }
-    },
-    "/dataCollections/{id1}/subects/{id2}": {
-      "parameters": [
-        {
-          "in": "path",
-          "name": "id1",
-          "required": true,
-          "type": "integer",
-          "description": "The dataCollection id"
-        },
-        {
-          "in": "path",
-          "name": "id2",
-          "required": true,
-          "type": "integer",
-          "description": "The Subject id"
-        }
-      ],
-      "get": {
-        "tags": [
-          "AdminApp",
-          "SurveyApp"
-        ],
-        "summary": "Get a Subject by the id",
-        "description": "Performed by users in order to get specific Subject",
-        "operationId": "getSubject",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "projectId",
-            "required": true,
-            "description": "The Project id",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/subject"
-            }
-          },
-          "400": {
-            "description": "Invalid id"
-          },
-          "404": {
-            "description": "Subject not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "AdminApp",
-          "SurveyApp"
-        ],
-        "summary": "Update an existing Subject",
-        "description": "Performed by a user in order to update the Subject",
-        "operationId": "updateSubject",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Subject object that needs to be updated",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "Number that identify the subject in the system"
-                },
-                "name": {
-                  "type": "string",
-                  "description": "Name of the subject"
-                },
-                "location": {
-                  "type": "string",
-                  "description": "Location of the subject"
-                },
-                "contact": {
-                  "type": "string",
-                  "description": "Contact of the subject"
-                },
-                "projectId": {
-                  "type": "integer",
-                  "description": "The Project id"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": "#/definitions/subject"
-            }
-          },
-          "400": {
-            "description": "Invalid id"
-          },
-          "404": {
-            "description": "Subject not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "AdminApp",
-          "SurveyApp"
-        ],
-        "summary": "Delete a Subject by id",
-        "description": "Performed by the user in order to delete the Subject from the system",
-        "operationId": "deleteSubject",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "projectId",
-            "required": true,
-            "description": "The Project id",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": "#/definitions/subject"
-            }
-          },
-          "400": {
-            "description": "Invalid id"
-          },
-          "404": {
-            "description": "Subject not found"
-          },
-          "405": {
-            "description": "Validation exception"
           }
         }
       }
