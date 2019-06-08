@@ -10,7 +10,7 @@ info:
     name: "MIT"
     url: "https://github.com/TrentoCrowdAI/CGA/blob/master/LICENSE"
 host: "a.com"
-basePath: "/v1"
+#basePath: "/v1"
 tags:
 - name: "AdminApp"
   description: "A set of APIs designed for administrate the projects"
@@ -46,8 +46,9 @@ paths:
             description:
               type: "string"
               description: "String that describe the project"
-            creationDate:
-              $ref: "#/definitions/datetime"
+            creation_date:
+              type: "string"
+              description: "Date and time in which the project has been created"
       responses:
         201:
           description: "Successful operation"
@@ -127,23 +128,9 @@ paths:
             description:
               type: "string"
               description: "String that describe the project"
-            creationDate:
-              $ref: "#/definitions/datetime"
-            dataCollections:
-              type: "array"
-              items:
-                $ref: "#/definitions/dataCollection"
-              description: "DataCollection that compose a project"
-            roles:
-              type: "array"
-              items:
-                $ref: "#/definitions/role"
-              description: "Roles assigned to the project"
-            members:
-              type: "array"
-              items:
-                $ref: "#/definitions/member"
-              description: "Members of the project" 
+            creation_date:
+              type: "string"
+              description: "Date and time in which the project has been created"
       responses:
         200:
           description: "Successful operation"
@@ -208,10 +195,12 @@ paths:
             type:
               type: "string"
               description: "String that identy the type of the data collection"
-            startDate:
-              $ref: "#/definitions/datetime"
-            endDate:
-              $ref: "#/definitions/datetime"
+            start_date:
+              type: "string"
+              description: "Date and time in which the data collection is started"
+            end_date:
+              type: "string"
+              description: "Date and time in which the data collection will end"
       responses:
         201:
           description: "Successful operation"
@@ -293,6 +282,7 @@ paths:
               $ref: "#/definitions/member"
         400:
           description: "Bad request"  
+  
   /members/{id}:
     parameters:
       - in: path
@@ -734,7 +724,7 @@ paths:
       - "application/json"
       parameters:
       - in: body
-        name: projectId
+        name: project_id
         required: true
         description: The Project id
         schema:
@@ -780,21 +770,13 @@ paths:
             type:
               type: "string"
               description: "String that identy the type of the data collection"
-            startDate:
-              $ref: "#/definitions/datetime"
-            endDate:
-              $ref: "#/definitions/datetime"
-            surveys:
-              type: "array"
-              items:
-                $ref: "#/definitions/survey"
-              description: "Surveys that compose a dataCollection"
-            subjects:
-              type: "array"
-              items:
-                $ref: '#/definitions/subject'
-              description: "Subject assigned to the project"
-            projectId:
+            start_date:
+              type: "string"
+              description: "Date and time in which the data collection is started"
+            end_date:
+              type: "string"
+              description: "Date and time in which the data collection will end"
+            project_id:
               type: "integer"
               description: The Project id
       responses:
@@ -820,7 +802,7 @@ paths:
       - "application/json"
       parameters:
       - in: body
-        name: projectId
+        name: project_id
         required: true
         description: The Project id
         schema:
@@ -867,12 +849,7 @@ paths:
             description:
               type: "string"
               description: "String that describe the survey"
-            components:
-              type: "array"
-              items:
-                $ref: "#/definitions/surveyComponent"
-              description: "SurveyComponent that compose a survey"
-            projectId:
+            project_id:
               type: "integer"
               description: The Project id
       responses:
@@ -895,7 +872,7 @@ paths:
       - "application/json"
       parameters:
       - in: body
-        name: projectId
+        name: project_id
         required: true
         description: The Project id
         schema:
@@ -995,14 +972,14 @@ paths:
       - "SurveyApp"
       summary: "Get an survey by the id"
       description: "Performed by users in order to get specific survey"
-      operationId: "getSurvey2"
+      operationId: "getSurveyById"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: body
-        name: dataCollectionId
+        name: data_collection_Id
         required: true
         description: The dataCollection id
         schema:
@@ -1045,12 +1022,7 @@ paths:
             description:
               type: "string"
               description: "String that describe the survey"
-            components:
-              type: "array"
-              items:
-                $ref: "#/definitions/surveyComponent"
-              description: "SurveyComponent that compose a survey"
-            dataCollectionId:
+            data_collection_Id:
               type: "integer"
               description: The dataCollection id
       responses:
@@ -1076,7 +1048,7 @@ paths:
       - "application/json"
       parameters:
       - in: body
-        name: dataCollectionId
+        name: data_collection_Id
         required: true
         description: The dataCollection id
         schema:
@@ -3430,8 +3402,9 @@ definitions:
       description:
         type: "string"
         description: "String that describe the project"
-      creationDate:
-        $ref: "#/definitions/datetime"
+      creation_date:
+        type: "string"
+        description: "Date and time in which the project has been created"
       dataCollections:
         type: "array"
         items:
@@ -3462,10 +3435,12 @@ definitions:
       type:
         type: "string"
         description: "String that identy the type of the data collection"
-      startDate:
-        $ref: "#/definitions/datetime"
-      endDate:
-        $ref: "#/definitions/datetime"
+      start_date:
+        type: "string"
+        description: "Date and time in which the data collection is started"
+      end_date:
+        type: "string"
+        description: "Date and time in which the data collection will end"
       surveys:
         type: "array"
         items:
