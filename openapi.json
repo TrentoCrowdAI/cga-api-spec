@@ -14,7 +14,6 @@
     }
   },
   "host": "a.com",
-  "basePath": "/v1",
   "tags": [
     {
       "name": "AdminApp",
@@ -60,8 +59,9 @@
                   "type": "string",
                   "description": "String that describe the project"
                 },
-                "creationDate": {
-                  "$ref": "#/definitions/datetime"
+                "creation_date": {
+                  "type": "string",
+                  "description": "Date and time in which the project has been created"
                 }
               }
             }
@@ -179,29 +179,9 @@
                   "type": "string",
                   "description": "String that describe the project"
                 },
-                "creationDate": {
-                  "$ref": "#/definitions/datetime"
-                },
-                "dataCollections": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/dataCollection"
-                  },
-                  "description": "DataCollection that compose a project"
-                },
-                "roles": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/role"
-                  },
-                  "description": "Roles assigned to the project"
-                },
-                "members": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/member"
-                  },
-                  "description": "Members of the project"
+                "creation_date": {
+                  "type": "string",
+                  "description": "Date and time in which the project has been created"
                 }
               }
             }
@@ -298,11 +278,13 @@
                   "type": "string",
                   "description": "String that identy the type of the data collection"
                 },
-                "startDate": {
-                  "$ref": "#/definitions/datetime"
+                "start_date": {
+                  "type": "string",
+                  "description": "Date and time in which the data collection is started"
                 },
-                "endDate": {
-                  "$ref": "#/definitions/datetime"
+                "end_date": {
+                  "type": "string",
+                  "description": "Date and time in which the data collection will end"
                 }
               }
             }
@@ -1081,7 +1063,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "projectId",
+            "name": "project_id",
             "required": true,
             "description": "The Project id",
             "schema": {
@@ -1145,27 +1127,15 @@
                   "type": "string",
                   "description": "String that identy the type of the data collection"
                 },
-                "startDate": {
-                  "$ref": "#/definitions/datetime"
+                "start_date": {
+                  "type": "string",
+                  "description": "Date and time in which the data collection is started"
                 },
-                "endDate": {
-                  "$ref": "#/definitions/datetime"
+                "end_date": {
+                  "type": "string",
+                  "description": "Date and time in which the data collection will end"
                 },
-                "surveys": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/survey"
-                  },
-                  "description": "Surveys that compose a dataCollection"
-                },
-                "subjects": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/subject"
-                  },
-                  "description": "Subject assigned to the project"
-                },
-                "projectId": {
+                "project_id": {
                   "type": "integer",
                   "description": "The Project id"
                 }
@@ -1207,7 +1177,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "projectId",
+            "name": "project_id",
             "required": true,
             "description": "The Project id",
             "schema": {
@@ -1274,14 +1244,7 @@
                   "type": "string",
                   "description": "String that describe the survey"
                 },
-                "components": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/surveyComponent"
-                  },
-                  "description": "SurveyComponent that compose a survey"
-                },
-                "projectId": {
+                "project_id": {
                   "type": "integer",
                   "description": "The Project id"
                 }
@@ -1318,7 +1281,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "projectId",
+            "name": "project_id",
             "required": true,
             "description": "The Project id",
             "schema": {
@@ -1465,7 +1428,7 @@
         ],
         "summary": "Get an survey by the id",
         "description": "Performed by users in order to get specific survey",
-        "operationId": "getSurvey2",
+        "operationId": "getSurveyById",
         "consumes": [
           "application/json"
         ],
@@ -1475,7 +1438,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "dataCollectionId",
+            "name": "data_collection_Id",
             "required": true,
             "description": "The dataCollection id",
             "schema": {
@@ -1535,14 +1498,7 @@
                   "type": "string",
                   "description": "String that describe the survey"
                 },
-                "components": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/surveyComponent"
-                  },
-                  "description": "SurveyComponent that compose a survey"
-                },
-                "dataCollectionId": {
+                "data_collection_Id": {
                   "type": "integer",
                   "description": "The dataCollection id"
                 }
@@ -1584,7 +1540,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "dataCollectionId",
+            "name": "data_collection_Id",
             "required": true,
             "description": "The dataCollection id",
             "schema": {
@@ -5050,8 +5006,9 @@
           "type": "string",
           "description": "String that describe the project"
         },
-        "creationDate": {
-          "$ref": "#/definitions/datetime"
+        "creation_date": {
+          "type": "string",
+          "description": "Date and time in which the project has been created"
         },
         "dataCollections": {
           "type": "array",
@@ -5095,11 +5052,13 @@
           "type": "string",
           "description": "String that identy the type of the data collection"
         },
-        "startDate": {
-          "$ref": "#/definitions/datetime"
+        "start_date": {
+          "type": "string",
+          "description": "Date and time in which the data collection is started"
         },
-        "endDate": {
-          "$ref": "#/definitions/datetime"
+        "end_date": {
+          "type": "string",
+          "description": "Date and time in which the data collection will end"
         },
         "surveys": {
           "type": "array",
