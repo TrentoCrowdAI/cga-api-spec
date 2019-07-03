@@ -773,6 +773,65 @@ paths:
           description: Bad request
         '500':
           description: Internal Server Error
+  '/dataCollections/{id}/subjects':
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The dataCollection id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all subject assigned to the logged user that has at least one survey incomplete
+      description: Performed by a user in order to get all subject that has a survey to fill
+      operationId: getDataCollectionSubjects
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/survey'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error
+  '/dataCollections/{id1}/subjects/{id2}/surveys':
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The dataCollection id
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The subject id
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Get all survey assigned to the subject that the logged user has to fill
+      description: Performed by a user in order to get all surveys of the chosen subject
+      operationId: getSubjectSurveys
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/survey'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error
   '/surveys/{id}':
     parameters:
       - in: path
