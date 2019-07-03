@@ -6,14 +6,14 @@
     "title": "CGA Survey",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
-      "email": "a@a.com"
+      "email": "giovanni.guadagnini@studenti.unitn.it"
     },
     "license": {
       "name": "MIT",
       "url": "https://github.com/TrentoCrowdAI/CGA/blob/master/LICENSE"
     }
   },
-  "host": "a.com",
+  "host": "cga-api.herokuapp.com",
   "tags": [
     {
       "name": "AdminApp",
@@ -21,13 +21,85 @@
     },
     {
       "name": "SurveyApp",
-      "description": "A set of APIs designed for create/manage the projects"
+      "description": "A set of APIs designed to fill the surveys"
     }
   ],
   "schemes": [
     "https"
   ],
+  "securityDefinitions": {
+    "cookieAuthSession": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Cookie: express:sess"
+    },
+    "cookieAuthSessionSignature": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Cookie: express:sess.sig"
+    }
+  },
+  "security": [
+    {
+      "cookieAuthSession": [
+
+      ],
+      "cookieAuthSessionSignature": [
+
+      ]
+    }
+  ],
   "paths": {
+    "/auth/google": {
+      "get": {
+        "tags": [
+          "AdminApp",
+          "SurveyApp"
+        ],
+        "summary": "Log-in",
+        "description": "Allow the user to log into the system using Google auth",
+        "operationId": "LogInUser",
+        "security": [
+
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, user created",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "201": {
+            "description": "Successful operation, user found",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "tags": [
+          "AdminApp",
+          "SurveyApp"
+        ],
+        "summary": "Log-out",
+        "description": "Allow the user to log out and destroy the session",
+        "operationId": "LogOutUser",
+        "responses": {
+          "301": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/projects": {
       "post": {
         "tags": [
@@ -80,6 +152,9 @@
           },
           "403": {
             "description": "Not Authorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -106,6 +181,9 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -146,6 +224,9 @@
           },
           "404": {
             "description": "Project not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -206,6 +287,9 @@
           },
           "404": {
             "description": "Project not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -224,7 +308,7 @@
             "description": "Successful operation",
             "schema": {
               "type": "integer",
-              "description": "project_id"
+              "description": "project id"
             }
           },
           "400": {
@@ -235,6 +319,9 @@
           },
           "404": {
             "description": "Project not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -265,7 +352,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "dataCollection",
+            "name": "data_collection",
             "description": "DataCollection object that needs to be added",
             "required": true,
             "schema": {
@@ -300,7 +387,7 @@
             "description": "Successful operation",
             "schema": {
               "type": "integer",
-              "description": "data_collection_id"
+              "description": "data_collection id"
             }
           },
           "400": {
@@ -308,6 +395,9 @@
           },
           "403": {
             "description": "Not Authorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -333,7 +423,10 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "description": "Invalid id"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -395,6 +488,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -404,7 +500,7 @@
         ],
         "summary": "Get all member",
         "description": "Performed by a user in order to get all members",
-        "operationId": "getAllMembers",
+        "operationId": "getProjectMembers",
         "produces": [
           "application/json"
         ],
@@ -419,7 +515,10 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "description": "Invalid Id"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -448,7 +547,7 @@
         ],
         "summary": "Get a member by the id",
         "description": "Performed by users in order to get specific member",
-        "operationId": "getMember",
+        "operationId": "getMemberById",
         "produces": [
           "application/json"
         ],
@@ -481,6 +580,9 @@
           },
           "404": {
             "description": "Member not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -545,6 +647,9 @@
           },
           "404": {
             "description": "Member not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -574,6 +679,9 @@
           },
           "404": {
             "description": "Member not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -621,11 +729,15 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/project"
+              "type": "integer",
+              "description": "role id"
             }
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -652,6 +764,9 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -689,6 +804,9 @@
           },
           "404": {
             "description": "Role not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -742,6 +860,9 @@
           },
           "404": {
             "description": "Role not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -760,7 +881,7 @@
             "description": "Successful operation",
             "schema": {
               "type": "integer",
-              "description": "role_id of the deleted role"
+              "description": "role id"
             }
           },
           "400": {
@@ -768,6 +889,9 @@
           },
           "404": {
             "description": "Role not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -819,6 +943,9 @@
           },
           "404": {
             "description": "DataCollection not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -838,7 +965,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "dataCollection",
+            "name": "data_collection",
             "description": "DataCollection object that needs to be updated",
             "required": true,
             "schema": {
@@ -884,13 +1011,16 @@
             }
           },
           "400": {
-            "description": "Invalid id"
+            "description": "Invalid ids"
           },
           "403": {
             "description": "Not Authorized"
           },
           "404": {
             "description": "DataCollection not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -919,10 +1049,11 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/dataCollection"
+              "type": "integer",
+              "description": "data_collection id"
             }
           },
           "400": {
@@ -933,6 +1064,9 @@
           },
           "404": {
             "description": "DataCollection not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -985,7 +1119,8 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/survey"
+              "type": "integer",
+              "description": "survey id"
             }
           },
           "400": {
@@ -993,6 +1128,9 @@
           },
           "403": {
             "description": "Not Authorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1019,6 +1157,96 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/dataCollections/{id}/subjects": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The dataCollection id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "AdminApp",
+          "SurveyApp"
+        ],
+        "summary": "Get all subject assigned to the logged user that has at least one survey incomplete",
+        "description": "Performed by a user in order to get all subject that has a survey to fill",
+        "operationId": "getDataCollectionSubjects",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/survey"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/dataCollections/{id1}/subjects/{id2}/surveys": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id1",
+          "required": true,
+          "type": "integer",
+          "description": "The dataCollection id"
+        },
+        {
+          "in": "path",
+          "name": "id2",
+          "required": true,
+          "type": "integer",
+          "description": "The subject id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "AdminApp",
+          "SurveyApp"
+        ],
+        "summary": "Get all survey assigned to the subject that the logged user has to fill",
+        "description": "Performed by a user in order to get all surveys of the chosen subject",
+        "operationId": "getSubjectSurveys",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/survey"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -1070,6 +1298,9 @@
           },
           "404": {
             "description": "Survey not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1079,7 +1310,7 @@
         ],
         "summary": "Update an existing survey",
         "description": "Performed by a user in order to update the survey",
-        "operationId": "updateSurvey2",
+        "operationId": "updateSurvey",
         "consumes": [
           "application/json"
         ],
@@ -1130,6 +1361,9 @@
           },
           "404": {
             "description": "Survey not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1139,7 +1373,7 @@
         ],
         "summary": "Delete a survey by id",
         "description": "Performed by the user in order to delete the survey from the system",
-        "operationId": "deleteSurvey2",
+        "operationId": "deleteSurvey",
         "consumes": [
           "application/json"
         ],
@@ -1180,7 +1414,7 @@
             "description": "Successful operation",
             "schema": {
               "type": "integer",
-              "description": "survey_id of the delete Survey"
+              "description": "survey id"
             }
           },
           "400": {
@@ -1191,6 +1425,9 @@
           },
           "404": {
             "description": "Survey not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -1212,7 +1449,7 @@
         ],
         "summary": "Add a new subject",
         "description": "Operation to call in order to create a new Subject in the system",
-        "operationId": "addSubjectToSurvey",
+        "operationId": "createSubjectToSurvey",
         "consumes": [
           "application/json"
         ],
@@ -1252,11 +1489,15 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/subject"
+              "type": "integer",
+              "description": "subject id"
             }
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1286,6 +1527,9 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -1316,7 +1560,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "SurveyComponent",
+            "name": "survey_component",
             "description": "SurveyComponent object that needs to be added",
             "required": true,
             "schema": {
@@ -1338,7 +1582,8 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/surveyComponent"
+              "type": "integer",
+              "description": "survey_component id"
             }
           },
           "400": {
@@ -1346,6 +1591,9 @@
           },
           "403": {
             "description": "Not Authorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1356,7 +1604,7 @@
         ],
         "summary": "Get all surveyComponent",
         "description": "Performed by a user in order to get all surveyComponent",
-        "operationId": "getAllSurveyComponents",
+        "operationId": "getSurveyComponents",
         "consumes": [
           "application/json"
         ],
@@ -1386,6 +1634,9 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -1423,6 +1674,9 @@
           },
           "404": {
             "description": "SurveyComponent not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1442,7 +1696,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "survey_component",
             "description": "SurveyComponent object that needs to be updated",
             "required": true,
             "schema": {
@@ -1483,13 +1737,15 @@
           },
           "404": {
             "description": "SurveyComponent not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
       "delete": {
         "tags": [
-          "AdminApp",
-          "SurveyApp"
+          "AdminApp"
         ],
         "summary": "Delete a SurveyItem by id",
         "description": "Performed by the user in order to delete the SurveyItem from the system",
@@ -1502,7 +1758,7 @@
             "description": "Successful operation",
             "schema": {
               "type": "integer",
-              "description": "survey_component_id of the deleted surveyComponent"
+              "description": "survey_component id"
             }
           },
           "400": {
@@ -1513,6 +1769,9 @@
           },
           "404": {
             "description": "SurveyComponent not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -1555,7 +1814,7 @@
                 },
                 "type": {
                   "type": "string",
-                  "description": "Name that identify the type of the surveyItemOption"
+                  "description": "Name that identify the type of the option"
                 }
               }
             }
@@ -1565,14 +1824,18 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/surveyItem"
+              "type": "integer",
+              "description": "survey_item id"
             }
           },
           "400": {
             "description": "Bad Request"
           },
           "403": {
-            "description": "Bad Request"
+            "description": "Not Authorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1583,7 +1846,7 @@
         ],
         "summary": "Get all surveyItem",
         "description": "Performed by a user in order to get all surveyItem",
-        "operationId": "getAllSurveyItems",
+        "operationId": "getSurveyItems",
         "consumes": [
           "application/json"
         ],
@@ -1612,7 +1875,10 @@
             }
           },
           "400": {
-            "description": "Bad request"
+            "description": "Invalid id"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -1650,6 +1916,9 @@
           },
           "404": {
             "description": "SurveyItem not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1685,7 +1954,7 @@
                 },
                 "type": {
                   "type": "string",
-                  "description": "Name that identify the type of the surveyItemOption"
+                  "description": "Name that identify the type of the option"
                 },
                 "survey_component_id": {
                   "type": "integer",
@@ -1710,6 +1979,9 @@
           },
           "404": {
             "description": "SurveyItem not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1720,28 +1992,15 @@
         "summary": "Delete a SurveyItem by id",
         "description": "Performed by the user in order to delete the SurveyItem from the system",
         "operationId": "deleteSurveyItem",
-        "consumes": [
-          "application/json"
-        ],
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "surveyComponentId",
-            "required": true,
-            "description": "The surveyComponent id",
-            "schema": {
-              "type": "integer"
-            }
-          }
         ],
         "responses": {
           "204": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/surveyItem"
+              "type": "integer",
+              "description": "survey_item id"
             }
           },
           "400": {
@@ -1752,11 +2011,14 @@
           },
           "404": {
             "description": "SurveyItem not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/surveyItems/{id}/surveyImages": {
+    "/surveyItems/{id}/images": {
       "parameters": [
         {
           "in": "path",
@@ -1772,7 +2034,7 @@
         ],
         "summary": "Add a new SurveyImage",
         "description": "Performed by a user when he wants to create a new SurveyImage",
-        "operationId": "addSurveyImage",
+        "operationId": "createSurveyItemImage",
         "consumes": [
           "application/json"
         ],
@@ -1782,7 +2044,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "SurveyImage",
+            "name": "image_survey_item",
             "description": "SurveyImage object that needs to be added",
             "required": true,
             "schema": {
@@ -1808,11 +2070,18 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/surveyImage"
+              "type": "integer",
+              "description": "image_survey_item id"
             }
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Not Authorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -1823,23 +2092,9 @@
         ],
         "summary": "Get all SurveyImage",
         "description": "Performed by a user in order to get all SurveyImage",
-        "operationId": "getAllSurveyImages",
-        "consumes": [
-          "application/json"
-        ],
+        "operationId": "getSurveyItemImages",
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "surveyComponentId",
-            "required": true,
-            "description": "The surveyComponent id",
-            "schema": {
-              "type": "integer"
-            }
-          }
         ],
         "responses": {
           "200": {
@@ -1847,175 +2102,15 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/surveyImage"
+                "$ref": "#/definitions/image"
               }
             }
           },
           "400": {
             "description": "Bad request"
-          }
-        }
-      }
-    },
-    "/surveyItems/{id1}/surveyImages/{id2}": {
-      "parameters": [
-        {
-          "in": "path",
-          "name": "id1",
-          "required": true,
-          "type": "integer",
-          "description": "The SurveyItem id"
-        },
-        {
-          "in": "path",
-          "name": "id2",
-          "required": true,
-          "type": "integer",
-          "description": "The SurveyImage id"
-        }
-      ],
-      "get": {
-        "tags": [
-          "AdminApp",
-          "SurveyApp"
-        ],
-        "summary": "Get a SurveyItem by the id",
-        "description": "Performed by users in order to get specific SurveyImage",
-        "operationId": "getSurveyImage",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "surveyComponentId",
-            "required": true,
-            "description": "The surveyComponent id",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/surveyImage"
-            }
           },
-          "400": {
-            "description": "Invalid id"
-          },
-          "404": {
-            "description": "SurveyImage not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "AdminApp"
-        ],
-        "summary": "Update an existing SurveyImage",
-        "description": "Performed by a user in order to update the SurveyImage",
-        "operationId": "updateSurveyImage",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "SurveyImage object that needs to be updated",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "description": "Number that identify the SurveyItem"
-                },
-                "title": {
-                  "type": "string",
-                  "description": "Description for the item"
-                },
-                "path": {
-                  "type": "string",
-                  "description": "Link/Path to the image file"
-                },
-                "surveyComponentId": {
-                  "type": "integer",
-                  "description": "The surveyComponent id"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": "#/definitions/surveyImage"
-            }
-          },
-          "400": {
-            "description": "Invalid id"
-          },
-          "404": {
-            "description": "SurveyImage not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "AdminApp"
-        ],
-        "summary": "Delete a SurveyImage by id",
-        "description": "Performed by the user in order to delete the SurveyImage from the system",
-        "operationId": "deleteSurveyImage",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "surveyComponentId",
-            "required": true,
-            "description": "The surveyComponent id",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation",
-            "schema": {
-              "$ref": "#/definitions/surveyImage"
-            }
-          },
-          "400": {
-            "description": "Invalid id"
-          },
-          "404": {
-            "description": "SurveyImage not found"
-          },
-          "405": {
-            "description": "Validation exception"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -2068,7 +2163,8 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/label"
+              "type": "integer",
+              "description": "label_survey_item id"
             }
           },
           "400": {
@@ -2076,6 +2172,9 @@
           },
           "403": {
             "description": "Not Authorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2086,7 +2185,7 @@
         ],
         "summary": "Get all label",
         "description": "Performed by a user in order to get all Label",
-        "operationId": "getAllLabels",
+        "operationId": "getSurveyItemLabels",
         "consumes": [
           "application/json"
         ],
@@ -2116,6 +2215,9 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -2162,7 +2264,7 @@
                 },
                 "type": {
                   "type": "string",
-                  "description": "Name that identify the type of the surveyItemOption"
+                  "description": "Name that identify the type of the option"
                 }
               }
             }
@@ -2172,11 +2274,15 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/surveyItemOption"
+              "type": "integer",
+              "description": "survey_item_option id"
             }
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2197,12 +2303,144 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/surveyItemOption"
+                "$ref": "#/definitions/option"
               }
             }
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/images/{id}": {
+      "parameters": [
+        {
+          "in": "path",
+          "name": "id",
+          "required": true,
+          "type": "integer",
+          "description": "The SurveyImage id"
+        }
+      ],
+      "get": {
+        "tags": [
+          "AdminApp",
+          "SurveyApp"
+        ],
+        "summary": "Get a SurveyItem by the id",
+        "description": "Performed by users in order to get specific SurveyImage",
+        "operationId": "getSurveyItemImageById",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/image"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyImage not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "AdminApp"
+        ],
+        "summary": "Update an existing SurveyImage",
+        "description": "Performed by a user in order to update the SurveyImage",
+        "operationId": "updateSurveyImage",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "image_survey_item",
+            "description": "SurveyImage object that needs to be updated",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "Number that identify the SurveyItem"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Description for the item"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Link/Path to the image file"
+                },
+                "survey_item_id": {
+                  "type": "integer",
+                  "description": "The surveyItem id"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/image"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyImage not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "AdminApp"
+        ],
+        "summary": "Delete a SurveyImage by id",
+        "description": "Performed by the user in order to delete the SurveyImage from the system",
+        "operationId": "deleteSurveyImage",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "integer",
+              "description": "image_survey_item id"
+            }
+          },
+          "400": {
+            "description": "Invalid id"
+          },
+          "404": {
+            "description": "SurveyImage not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -2241,8 +2479,8 @@
           "404": {
             "description": "Label not found"
           },
-          "405": {
-            "description": "Validation exception"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2280,9 +2518,9 @@
                   "type": "string",
                   "description": "Contains the question in the language indicated in the language field"
                 },
-                "survey_component_id": {
+                "survey_item_id": {
                   "type": "integer",
-                  "description": "The surveyComponent id"
+                  "description": "The surveyItem id"
                 }
               }
             }
@@ -2303,6 +2541,9 @@
           },
           "404": {
             "description": "Label not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2332,6 +2573,9 @@
           },
           "404": {
             "description": "Label not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -2361,7 +2605,7 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/surveyItemOption"
+              "$ref": "#/definitions/option"
             }
           },
           "400": {
@@ -2372,6 +2616,9 @@
           },
           "404": {
             "description": "SurveyItemOption not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2391,7 +2638,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "survey_item_option",
             "description": "SurveyItemOption object that needs to be updated",
             "required": true,
             "schema": {
@@ -2411,7 +2658,11 @@
                 },
                 "type": {
                   "type": "string",
-                  "description": "Name that identify the type of the surveyItemOption"
+                  "description": "Name that identify the type of the option"
+                },
+                "survey_item_id": {
+                  "type": "integer",
+                  "description": "The surveyItem id"
                 }
               }
             }
@@ -2421,7 +2672,7 @@
           "202": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/surveyItemOption"
+              "$ref": "#/definitions/option"
             }
           },
           "400": {
@@ -2432,6 +2683,9 @@
           },
           "404": {
             "description": "SurveyItemOption not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2449,7 +2703,8 @@
           "204": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/surveyItemOption"
+              "type": "integer",
+              "description": "survey_item_option id"
             }
           },
           "400": {
@@ -2460,6 +2715,9 @@
           },
           "404": {
             "description": "SurveyItemOption not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -2512,7 +2770,8 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/label"
+              "type": "integer",
+              "description": "label_survey_item_option id"
             }
           },
           "400": {
@@ -2520,6 +2779,9 @@
           },
           "403": {
             "description": "Not Authorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2546,6 +2808,9 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -2582,7 +2847,10 @@
             "description": "Invalid id"
           },
           "404": {
-            "description": "Label not found"
+            "description": "SurveyOptionLabel not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2642,7 +2910,10 @@
             "description": "Not Authorized"
           },
           "404": {
-            "description": "Label not found"
+            "description": "SurveyOptionLabel not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2661,7 +2932,7 @@
             "description": "OK",
             "schema": {
               "type": "integer",
-              "description": "id label_survey_item_option deleted"
+              "description": "label_survey_item_option id"
             }
           },
           "400": {
@@ -2671,12 +2942,15 @@
             "description": "Not Authorized"
           },
           "404": {
-            "description": "Label not found"
+            "description": "SurveyOptionLabel not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/surveyResponses/{id}": {
+    "/responses/{id}": {
       "parameters": [
         {
           "in": "path",
@@ -2709,6 +2983,9 @@
           },
           "404": {
             "description": "SurveyResponse not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2729,7 +3006,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "survey_response",
             "description": "SurveyResponse object that needs to be updated",
             "required": true,
             "schema": {
@@ -2771,6 +3048,9 @@
           },
           "404": {
             "description": "SurveyResponse not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2786,10 +3066,11 @@
           "application/json"
         ],
         "responses": {
-          "200": {
-            "description": "Successful operation",
+          "204": {
+            "description": "OK",
             "schema": {
-              "$ref": "#/definitions/surveyResponse"
+              "type": "integer",
+              "description": "survey_response id"
             }
           },
           "400": {
@@ -2800,11 +3081,14 @@
           },
           "405": {
             "description": "Validation exception"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/surveyResponses/{id}/componentResponses": {
+    "/responses/{id}/componentResponses": {
       "parameters": [
         {
           "in": "path",
@@ -2819,9 +3103,9 @@
           "AdminApp",
           "SurveyApp"
         ],
-        "summary": "Add a new surveyCompResponse",
-        "description": "Operation to call in order to create a new surveyCompResponse in the system",
-        "operationId": "addSurveyCompResponse",
+        "summary": "Add a new surveyComponentResponse",
+        "description": "Operation to call in order to create a new surveyComponentResponse in the system",
+        "operationId": "createSurveyComponentResponse",
         "consumes": [
           "application/json"
         ],
@@ -2831,7 +3115,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "survey_response",
+            "name": "survey_component_response",
             "description": "SurveyCompResponse object that needs to be added",
             "required": true,
             "schema": {
@@ -2849,11 +3133,18 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/surveyCompResponse"
+              "type": "integer",
+              "description": "survey_component_response id"
             }
           },
           "400": {
             "description": "Bad Request"
+          },
+          "403": {
+            "description": "Not Authorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2862,8 +3153,8 @@
           "AdminApp",
           "SurveyApp"
         ],
-        "summary": "Get all surveyCompResponse",
-        "description": "Performed by a surveyCompResponse in order to get all surveyCompResponses",
+        "summary": "Get all surveyComponentResponse",
+        "description": "Performed by a surveyComponentResponse in order to get all surveyComponentResponses",
         "operationId": "getSurveyComponentResponses",
         "produces": [
           "application/json"
@@ -2874,12 +3165,15 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/surveyCompResponse"
+                "$ref": "#/definitions/surveyComponentResponse"
               }
             }
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -2891,7 +3185,7 @@
           "name": "id",
           "required": true,
           "type": "integer",
-          "description": "The SurveyCompResponse id"
+          "description": "The SurveyComponentResponse id"
         }
       ],
       "get": {
@@ -2899,9 +3193,9 @@
           "AdminApp",
           "SurveyApp"
         ],
-        "summary": "Get a surveyCompResponse by the id",
-        "description": "Performed by surveyCompResponses in order to get specific surveyCompResponse",
-        "operationId": "getSurveyCompResponseById",
+        "summary": "Get a surveyComponentResponse by the id",
+        "description": "Performed by surveyComponentResponses in order to get specific surveyComponentResponse",
+        "operationId": "getSurveyComponentResponseById",
         "produces": [
           "application/json"
         ],
@@ -2909,14 +3203,17 @@
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/surveyCompResponse"
+              "$ref": "#/definitions/surveyComponentResponse"
             }
           },
           "400": {
             "description": "Invalid id"
           },
           "404": {
-            "description": "SurveyCompResponse not found"
+            "description": "SurveyComponentResponse not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2926,7 +3223,7 @@
           "SurveyApp"
         ],
         "summary": "Update an existing SurveyCompResponse",
-        "description": "Performed by a surveyCompResponse in order to update the SurveyCompResponse",
+        "description": "Performed by a surveyComponentResponse in order to update the SurveyCompResponse",
         "operationId": "updateSurveyCompResponse",
         "consumes": [
           "application/json"
@@ -2945,7 +3242,7 @@
               "properties": {
                 "id": {
                   "type": "integer",
-                  "description": "Number that identify the surveyCompResponse in the system"
+                  "description": "Number that identify the surveyComponentResponse in the system"
                 },
                 "status": {
                   "type": "string",
@@ -2958,6 +3255,10 @@
                 "user_id": {
                   "type": "integer",
                   "description": "Id of the user that collected the data"
+                },
+                "survey_response_id": {
+                  "type": "integer",
+                  "description": "Id of the survey response"
                 }
               }
             }
@@ -2967,14 +3268,17 @@
           "202": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/surveyCompResponse"
+              "$ref": "#/definitions/surveyComponentResponse"
             }
           },
           "400": {
             "description": "Invalid id"
           },
           "404": {
-            "description": "SurveyCompResponse not found"
+            "description": "SurveyComponentResponse not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -2984,49 +3288,39 @@
           "SurveyApp"
         ],
         "summary": "Delete a SurveyCompResponse by id",
-        "description": "Performed by the surveyCompResponse in order to delete the SurveyCompResponse from the system",
+        "description": "Performed by the surveyComponentResponse in order to delete the SurveyCompResponse from the system",
         "operationId": "deleteSurveyCompResponse",
-        "consumes": [
-          "application/json"
-        ],
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "surveyResponseId",
-            "required": true,
-            "description": "The surveyResponse id",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
         "responses": {
           "204": {
-            "description": "Successful operation",
+            "description": "OK",
             "schema": {
-              "$ref": "#/definitions/surveyCompResponse"
+              "type": "integer",
+              "description": "survey_component_response id"
             }
           },
           "400": {
             "description": "Invalid id"
           },
           "404": {
-            "description": "SurveyCompResponse not found"
+            "description": "SurveyComponentResponse not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/componentResponses/{id}/surveyItemResponses": {
+    "/componentResponses/{id}/itemResponses": {
       "parameters": [
         {
           "in": "path",
           "name": "id",
           "required": true,
           "type": "integer",
-          "description": "The SurveyCompResponse id"
+          "description": "The SurveyComponentResponse id"
         }
       ],
       "post": {
@@ -3036,7 +3330,7 @@
         ],
         "summary": "Add a new surveyItemResponse",
         "description": "Operation to call in order to create a new surveyItemResponse in the system",
-        "operationId": "addSurveyItemResponse",
+        "operationId": "createSurveyItemResponse",
         "consumes": [
           "application/json"
         ],
@@ -3072,14 +3366,15 @@
           "201": {
             "description": "OK",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/surveyItemResponse"
-              }
+              "type": "integer",
+              "description": "survey_item_response id"
             }
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -3106,11 +3401,14 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "/surveyItemResponses/{id}": {
+    "/itemResponses/{id}": {
       "parameters": [
         {
           "in": "path",
@@ -3143,6 +3441,9 @@
           },
           "404": {
             "description": "SurveyItemResponse not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -3163,7 +3464,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "survey_item_response",
             "description": "SurveyItemResponse object that needs to be updated",
             "required": true,
             "schema": {
@@ -3181,7 +3482,7 @@
                   "type": "string",
                   "description": "Value of the surveyItemResponse"
                 },
-                "survey_item_Id": {
+                "survey_item_id": {
                   "type": "integer",
                   "description": "The surveyItem id"
                 },
@@ -3205,6 +3506,9 @@
           },
           "404": {
             "description": "SurveyItemResponse not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -3216,28 +3520,15 @@
         "summary": "Delete a SurveyItemResponse by id",
         "description": "Performed by the surveyItemResponse in order to delete the SurveyItemResponse from the system",
         "operationId": "deleteSurveyItemResponse",
-        "consumes": [
-          "application/json"
-        ],
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "surveyResponseId",
-            "required": true,
-            "description": "The surveyResponse id",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
         "responses": {
           "204": {
-            "description": "Successful operation",
+            "description": "OK",
             "schema": {
-              "$ref": "#/definitions/surveyItemResponse"
+              "type": "integer",
+              "description": "survey_item_response id"
             }
           },
           "400": {
@@ -3245,6 +3536,9 @@
           },
           "404": {
             "description": "SurveyItemResponse not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3284,6 +3578,10 @@
                 "surname": {
                   "type": "string",
                   "description": "String that identify the surname of the user"
+                },
+                "avatar": {
+                  "type": "string",
+                  "description": "Link to the user profile image"
                 }
               }
             }
@@ -3293,11 +3591,15 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/user"
+              "type": "integer",
+              "description": "user id"
             }
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -3324,6 +3626,9 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3361,6 +3666,9 @@
           },
           "404": {
             "description": "User not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -3380,7 +3688,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "user",
             "description": "User object that needs to be updated",
             "required": true,
             "schema": {
@@ -3397,13 +3705,17 @@
                 "surname": {
                   "type": "string",
                   "description": "String that identify the surname of the user"
+                },
+                "avatar": {
+                  "type": "string",
+                  "description": "Link to the user profile image"
                 }
               }
             }
           }
         ],
         "responses": {
-          "200": {
+          "202": {
             "description": "Successful operation",
             "schema": {
               "$ref": "#/definitions/user"
@@ -3429,10 +3741,11 @@
           "application/json"
         ],
         "responses": {
-          "200": {
-            "description": "Successful operation",
+          "204": {
+            "description": "OK",
             "schema": {
-              "$ref": "#/definitions/user"
+              "type": "integer",
+              "description": "user id"
             }
           },
           "400": {
@@ -3440,6 +3753,9 @@
           },
           "404": {
             "description": "User not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3452,7 +3768,7 @@
         ],
         "summary": "Add a new subject",
         "description": "Operation to call in order to create a new subject in the system",
-        "operationId": "addSubject",
+        "operationId": "createSubject",
         "consumes": [
           "application/json"
         ],
@@ -3472,6 +3788,10 @@
                   "type": "string",
                   "description": "Name of the subject"
                 },
+                "surname": {
+                  "type": "string",
+                  "description": "Surname of the subject"
+                },
                 "location": {
                   "type": "string",
                   "description": "Location of the subject"
@@ -3488,11 +3808,15 @@
           "201": {
             "description": "Successful operation",
             "schema": {
-              "$ref": "#/definitions/subject"
+              "type": "integer",
+              "description": "subject id"
             }
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -3519,6 +3843,9 @@
           },
           "400": {
             "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3556,6 +3883,9 @@
           },
           "404": {
             "description": "Subject not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -3589,6 +3919,10 @@
                   "type": "string",
                   "description": "Name of the subject"
                 },
+                "surname": {
+                  "type": "string",
+                  "description": "Surname of the subject"
+                },
                 "location": {
                   "type": "string",
                   "description": "Location of the subject"
@@ -3602,7 +3936,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "202": {
             "description": "Successful operation",
             "schema": {
               "$ref": "#/definitions/subject"
@@ -3613,6 +3947,9 @@
           },
           "404": {
             "description": "Subject not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -3628,10 +3965,11 @@
           "application/json"
         ],
         "responses": {
-          "200": {
-            "description": "Successful operation",
+          "204": {
+            "description": "OK",
             "schema": {
-              "$ref": "#/definitions/subject"
+              "type": "integer",
+              "description": "subject id"
             }
           },
           "400": {
@@ -3639,6 +3977,9 @@
           },
           "404": {
             "description": "Subject not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3807,14 +4148,14 @@
         "options": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/surveyItemOption"
+            "$ref": "#/definitions/option"
           },
           "description": "Option that the user can select"
         },
         "images": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/surveyImage"
+            "$ref": "#/definitions/image"
           },
           "description": "Images that could compose the item"
         },
@@ -3824,7 +4165,7 @@
         }
       }
     },
-    "surveyImage": {
+    "image": {
       "type": "object",
       "properties": {
         "id": {
@@ -3838,6 +4179,10 @@
         "path": {
           "type": "string",
           "description": "Link/Path to the image file"
+        },
+        "survey_item_id": {
+          "type": "integer",
+          "description": "The surveyItem id"
         }
       }
     },
@@ -3855,10 +4200,14 @@
         "values": {
           "type": "string",
           "description": "Contains the question in the language indicated in the language field"
+        },
+        "survey_item_id": {
+          "type": "integer",
+          "description": "The surveyItem id"
         }
       }
     },
-    "surveyItemOption": {
+    "option": {
       "type": "object",
       "properties": {
         "id": {
@@ -3871,7 +4220,7 @@
         },
         "type": {
           "type": "string",
-          "description": "Name that identify the type of the surveyItemOption"
+          "description": "Name that identify the type of the option"
         },
         "labels": {
           "type": "array",
@@ -3879,6 +4228,10 @@
             "$ref": "#/definitions/label"
           },
           "description": "Values in order to answer to a specific question"
+        },
+        "survey_item_id": {
+          "type": "integer",
+          "description": "The surveyItem id"
         }
       }
     },
@@ -3892,6 +4245,10 @@
         "name": {
           "type": "string",
           "description": "Name of the subject"
+        },
+        "surname": {
+          "type": "string",
+          "description": "Surname of the subject"
         },
         "location": {
           "type": "string",
@@ -3959,6 +4316,10 @@
         "surname": {
           "type": "string",
           "description": "String that identify the surname of the user"
+        },
+        "avatar": {
+          "type": "string",
+          "description": "Link to the user profile image"
         }
       }
     },
@@ -3988,18 +4349,18 @@
         "components": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/surveyCompResponse"
+            "$ref": "#/definitions/surveyComponentResponse"
           },
           "description": "Values in order to collect surveyComp response"
         }
       }
     },
-    "surveyCompResponse": {
+    "surveyComponentResponse": {
       "type": "object",
       "properties": {
         "id": {
           "type": "integer",
-          "description": "Number that identify the surveyCompResponse in the system"
+          "description": "Number that identify the surveyComponentResponse in the system"
         },
         "status": {
           "type": "string",
@@ -4012,6 +4373,10 @@
         "user_id": {
           "type": "integer",
           "description": "Id of the user that collected the data"
+        },
+        "survey_response_id": {
+          "type": "integer",
+          "description": "Id of the survey response"
         },
         "items": {
           "type": "array",

@@ -5,22 +5,69 @@ info:
   title: "CGA Survey"
   termsOfService: "http://swagger.io/terms/"
   contact:
-    email: "a@a.com"
+    email: "giovanni.guadagnini@studenti.unitn.it"
   license:
     name: "MIT"
     url: "https://github.com/TrentoCrowdAI/CGA/blob/master/LICENSE"
-host: "a.com"
+host: "cga-api.herokuapp.com"
 #basePath: "/v1"
 tags:
 - name: "AdminApp"
   description: "A set of APIs designed for administrate the projects"
 - name: "SurveyApp"
-  description: "A set of APIs designed for create/manage the projects"
+  description: "A set of APIs designed to fill the surveys"
 
 schemes:
 - "https"
 
+securityDefinitions:
+  cookieAuthSession:         
+    type: apiKey
+    in: header
+    name: "Cookie: express:sess"
+  cookieAuthSessionSignature:         
+    type: apiKey
+    in: header
+    name: "Cookie: express:sess.sig"
+
+security: [ { cookieAuthSession: [] , cookieAuthSessionSignature: []  } ]
+
 paths:
+  /auth/google:
+    get:
+      tags:
+      - "AdminApp"
+      - "SurveyApp"
+      summary: "Log-in"
+      description: "Allow the user to log into the system using Google auth"
+      operationId: "LogInUser"
+      security: [] # no authentication
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful operation, user created"
+          schema:
+            $ref: "#/definitions/user"
+        201:
+          description: "Successful operation, user found"
+          schema:
+            $ref: "#/definitions/user"
+        400:
+          description: "Bad Request"
+  
+  /logout:
+    get:
+      tags:
+      - "AdminApp"
+      - "SurveyApp"
+      summary: "Log-out"
+      description: "Allow the user to log out and destroy the session"
+      operationId: "LogOutUser"
+      responses: 
+        301:
+          description: "OK"
+
   /projects:
     post:
       tags:
@@ -59,6 +106,8 @@ paths:
           description: "Bad Request"
         403: 
           description: "Not Authorized"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
@@ -77,6 +126,8 @@ paths:
               $ref: "#/definitions/project"
         400:
           description: "Bad request"
+        500: 
+          description: "Internal Server Error"
   /projects/{id}:
     parameters:
       - in: path
@@ -104,6 +155,8 @@ paths:
           description: "Not Authorized"
         404:
           description: "Project not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -145,6 +198,8 @@ paths:
           description: "Not Authorized"
         404:
           description: "Project not found"
+        500: 
+          description: "Internal Server Error"
     delete:
       tags:
       - "AdminApp"
@@ -158,13 +213,15 @@ paths:
           description: "Successful operation"
           schema:
             type: "integer"
-            description: "project_id"
+            description: "project id"
         400:
           description: "Invalid id"
         403: 
           description: "Not Authorized"
         404:
-          description: "Project not found"     
+          description: "Project not found"  
+        500: 
+          description: "Internal Server Error"   
   /projects/{id}/dataCollections:
     parameters:
       - in: path
@@ -184,7 +241,7 @@ paths:
       - "application/json"
       parameters:
       - in: body
-        name: "dataCollection"
+        name: "data_collection"
         description: "DataCollection object that needs to be added"
         required: true
         schema:
@@ -210,11 +267,13 @@ paths:
           description: "Successful operation"
           schema:
             type: "integer"
-            description: "data_collection_id"
+            description: "data_collection id"
         400:
           description: "Bad Request"
         403:
           description: "Not Authorized"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
@@ -232,7 +291,9 @@ paths:
             items:
               $ref: "#/definitions/dataCollection"
         400:
-          description: "Bad request"  
+          description: "Invalid id"  
+        500: 
+          description: "Internal Server Error"
   /projects/{id}/members:
     parameters:
       - in: path
@@ -274,12 +335,14 @@ paths:
             $ref: "#/definitions/member"
         400:
           description: "Bad Request"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
       summary: "Get all member"
       description: "Performed by a user in order to get all members"
-      operationId: "getAllMembers"
+      operationId: "getProjectMembers"
       produces:
       - "application/json"
       responses:
@@ -290,7 +353,9 @@ paths:
             items:
               $ref: "#/definitions/member"
         400:
-          description: "Bad request"  
+          description: "Invalid Id" 
+        500: 
+          description: "Internal Server Error" 
   /projects/{id1}/members/{id2}:
     parameters:
       - in: path
@@ -309,7 +374,7 @@ paths:
       - "SurveyApp"
       summary: "Get a member by the id"
       description: "Performed by users in order to get specific member"
-      operationId: "getMember"
+      operationId: "getMemberById"
       produces:
       - "application/json"
       parameters:
@@ -332,6 +397,8 @@ paths:
           description: "Invalid ids"
         404:
           description: "Member not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -375,7 +442,9 @@ paths:
         403:
           description: "Not Authorized"
         404:
-          description: "Member not found"      
+          description: "Member not found"   
+        500: 
+          description: "Internal Server Error"   
     delete:
       tags:
       - "AdminApp"
@@ -396,6 +465,8 @@ paths:
           description: "Not Authorized"
         404:
           description: "Member not found"
+        500: 
+          description: "Internal Server Error"
   
   /roles/:
     post:
@@ -429,9 +500,12 @@ paths:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/project"
+            type: "integer"
+            description: "role id"
         400:
           description: "Bad Request"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
@@ -450,6 +524,8 @@ paths:
               $ref: "#/definitions/role"
         400:
           description: "Bad request"
+        500: 
+          description: "Internal Server Error"
   /roles/{id}:
     parameters:
       - in: path
@@ -475,6 +551,8 @@ paths:
           description: "Invalid id"
         404:
           description: "Role not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -511,6 +589,8 @@ paths:
           description: "Invalid id"
         404:
           description: "Role not found"
+        500: 
+          description: "Internal Server Error"
     delete:
         tags:
         - "AdminApp"
@@ -524,11 +604,13 @@ paths:
             description: "Successful operation"
             schema:
               type: "integer"
-              description: "role_id of the deleted role"
+              description: "role id"
           400:
             description: "Invalid id"
           404:
             description: "Role not found"
+          500: 
+            description: "Internal Server Error"
 
   /dataCollections/{id}/:
     parameters:
@@ -564,6 +646,8 @@ paths:
           description: "Invalid id"
         404:
           description: "DataCollection not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -576,7 +660,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "dataCollection"
+        name: "data_collection"
         description: "DataCollection object that needs to be updated"
         required: true
         schema:
@@ -609,11 +693,13 @@ paths:
           schema:
             $ref: "#/definitions/dataCollection"
         400:
-          description: "Invalid id"
+          description: "Invalid ids"
         403:
           description: "Not Authorized"
         404:
-          description: "DataCollection not found"        
+          description: "DataCollection not found"  
+        500: 
+          description: "Internal Server Error"      
     delete:
       tags:
       - "AdminApp"
@@ -632,16 +718,19 @@ paths:
         schema:
           type: "integer"
       responses:
-        200:
+        204:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/dataCollection"
+            type: "integer"
+            description: "data_collection id"
         400:
           description: "Invalid id"
         403:
           description: "Not Authorized"
         404:
           description: "DataCollection not found"
+        500: 
+          description: "Internal Server Error"
   /dataCollections/{id}/surveys:      
     parameters:
       - in: path
@@ -677,11 +766,14 @@ paths:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/survey"
+            type: "integer"
+            description: "survey id"
         400:
           description: "Bad Request"
         403:
           description: "Not Authorized"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
@@ -700,6 +792,68 @@ paths:
               $ref: "#/definitions/survey"
         400:
           description: "Bad request"  
+        500: 
+          description: "Internal Server Error"
+  
+  /dataCollections/{id}/subjects:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The dataCollection id 
+    get:
+      tags:
+      - "AdminApp"
+      - "SurveyApp"
+      summary: "Get all subject assigned to the logged user that has at least one survey incomplete"
+      description: "Performed by a user in order to get all subject that has a survey to fill"
+      operationId: "getDataCollectionSubjects"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/survey"
+        400:
+          description: "Bad request"  
+        500: 
+          description: "Internal Server Error" 
+  /dataCollections/{id1}/subjects/{id2}/surveys:
+    parameters:
+      - in: path
+        name: id1
+        required: true
+        type: integer
+        description: The dataCollection id   
+      - in: path
+        name: id2
+        required: true
+        type: integer
+        description: The subject id 
+    get:
+      tags:
+      - "AdminApp"
+      - "SurveyApp"
+      summary: "Get all survey assigned to the subject that the logged user has to fill"
+      description: "Performed by a user in order to get all surveys of the chosen subject"
+      operationId: "getSubjectSurveys"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/survey"
+        400:
+          description: "Bad request"  
+        500: 
+          description: "Internal Server Error"  
   
   /surveys/{id}:
     parameters:
@@ -735,12 +889,14 @@ paths:
           description: "Invalid id"
         404:
           description: "Survey not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
       summary: "Update an existing survey"
       description: "Performed by a user in order to update the survey"
-      operationId: "updateSurvey2"
+      operationId: "updateSurvey"
       consumes:
       - "application/json"
       produces:
@@ -776,12 +932,14 @@ paths:
           description: "Not Authorized"
         404:
           description: "Survey not found"
+        500: 
+          description: "Internal Server Error"
     delete:
       tags:
       - "AdminApp"
       summary: "Delete a survey by id"
       description: "Performed by the user in order to delete the survey from the system"
-      operationId: "deleteSurvey2"
+      operationId: "deleteSurvey"
       consumes:
       - "application/json"
       produces:
@@ -811,13 +969,15 @@ paths:
           description: "Successful operation"
           schema:
             type: "integer"
-            description: "survey_id of the delete Survey"
+            description: "survey id"
         400:
           description: "Invalid id"
         403:
           description: "Not Authorized"
         404:
           description: "Survey not found"
+        500: 
+          description: "Internal Server Error"
   /surveys/{id}/subjects:
     parameters:
       - in: path
@@ -831,7 +991,7 @@ paths:
       - "SurveyApp"
       summary: "Add a new subject"
       description: "Operation to call in order to create a new Subject in the system"
-      operationId: "addSubjectToSurvey"
+      operationId: "createSubjectToSurvey"
       consumes:
       - "application/json"
       produces:
@@ -860,9 +1020,12 @@ paths:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/subject"
+            type: "integer"
+            description: "subject id"
         400:
           description: "Bad Request"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
@@ -883,6 +1046,8 @@ paths:
               $ref: "#/definitions/subject"
         400:
           description: "Bad request"
+        500: 
+          description: "Internal Server Error"
   /surveys/{id}/surveyComponents:
     parameters:
       - in: path
@@ -902,7 +1067,7 @@ paths:
       - "application/json"
       parameters:
       - in: body
-        name: "SurveyComponent"
+        name: "survey_component"
         description: "SurveyComponent object that needs to be added"
         required: true
         schema:
@@ -918,18 +1083,21 @@ paths:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/surveyComponent"
+            type: "integer"
+            description: "survey_component id"
         400:
           description: "Bad Request"
         403:
           description: "Not Authorized"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
       - "SurveyApp"
       summary: "Get all surveyComponent"
       description: "Performed by a user in order to get all surveyComponent"
-      operationId: "getAllSurveyComponents"
+      operationId: "getSurveyComponents"
       consumes:
       - "application/json"
       produces:
@@ -950,6 +1118,8 @@ paths:
               $ref: "#/definitions/surveyComponent"
         400:
           description: "Bad request"
+        500: 
+          description: "Internal Server Error"
   
   /surveyComponents/{id}:
     parameters:
@@ -976,6 +1146,8 @@ paths:
           description: "Invalid id"
         404:
           description: "SurveyComponent not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -988,7 +1160,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "survey_component"
         description: "SurveyComponent object that needs to be updated"
         required: true
         schema:
@@ -1017,10 +1189,11 @@ paths:
           description: "Not Authorized"
         404:
           description: "SurveyComponent not found"
+        500: 
+          description: "Internal Server Error"
     delete:
       tags:
       - "AdminApp"
-      - "SurveyApp"
       summary: "Delete a SurveyItem by id"
       description: "Performed by the user in order to delete the SurveyItem from the system"
       operationId: "deleteSurveyComponent"
@@ -1031,13 +1204,15 @@ paths:
           description: "Successful operation"
           schema:
             type: "integer"
-            description: "survey_component_id of the deleted surveyComponent"
+            description: "survey_component id"
         400:
           description: "Invalid id"
         403:
           description: "Not Authorized"
         404:
           description: "SurveyComponent not found"
+        500: 
+          description: "Internal Server Error"
   /surveyComponents/{id}/surveyItems:
     parameters:
       - in: path
@@ -1068,23 +1243,26 @@ paths:
               description: "Name of the item"
             type:
               type: "string"
-              description: "Name that identify the type of the surveyItemOption"           
+              description: "Name that identify the type of the option"           
       responses:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/surveyItem"
+            type: "integer"
+            description: "survey_item id"
         400:
           description: "Bad Request"
         403:
-          description: "Bad Request"
+          description: "Not Authorized"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
       - "SurveyApp"
       summary: "Get all surveyItem"
       description: "Performed by a user in order to get all surveyItem"
-      operationId: "getAllSurveyItems"
+      operationId: "getSurveyItems"
       consumes:
       - "application/json"
       produces:
@@ -1104,7 +1282,9 @@ paths:
             items:
               $ref: "#/definitions/surveyItem"
         400:
-          description: "Bad request"
+          description: "Invalid id"
+        500: 
+          description: "Internal Server Error"
   
   /surveyItems/{id}:
     parameters:
@@ -1131,6 +1311,8 @@ paths:
           description: "Invalid id"
         404:
           description: "SurveyItem not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -1157,7 +1339,7 @@ paths:
               description: "Name of the item"
             type:
               type: "string"
-              description: "Name that identify the type of the surveyItemOption"           
+              description: "Name that identify the type of the option"           
             survey_component_id:
               type: "integer"
               description: "Id that identify the component of the item"
@@ -1172,35 +1354,31 @@ paths:
           description: "Not Authorized"
         404:
           description: "SurveyItem not found"
+        500: 
+          description: "Internal Server Error"
     delete:
       tags:
       - "AdminApp"
       summary: "Delete a SurveyItem by id"
       description: "Performed by the user in order to delete the SurveyItem from the system"
       operationId: "deleteSurveyItem"
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
-      parameters:
-      - in: body
-        name: surveyComponentId
-        required: true
-        description: The surveyComponent id
-        schema:
-          type: "integer"
       responses:
         204:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/surveyItem"
+            type: "integer"
+            description: "survey_item id"
         400:
           description: "Invalid id"
         403:
           description: "Not Authorized"
         404:
           description: "SurveyItem not found"
-  /surveyItems/{id}/surveyImages:
+        500: 
+          description: "Internal Server Error"
+  /surveyItems/{id}/images:
     parameters:
       - in: path
         name: id
@@ -1212,14 +1390,14 @@ paths:
       - "AdminApp"
       summary: "Add a new SurveyImage"
       description: "Performed by a user when he wants to create a new SurveyImage"
-      operationId: "addSurveyImage"
+      operationId: "createSurveyItemImage"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: body
-        name: "SurveyImage"
+        name: "image_survey_item"
         description: "SurveyImage object that needs to be added"
         required: true
         schema:
@@ -1238,146 +1416,35 @@ paths:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/surveyImage"
+            type: "integer"
+            description: "image_survey_item id"
         400:
           description: "Bad Request"
+        403:
+          description: "Not Authorized"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
       - "SurveyApp"
       summary: "Get all SurveyImage"
       description: "Performed by a user in order to get all SurveyImage"
-      operationId: "getAllSurveyImages"
-      consumes:
-      - "application/json"
+      operationId: "getSurveyItemImages"
       produces:
       - "application/json"
-      parameters:
-      - in: body
-        name: surveyComponentId
-        required: true
-        description: The surveyComponent id
-        schema:
-          type: "integer"
       responses:
         200:
           description: "OK"
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/surveyImage"
+              $ref: "#/definitions/image"
         400:
           description: "Bad request"
-  /surveyItems/{id1}/surveyImages/{id2}:
-    parameters:
-      - in: path
-        name: id1
-        required: true
-        type: integer
-        description: The SurveyItem id
-      - in: path
-        name: id2
-        required: true
-        type: integer
-        description: The SurveyImage id
-    get:
-      tags:
-      - "AdminApp"
-      - "SurveyApp"
-      summary: "Get a SurveyItem by the id"
-      description: "Performed by users in order to get specific SurveyImage"
-      operationId: "getSurveyImage"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: body
-        name: surveyComponentId
-        required: true
-        description: The surveyComponent id
-        schema:
-          type: "integer"
-      responses:
-        200:
-          description: "OK"
-          schema:
-            $ref: "#/definitions/surveyImage"
-        400:
-          description: "Invalid id"
-        404:
-          description: "SurveyImage not found"
-        405:
-          description: "Validation exception"
-    put:
-      tags:
-      - "AdminApp"
-      summary: "Update an existing SurveyImage"
-      description: "Performed by a user in order to update the SurveyImage"
-      operationId: "updateSurveyImage"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "SurveyImage object that needs to be updated"
-        required: true
-        schema:
-          type: "object"
-          properties:
-            id:
-              type: "integer"
-              description: "Number that identify the SurveyItem"
-            title:
-              type: "string"
-              description: "Description for the item"
-            path:
-              type: "string"
-              description: "Link/Path to the image file"
-            surveyComponentId:
-              type: "integer"
-              description: The surveyComponent id 
-      responses:
-        200:
-          description: "Successful operation"
-          schema:
-            $ref: "#/definitions/surveyImage"
-        400:
-          description: "Invalid id"
-        404:
-          description: "SurveyImage not found"
-        405:
-          description: "Validation exception"
-    delete:
-      tags:
-      - "AdminApp"
-      summary: "Delete a SurveyImage by id"
-      description: "Performed by the user in order to delete the SurveyImage from the system"
-      operationId: "deleteSurveyImage"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: body
-        name: surveyComponentId
-        required: true
-        description: The surveyComponent id
-        schema:
-          type: "integer"
-      responses:
-        200:
-          description: "Successful operation"
-          schema:
-            $ref: "#/definitions/surveyImage"
-        400:
-          description: "Invalid id"
-        404:
-          description: "SurveyImage not found"
-        405:
-          description: "Validation exception"
+        500: 
+          description: "Internal Server Error"
+  
   /surveyItems/{id}/labels:
     parameters:
       - in: path
@@ -1413,18 +1480,21 @@ paths:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/label"
+            type: "integer"
+            description: "label_survey_item id"
         400:
           description: "Bad Request"
         403:
           description: "Not Authorized"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
       - "SurveyApp"
       summary: "Get all label"
       description: "Performed by a user in order to get all Label"
-      operationId: "getAllLabels"
+      operationId: "getSurveyItemLabels"
       consumes:
       - "application/json"
       produces:
@@ -1445,6 +1515,8 @@ paths:
               $ref: "#/definitions/label"
         400:
           description: "Bad request"
+        500: 
+          description: "Internal Server Error"
   /surveyItems/{id}/options:
     parameters:
       - in: path
@@ -1478,14 +1550,17 @@ paths:
               description: "Value of the SurveyItemOption"
             type:
               type: "string"
-              description: "Name that identify the type of the surveyItemOption"
+              description: "Name that identify the type of the option"
       responses:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/surveyItemOption"
+            type: "integer"
+            description: "survey_item_option id"
         400:
           description: "Bad Request"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
@@ -1501,9 +1576,100 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/surveyItemOption"
+              $ref: "#/definitions/option"
         400:
           description: "Bad request"
+        500: 
+          description: "Internal Server Error"
+  
+  /images/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        type: integer
+        description: The SurveyImage id
+    get:
+      tags:
+      - "AdminApp"
+      - "SurveyApp"
+      summary: "Get a SurveyItem by the id"
+      description: "Performed by users in order to get specific SurveyImage"
+      operationId: "getSurveyItemImageById"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/image"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        500: 
+          description: "Internal Server Error"
+    put:
+      tags:
+      - "AdminApp"
+      summary: "Update an existing SurveyImage"
+      description: "Performed by a user in order to update the SurveyImage"
+      operationId: "updateSurveyImage"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "image_survey_item"
+        description: "SurveyImage object that needs to be updated"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              description: "Number that identify the SurveyItem"
+            title:
+              type: "string"
+              description: "Description for the item"
+            path:
+              type: "string"
+              description: "Link/Path to the image file"
+            survey_item_id:
+              type: "integer"
+              description: The surveyItem id  
+      responses:
+        202:
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/image"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        500: 
+          description: "Internal Server Error"
+    delete:
+      tags:
+      - "AdminApp"
+      summary: "Delete a SurveyImage by id"
+      description: "Performed by the user in order to delete the SurveyImage from the system"
+      operationId: "deleteSurveyImage"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "Successful operation"
+          schema:
+            type: "integer"
+            description: "image_survey_item id"
+        400:
+          description: "Invalid id"
+        404:
+          description: "SurveyImage not found"
+        500: 
+          description: "Internal Server Error"
 
   /labels/{id}:
     parameters:
@@ -1530,8 +1696,8 @@ paths:
           description: "Invalid id"
         404:
           description: "Label not found"
-        405:
-          description: "Validation exception"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -1559,9 +1725,9 @@ paths:
             content:
               type: "string"
               description: "Contains the question in the language indicated in the language field"
-            survey_component_id:
+            survey_item_id:
               type: "integer"
-              description: The surveyComponent id 
+              description: The surveyItem id 
       responses:
         202:
           description: "Successful operation"
@@ -1573,6 +1739,8 @@ paths:
           description: "Not Authorized"
         404:
           description: "Label not found"
+        500: 
+          description: "Internal Server Error"
     delete:
       tags:
       - "AdminApp"
@@ -1593,6 +1761,8 @@ paths:
           description: "Not Authorized"
         404:
           description: "Label not found"
+        500: 
+          description: "Internal Server Error"
   
   /options/{id}:
     parameters:
@@ -1614,13 +1784,15 @@ paths:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/surveyItemOption"
+            $ref: "#/definitions/option"
         400:
           description: "Invalid id"
         403:
           description: "Not Authorized"
         404:
           description: "SurveyItemOption not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -1633,7 +1805,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "survey_item_option"
         description: "SurveyItemOption object that needs to be updated"
         required: true
         schema:
@@ -1650,18 +1822,23 @@ paths:
               description: "Value of the SurveyItemOption"
             type:
               type: "string"
-              description: "Name that identify the type of the surveyItemOption"
+              description: "Name that identify the type of the option"
+            survey_item_id:
+              type: "integer"
+              description: The surveyItem id 
       responses:
         202:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/surveyItemOption"
+            $ref: "#/definitions/option"
         400:
           description: "Invalid id"
         403:
           description: "Not Authorized"
         404:
           description: "SurveyItemOption not found"
+        500: 
+          description: "Internal Server Error"
     delete:
       tags:
       - "AdminApp"
@@ -1674,13 +1851,16 @@ paths:
         204:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/surveyItemOption"
+            type: "integer"
+            description: "survey_item_option id"
         400:
           description: "Invalid id"
         403:
           description: "Not Authorized"
         404:
           description: "SurveyItemOption not found"
+        500: 
+          description: "Internal Server Error"
   /options/{id}/optionLabels:
     parameters:
       - in: path
@@ -1716,11 +1896,14 @@ paths:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/label"
+            type: "integer"
+            description: "label_survey_item_option id"
         400:
           description: "Bad Request"
         403:
           description: "Not Authorized"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
@@ -1739,6 +1922,9 @@ paths:
               $ref: "#/definitions/label"
         400:
           description: "Bad request"
+        500: 
+          description: "Internal Server Error"
+  
   /optionLabels/{id}:
     parameters:
       - in: path
@@ -1763,7 +1949,9 @@ paths:
         400:
           description: "Invalid id"
         404:
-          description: "Label not found"
+          description: "SurveyOptionLabel not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -1804,7 +1992,9 @@ paths:
         403:
           description: "Not Authorized"
         404:
-          description: "Label not found"
+          description: "SurveyOptionLabel not found"
+        500: 
+          description: "Internal Server Error"
     delete:
       tags:
       - "AdminApp"
@@ -1818,15 +2008,17 @@ paths:
           description: "OK" 
           schema:
             type: "integer"
-            description: "id label_survey_item_option deleted" 
+            description: "label_survey_item_option id" 
         400:
           description: "Invalid id"
         403:
           description: "Not Authorized"
         404:
-          description: "Label not found"
+          description: "SurveyOptionLabel not found"
+        500: 
+          description: "Internal Server Error"
   
-  /surveyResponses/{id}:
+  /responses/{id}:
     parameters:
       - in: path
         name: id
@@ -1851,6 +2043,8 @@ paths:
           description: "Invalid id"
         404:
           description: "SurveyResponse not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -1864,7 +2058,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "survey_response"
         description: "SurveyResponse object that needs to be updated"
         required: true
         schema:
@@ -1894,6 +2088,8 @@ paths:
           description: "Invalid id"
         404:
           description: "SurveyResponse not found"
+        500: 
+          description: "Internal Server Error"
     delete:
       tags:
         - "AdminApp"
@@ -1904,17 +2100,20 @@ paths:
       produces:
       - "application/json"
       responses:
-        200:
-          description: "Successful operation"
+        204:
+          description: "OK" 
           schema:
-            $ref: "#/definitions/surveyResponse"
+            type: "integer"
+            description: "survey_response id" 
         400:
           description: "Invalid id"
         404:
           description: "SurveyResponse not found"
         405:
           description: "Validation exception"
-  /surveyResponses/{id}/componentResponses:
+        500: 
+          description: "Internal Server Error"
+  /responses/{id}/componentResponses:
     parameters:
       - in: path
         name: id
@@ -1925,16 +2124,16 @@ paths:
       tags:
       - "AdminApp"
       - "SurveyApp"
-      summary: "Add a new surveyCompResponse"
-      description: "Operation to call in order to create a new surveyCompResponse in the system"
-      operationId: "addSurveyCompResponse"
+      summary: "Add a new surveyComponentResponse"
+      description: "Operation to call in order to create a new surveyComponentResponse in the system"
+      operationId: "createSurveyComponentResponse"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: body
-        name: "survey_response"
+        name: "survey_component_response"
         description: "SurveyCompResponse object that needs to be added"
         required: true
         schema:
@@ -1947,15 +2146,20 @@ paths:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/surveyCompResponse"
+            type: "integer"
+            description: "survey_component_response id" 
         400:
           description: "Bad Request"
+        403:
+          description: "Not Authorized"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
       - "SurveyApp"
-      summary: "Get all surveyCompResponse"
-      description: "Performed by a surveyCompResponse in order to get all surveyCompResponses"
+      summary: "Get all surveyComponentResponse"
+      description: "Performed by a surveyComponentResponse in order to get all surveyComponentResponses"
       operationId: "getSurveyComponentResponses"
       produces:
       - "application/json"
@@ -1965,9 +2169,11 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/surveyCompResponse"
+              $ref: "#/definitions/surveyComponentResponse"
         400:
-          description: "Bad request"  
+          description: "Bad request" 
+        500: 
+          description: "Internal Server Error" 
   
   /componentResponses/{id}:
     parameters:
@@ -1975,31 +2181,33 @@ paths:
         name: id
         required: true
         type: integer
-        description: The SurveyCompResponse id
+        description: The SurveyComponentResponse id
     get:
       tags:
       - "AdminApp"
       - "SurveyApp"
-      summary: "Get a surveyCompResponse by the id"
-      description: "Performed by surveyCompResponses in order to get specific surveyCompResponse"
-      operationId: "getSurveyCompResponseById"
+      summary: "Get a surveyComponentResponse by the id"
+      description: "Performed by surveyComponentResponses in order to get specific surveyComponentResponse"
+      operationId: "getSurveyComponentResponseById"
       produces:
       - "application/json"
       responses:
         200:
           description: "OK"
           schema:
-            $ref: "#/definitions/surveyCompResponse"
+            $ref: "#/definitions/surveyComponentResponse"
         400:
           description: "Invalid id"
         404:
-          description: "SurveyCompResponse not found"
+          description: "SurveyComponentResponse not found"
+        500: 
+          description: "Internal Server Error" 
     put:
       tags:
       - "AdminApp"
       - "SurveyApp"
       summary: "Update an existing SurveyCompResponse"
-      description: "Performed by a surveyCompResponse in order to update the SurveyCompResponse"
+      description: "Performed by a surveyComponentResponse in order to update the SurveyCompResponse"
       operationId: "updateSurveyCompResponse"
       consumes:
       - "application/json"
@@ -2015,7 +2223,7 @@ paths:
           properties:
             id:
               type: "integer"
-              description: "Number that identify the surveyCompResponse in the system"
+              description: "Number that identify the surveyComponentResponse in the system"
             status:
               type: "string"
               description: "String that identify the status of the surveyResponse"
@@ -2025,56 +2233,55 @@ paths:
             user_id:
               type: "integer"
               description: "Id of the user that collected the data"
+            survey_response_id:
+              type: "integer"
+              description: "Id of the survey response"
       responses:
         202:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/surveyCompResponse"
+            $ref: "#/definitions/surveyComponentResponse"
         400:
           description: "Invalid id"
         404:
-          description: "SurveyCompResponse not found"
+          description: "SurveyComponentResponse not found"
+        500: 
+          description: "Internal Server Error" 
     delete:
       tags:
       - "AdminApp"
       - "SurveyApp"
       summary: "Delete a SurveyCompResponse by id"
-      description: "Performed by the surveyCompResponse in order to delete the SurveyCompResponse from the system"
+      description: "Performed by the surveyComponentResponse in order to delete the SurveyCompResponse from the system"
       operationId: "deleteSurveyCompResponse"
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
-      parameters:
-      - in: body
-        name: surveyResponseId
-        required: true
-        description: The surveyResponse id
-        schema:
-          type: "integer"
       responses:
         204:
-          description: "Successful operation"
+          description: "OK" 
           schema:
-            $ref: "#/definitions/surveyCompResponse"
+            type: "integer"
+            description: "survey_component_response id" 
         400:
           description: "Invalid id"
         404:
-          description: "SurveyCompResponse not found"
-  /componentResponses/{id}/surveyItemResponses:
+          description: "SurveyComponentResponse not found"
+        500: 
+          description: "Internal Server Error" 
+  /componentResponses/{id}/itemResponses:
     parameters:
       - in: path
         name: id
         required: true
         type: integer
-        description: The SurveyCompResponse id
+        description: The SurveyComponentResponse id
     post:
       tags:
       - "AdminApp"
       - "SurveyApp"
       summary: "Add a new surveyItemResponse"
       description: "Operation to call in order to create a new surveyItemResponse in the system"
-      operationId: "addSurveyItemResponse"
+      operationId: "createSurveyItemResponse"
       consumes:
       - "application/json"
       produces:
@@ -2100,11 +2307,12 @@ paths:
         201:
           description: "OK"
           schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/surveyItemResponse"
+            type: "integer"
+            description: "survey_item_response id" 
         400:
           description: "Bad Request"
+        500: 
+          description: "Internal Server Error" 
     get:
       tags:
       - "AdminApp"
@@ -2122,9 +2330,11 @@ paths:
             items:
               $ref: "#/definitions/surveyItemResponse"
         400:
-          description: "Bad request"  
+          description: "Bad request" 
+        500: 
+          description: "Internal Server Error"  
   
-  /surveyItemResponses/{id}:
+  /itemResponses/{id}:
     parameters:
       - in: path
         name: id
@@ -2149,6 +2359,8 @@ paths:
           description: "Invalid id"
         404:
           description: "SurveyItemResponse not found"
+        500: 
+          description: "Internal Server Error" 
     put:
       tags:
       - "AdminApp"
@@ -2162,7 +2374,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "survey_item_response"
         description: "SurveyItemResponse object that needs to be updated"
         required: true
         schema:
@@ -2177,7 +2389,7 @@ paths:
             value:
               type: "string"
               description: "Value of the surveyItemResponse"
-            survey_item_Id:
+            survey_item_id:
               type: "integer"
               description: "The surveyItem id"
             survey_component_response_id:
@@ -2192,6 +2404,8 @@ paths:
           description: "Invalid id"
         404:
           description: "SurveyItemResponse not found"
+        500: 
+          description: "Internal Server Error" 
     delete:
       tags:
       - "AdminApp"
@@ -2199,26 +2413,20 @@ paths:
       summary: "Delete a SurveyItemResponse by id"
       description: "Performed by the surveyItemResponse in order to delete the SurveyItemResponse from the system"
       operationId: "deleteSurveyItemResponse"
-      consumes:
-      - "application/json"
       produces:
       - "application/json"
-      parameters:
-        - in: body
-          name: surveyResponseId
-          required: true
-          description: The surveyResponse id
-          schema:
-            type: "integer"
       responses:
         204:
-          description: "Successful operation"
+          description: "OK" 
           schema:
-            $ref: "#/definitions/surveyItemResponse"
+            type: "integer"
+            description: "survey_item_response id"
         400:
           description: "Invalid id"
         404:
           description: "SurveyItemResponse not found"
+        500: 
+          description: "Internal Server Error" 
 
   /users:
     post:
@@ -2249,13 +2457,19 @@ paths:
             surname:
               type: "string"
               description: "String that identify the surname of the user"
+            avatar: 
+              type: "string"
+              description: "Link to the user profile image" 
       responses:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/user"
+            type: "integer"
+            description: "user id" 
         400:
           description: "Bad Request"
+        500: 
+          description: "Internal Server Error" 
     get:
       tags:
       - "AdminApp"
@@ -2274,6 +2488,8 @@ paths:
               $ref: "#/definitions/user"
         400:
           description: "Bad request"  
+        500: 
+          description: "Internal Server Error" 
   /users/{id}:
     parameters:
       - in: path
@@ -2299,6 +2515,8 @@ paths:
           description: "Invalid id"
         404:
           description: "User not found"
+        500: 
+          description: "Internal Server Error" 
     put:
       tags:
       - "AdminApp"
@@ -2311,7 +2529,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "user"
         description: "User object that needs to be updated"
         required: true
         schema:
@@ -2326,8 +2544,11 @@ paths:
             surname:
               type: "string"
               description: "String that identify the surname of the user"
+            avatar: 
+              type: "string"
+              description: "Link to the user profile image" 
       responses:
-        200:
+        202:
           description: "Successful operation"
           schema:
             $ref: "#/definitions/user"
@@ -2336,23 +2557,26 @@ paths:
         404:
           description: "User not found"
     delete:
-        tags:
-        - "AdminApp"
-        - "SurveyApp"
-        summary: "Delete a User by id"
-        description: "Performed by the user in order to delete the User from the system"
-        operationId: "deleteUser"
-        produces:
-        - "application/json"
-        responses:
-          200:
-            description: "Successful operation"
-            schema:
-              $ref: "#/definitions/user"
-          400:
-            description: "Invalid id"
-          404:
-            description: "User not found"
+      tags:
+      - "AdminApp"
+      - "SurveyApp"
+      summary: "Delete a User by id"
+      description: "Performed by the user in order to delete the User from the system"
+      operationId: "deleteUser"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "OK" 
+          schema:
+            type: "integer"
+            description: "user id"
+        400:
+          description: "Invalid id"
+        404:
+          description: "User not found"
+        500: 
+          description: "Internal Server Error" 
 
   /subjects:
     post:
@@ -2361,14 +2585,14 @@ paths:
       - "SurveyApp"
       summary: "Add a new subject"
       description: "Operation to call in order to create a new subject in the system"
-      operationId: "addSubject"
+      operationId: "createSubject"
       consumes:
       - "application/json"
       produces:
       - "application/json"
       parameters:
       - in: body
-        name: subject
+        name: "subject"
         description: "Subject object that needs to be added"
         required: true
         schema:
@@ -2377,6 +2601,9 @@ paths:
             name:
               type: "string"
               description: "Name of the subject"
+            surname:
+              type: "string"
+              description: "Surname of the subject"
             location:
               type: "string"
               description: "Location of the subject"
@@ -2387,9 +2614,12 @@ paths:
         201:
           description: "Successful operation"
           schema:
-            $ref: "#/definitions/subject"
+            type: "integer"
+            description: "subject id" 
         400:
           description: "Bad Request"
+        500: 
+          description: "Internal Server Error"
     get:
       tags:
       - "AdminApp"
@@ -2408,6 +2638,8 @@ paths:
               $ref: "#/definitions/subject"
         400:
           description: "Bad request"  
+        500: 
+          description: "Internal Server Error"
   /subjects/{id}:
     parameters:
       - in: path
@@ -2433,6 +2665,8 @@ paths:
           description: "Invalid id"
         404:
           description: "Subject not found"
+        500: 
+          description: "Internal Server Error"
     put:
       tags:
       - "AdminApp"
@@ -2457,6 +2691,9 @@ paths:
             name:
               type: "string"
               description: "Name of the subject"
+            surname:
+              type: "string"
+              description: "Surname of the subject"
             location:
               type: "string"
               description: "Location of the subject"
@@ -2464,7 +2701,7 @@ paths:
               type: "string"
               description: "Contact of the subject" 
       responses:
-        200:
+        202:
           description: "Successful operation"
           schema:
             $ref: "#/definitions/subject"
@@ -2472,25 +2709,30 @@ paths:
           description: "Invalid id"
         404:
           description: "Subject not found"
+        500: 
+          description: "Internal Server Error"
     delete:
-        tags:
-        - "AdminApp"
-        - "SurveyApp"
-        summary: "Delete a Subject by id"
-        description: "Performed by the user in order to delete the Subject from the system"
-        operationId: "deleteSubject"
-        produces:
-        - "application/json"
-        responses:
-          200:
-            description: "Successful operation"
-            schema:
-              $ref: "#/definitions/subject"
-          400:
-            description: "Invalid id"
-          404:
-            description: "Subject not found"
-  
+      tags:
+      - "AdminApp"
+      - "SurveyApp"
+      summary: "Delete a Subject by id"
+      description: "Performed by the user in order to delete the Subject from the system"
+      operationId: "deleteSubject"
+      produces:
+      - "application/json"
+      responses:
+        204:
+          description: "OK" 
+          schema:
+            type: "integer"
+            description: "subject id"
+        400:
+          description: "Invalid id"
+        404:
+          description: "Subject not found"
+        500: 
+          description: "Internal Server Error"
+
 definitions:
   project:
     type: "object"
@@ -2610,17 +2852,17 @@ definitions:
       options:
         type: "array"
         items:
-          $ref: "#/definitions/surveyItemOption"
+          $ref: "#/definitions/option"
         description: "Option that the user can select"
       images:
         type: "array"
         items:
-          $ref: "#/definitions/surveyImage"
+          $ref: "#/definitions/image"
         description: "Images that could compose the item"
       survey_component_id:
         type: "integer"
         description: "Id that identify the component of the item"    
-  surveyImage:
+  image:
     type: "object"
     properties:
       id:
@@ -2632,6 +2874,9 @@ definitions:
       path:
         type: "string"
         description: "Link/Path to the image file"
+      survey_item_id:
+        type: "integer"
+        description: The surveyItem id 
   label:
     type: "object"
     properties:
@@ -2644,7 +2889,10 @@ definitions:
       values:
         type: "string"
         description: "Contains the question in the language indicated in the language field"
-  surveyItemOption:
+      survey_item_id:
+        type: "integer"
+        description: The surveyItem id 
+  option:
     type: "object"
     properties:
       id:
@@ -2655,12 +2903,15 @@ definitions:
         description: "Name that describe the SurveyItemOption"
       type:
         type: "string"
-        description: "Name that identify the type of the surveyItemOption"
+        description: "Name that identify the type of the option"
       labels:
         type: "array"
         items:
           $ref: "#/definitions/label"
         description: "Values in order to answer to a specific question"
+      survey_item_id:
+        type: "integer"
+        description: The surveyItem id 
   subject:
     type: "object"
     properties:
@@ -2670,6 +2921,9 @@ definitions:
       name:
         type: "string"
         description: "Name of the subject"
+      surname:
+        type: "string"
+        description: "Surname of the subject"
       location:
         type: "string"
         description: "Location of the subject"
@@ -2718,6 +2972,9 @@ definitions:
       surname:
         type: "string"
         description: "String that identify the surname of the user"
+      avatar: 
+        type: "string"
+        description: "Link to the user profile image" 
   surveyResponse:
     type: "object"
     properties:
@@ -2739,14 +2996,14 @@ definitions:
       components:
         type: "array"
         items:
-          $ref: "#/definitions/surveyCompResponse"
+          $ref: "#/definitions/surveyComponentResponse"
         description: "Values in order to collect surveyComp response"
-  surveyCompResponse:
+  surveyComponentResponse:
     type: "object"
     properties:
       id:
         type: "integer"
-        description: "Number that identify the surveyCompResponse in the system"
+        description: "Number that identify the surveyComponentResponse in the system"
       status:
         type: "string"
         description: "String that identify the status of the surveyResponse"
@@ -2756,6 +3013,9 @@ definitions:
       user_id:
         type: "integer"
         description: "Id of the user that collected the data"
+      survey_response_id:
+        type: "integer"
+        description: "Id of the survey response"
       items:
         type: "array"
         items:
