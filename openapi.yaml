@@ -61,7 +61,7 @@ paths:
       description: Allow the user to log out and destroy the session
       operationId: LogOutUser
       responses:
-        '200':
+        '301':
           description: OK
   /projects:
     post:
