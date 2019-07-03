@@ -5,7 +5,7 @@ info:
   title: CGA Survey
   termsOfService: 'http://swagger.io/terms/'
   contact:
-    email: a@a.com
+    email: giovanni.guadagnini@studenti.unitn.it
   license:
     name: MIT
     url: 'https://github.com/TrentoCrowdAI/CGA/blob/master/LICENSE'
@@ -52,6 +52,17 @@ paths:
             $ref: '#/definitions/user'
         '400':
           description: Bad Request
+  /logout:
+    get:
+      tags:
+        - AdminApp
+        - SurveyApp
+      summary: Log-out
+      description: Allow the user to log out and destroy the session
+      operationId: LogOutUser
+      responses:
+        '200':
+          description: OK
   /projects:
     post:
       tags:
@@ -197,7 +208,7 @@ paths:
           description: Successful operation
           schema:
             type: integer
-            description: project_id
+            description: project id
         '400':
           description: Invalid id
         '403':
@@ -225,7 +236,7 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: dataCollection
+          name: data_collection
           description: DataCollection object that needs to be added
           required: true
           schema:
@@ -251,7 +262,7 @@ paths:
           description: Successful operation
           schema:
             type: integer
-            description: data_collection_id
+            description: data_collection id
         '400':
           description: Bad Request
         '403':
@@ -483,7 +494,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/project'
+            type: integer
+            description: role id
         '400':
           description: Bad Request
         '500':
@@ -586,7 +598,7 @@ paths:
           description: Successful operation
           schema:
             type: integer
-            description: role_id of the deleted role
+            description: role id
         '400':
           description: Invalid id
         '404':
@@ -641,7 +653,7 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: dataCollection
+          name: data_collection
           description: DataCollection object that needs to be updated
           required: true
           schema:
@@ -699,10 +711,11 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        '204':
           description: Successful operation
           schema:
-            $ref: '#/definitions/dataCollection'
+            type: integer
+            description: data_collection id
         '400':
           description: Invalid id
         '403':
@@ -746,7 +759,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/survey'
+            type: integer
+            description: survey id
         '400':
           description: Bad Request
         '403':
@@ -873,7 +887,7 @@ paths:
         - AdminApp
       summary: Update an existing survey
       description: Performed by a user in order to update the survey
-      operationId: updateSurvey2
+      operationId: updateSurvey
       consumes:
         - application/json
       produces:
@@ -916,7 +930,7 @@ paths:
         - AdminApp
       summary: Delete a survey by id
       description: Performed by the user in order to delete the survey from the system
-      operationId: deleteSurvey2
+      operationId: deleteSurvey
       consumes:
         - application/json
       produces:
@@ -946,7 +960,7 @@ paths:
           description: Successful operation
           schema:
             type: integer
-            description: survey_id of the delete Survey
+            description: survey id
         '400':
           description: Invalid id
         '403':
@@ -968,7 +982,7 @@ paths:
         - SurveyApp
       summary: Add a new subject
       description: Operation to call in order to create a new Subject in the system
-      operationId: addSubjectToSurvey
+      operationId: createSubjectToSurvey
       consumes:
         - application/json
       produces:
@@ -997,7 +1011,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/subject'
+            type: integer
+            description: subject id
         '400':
           description: Bad Request
         '500':
@@ -1059,7 +1074,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/surveyComponent'
+            type: integer
+            description: survey_component id
         '400':
           description: Bad Request
         '403':
@@ -1178,7 +1194,7 @@ paths:
           description: Successful operation
           schema:
             type: integer
-            description: survey_component_id of the deleted surveyComponent
+            description: survey_component id
         '400':
           description: Invalid id
         '403':
@@ -1222,7 +1238,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/surveyItem'
+            type: integer
+            description: survey_item id
         '400':
           description: Bad Request
         '403':
@@ -1334,22 +1351,14 @@ paths:
       summary: Delete a SurveyItem by id
       description: Performed by the user in order to delete the SurveyItem from the system
       operationId: deleteSurveyItem
-      consumes:
-        - application/json
       produces:
         - application/json
-      parameters:
-        - in: body
-          name: surveyComponentId
-          required: true
-          description: The surveyComponent id
-          schema:
-            type: integer
       responses:
         '204':
           description: Successful operation
           schema:
-            $ref: '#/definitions/surveyItem'
+            type: integer
+            description: survey_item id
         '400':
           description: Invalid id
         '403':
@@ -1370,7 +1379,7 @@ paths:
         - AdminApp
       summary: Add a new SurveyImage
       description: Performed by a user when he wants to create a new SurveyImage
-      operationId: addSurveyItemImage
+      operationId: createSurveyItemImage
       consumes:
         - application/json
       produces:
@@ -1396,7 +1405,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/image'
+            type: integer
+            description: image_survey_item id
         '400':
           description: Bad Request
         '403':
@@ -1458,7 +1468,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/label'
+            type: integer
+            description: label_survey_item id
         '400':
           description: Bad Request
         '403':
@@ -1532,7 +1543,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/option'
+            type: integer
+            description: survey_item_option id
         '400':
           description: Bad Request
         '500':
@@ -1638,7 +1650,7 @@ paths:
           description: Successful operation
           schema:
             type: integer
-            description: survey_item_image id
+            description: image_survey_item id
         '400':
           description: Invalid id
         '404':
@@ -1824,7 +1836,8 @@ paths:
         '204':
           description: Successful operation
           schema:
-            $ref: '#/definitions/option'
+            type: integer
+            description: survey_item_option id
         '400':
           description: Invalid id
         '403':
@@ -1868,7 +1881,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/label'
+            type: integer
+            description: label_survey_item_option id
         '400':
           description: Bad Request
         '403':
@@ -2115,7 +2129,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/surveyComponentResponse'
+            type: integer
+            description: survey_component_response id
         '400':
           description: Bad Request
         '403':
@@ -2274,9 +2289,8 @@ paths:
         '201':
           description: OK
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/surveyItemResponse'
+            type: integer
+            description: survey_item_response id
         '400':
           description: Bad Request
         '500':
@@ -2430,7 +2444,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/user'
+            type: integer
+            description: user id
         '400':
           description: Bad Request
         '500':
@@ -2578,7 +2593,8 @@ paths:
         '201':
           description: Successful operation
           schema:
-            $ref: '#/definitions/subject'
+            type: integer
+            description: subject id
         '400':
           description: Bad Request
         '500':
@@ -2688,7 +2704,7 @@ paths:
           description: OK
           schema:
             type: integer
-            description: subkect id
+            description: subject id
         '400':
           description: Invalid id
         '404':
